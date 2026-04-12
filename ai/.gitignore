@@ -1,0 +1,8 @@
+# paquetes basicos
+node_modules
+package.json
+bun.lock
+
+# ignorar skills propietarias
+skills/*/
+agents/*/
