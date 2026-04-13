@@ -6,12 +6,17 @@
 # 'cls' (Clear screen) Limpiar el buffer de la session actual
 # 'gtz' (Go To .zshrc) Acceder a la configuracion en .zshrc
 # 'srcz' (Source .zshrc) Guardar la configuracion en .zshrc
+# 'ot' (Open Tab) Abrir un nuevo tab en el mismo directorio
 # -------------------------------------------------------------------
 alias gtnv="cd ~/.config/nvim"
 alias gtoc="cd ~/.config/opencode"
 alias cls="clear"
 alias gtz="nv ~/.zshrc"
 alias srcz="source .zshrc"
+
+ot() {
+  wezterm cli spawn --cwd "$(pwd)" >/dev/null 2>&1
+}
 
 # -------------------------------------------------------------------
 # Abre IDE directamente con el tema Catppuccin

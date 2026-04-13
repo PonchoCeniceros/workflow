@@ -10,24 +10,46 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
 ## Instalación
 
 ```bash
+# Instalar previamente nvim, OpenCode.ai y WezTerm
+# Agregar WezTerm al PATH
+echo 'export PATH="/Applications/WezTerm.app/Contents/MacOS:$PATH"' >> ~/.zshrc
+
+# Clonar el repositorio
 cd ~/
 git clone https://github.com/PonchoCeniceros/workflow.git
-ln -s ~/workflow/ai ~/.config/opencode
-ln -s ~/workflow/ide ~/.config/nvim
-ln -s ~/workflow/.wezterm.lua ~/.wezterm.lua
+
+# Enlazar configuraciones
+ln -s ~/workflow/ai ~/.config/opencode        # OpenCode
+ln -s ~/workflow/ide ~/.config/nvim           # LazyVim
+ln -s ~/workflow/.wezterm.lua ~/.wezterm.lua  # WezTerm
+
+# Cargar comandos personalizados al iniciar la shell
 echo '[ -f ~/workflow/.cmds.sh ] && source ~/workflow/.cmds.sh' >> ~/.zshrc
+
+# Recargar la configuración de la shell
 source ~/.zshrc
 ```
 
-## SSH
+## Comandos
 
-Conexión rápida a servidores vía `sssh` — selecciona un servidor del catálogo con `fzf` y se conecta automáticamente por SSH con la llave correcta.
-
-```bash
-sssh
-```
-
-Los servidores están definidos en `.wallet/ssh.csv` y las llaves en `.wallet/pem/`.
+| Comando | Acción |
+|---------|--------|
+| `gtnv` | Ir a la configuración de LazyVim |
+| `gtoc` | Ir a la configuración de OpenCode |
+| `gtz` | Abrir `.zshrc` en Neovim |
+| `srcz` | Recargar configuración de `.zshrc` |
+| `cls` | Limpiar pantalla |
+| `ot` | Abrir nuevo tab en el mismo directorio |
+| `nv` | Abrir Neovim |
+| `nv c [arch]` | Abrir Neovim con tema Catppuccin |
+| `nv x [arch]` | Abrir Neovim con tema Carbonfox |
+| `nvc [arch]` | Abrir Neovim con Catppuccin directo |
+| `nvx [arch]` | Abrir Neovim con Carbonfox directo |
+| `nvcp` | Seleccionar proyecto (Projects) con fzf + Catppuccin |
+| `nvcd` | Seleccionar proyecto (Development) con fzf + Catppuccin |
+| `nvxp` | Seleccionar proyecto (Projects) con fzf + Carbonfox |
+| `nvxd` | Seleccionar proyecto (Development) con fzf + Carbonfox |
+| `sssh` | Seleccionar servidor SSH del catálogo con fzf |
 
 ## IDE
 
@@ -118,3 +140,12 @@ Usa el script `theme-selector.sh` para gestionar temas fácilmente:
 ./theme-selector.sh catppuccin
 ./theme-selector.sh carbonfox
 ```
+
+## SSH
+
+Conexión rápida a servidores vía `sssh` — selecciona un servidor del catálogo con `fzf` y se conecta automáticamente por SSH con la llave correcta.
+
+```bash
+sssh
+```
+Los servidores están definidos en `.wallet/ssh.csv` y las llaves en `.wallet/pem/`.
