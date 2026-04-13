@@ -5,7 +5,7 @@
 ![GNU Bash Badge](https://img.shields.io/badge/GNU%20Bash-4EAA25?logo=gnubash&logoColor=fff&style=for-the-badge)
 ![WezTerm Badge](https://img.shields.io/badge/WezTerm-4E49EE?logo=wezterm&logoColor=fff&style=for-the-badge)
 
-Este repositorio es el motor de mi productividad que facilita la experiencia desarrollo de Software.
+Workflow es un monorepo de configuración personal que centraliza y sincroniza el entorno de desarrollo: **LazyVim** como IDE, **OpenCode.ai** como asistente de IA, **WezTerm** como terminal, y **shell aliases** como atajos productivos. Todo en un solo lugar, listo para clonar y enlazar.
 
 ## Instalación
 
@@ -20,6 +20,54 @@ source ~/.zshrc
 ```
 
 ## IDE
+
+### Cheatsheet
+
+| Edición de Código | Búsqueda y Navegación | Buffers y Ventanas | Productividad | LSP y Debug |
+|--------------------|------------------------|----------------------|-----------------|--------------|
+| `i` Insertar después del cursor | `<leader>ff` Buscar archivos | `<leader>bb` Buffer anterior | `<leader>w` Guardar archivo | `<leader>xx` Warnings/errores LSP |
+| `a` Insertar antes del cursor | `<leader>sg` Buscar texto (grep) | `Shift + →` Buffer siguiente | `<leader>q` Cerrar buffer | `<leader>ls` Símbolos del buffer |
+| `I` Insertar al final de línea | `<leader>fb` Buffers abiertos | `Shift + ←` Buffer anterior | `<leader>e` Explorador archivos | `<leader>lR` Rename proyecto |
+| `A` Insertar al inicio de línea | `<leader>fh` Ayuda | `<leader>bd` Cerrar buffer | `<leader>gg` Git status | `<leader>la` Code actions |
+| `gcc` Comentar línea | `<leader>fr` Archivos recientes | `<leader>bD` Cerrar otros buffers | `<leader>gl` Git log | `<leader>le` Diagnósticos |
+| `gc` + mov. Comentar múltiple | `gd` Ir a definición | `Shift + ↓↓` Ventana superior | `<leader>ca` Code actions | `<leader>ld` Ir a definición |
+| `yi"` Copiar entre comillas | `gr` Ir a referencias | `Shift + ↑↑` Ventana inferior | `<leader>rn` Renombrar variable | `<leader>lr` Mostrar referencias |
+| `ci"` Cambiar entre comillas | `gi` Ir a implementación | `Shift + ←←` Ventana izquierda |`:qall` Cerrar Neovim | `<leader>li` Mostrar info |
+| `di"` Eliminar entre comillas | `K` Documentación flotante | `Shift + →→` Ventana derecha |`<leader>.` Clipboard | `F5` Start / Continue debug |
+| | `<leader>ft` Terminal flotante | `<S-Left>` Buffer anterior | | `F10` Step over |
+| | | `<S-Right>` Buffer siguiente | | |
+| | | `<C-w>s` Split horizontal | | |
+| | | `<C-w>v` Split vertical | | |
+| | | `<C-w>c` Cerrar ventana | | |
+
+
+### OpenCode
+
+IA basada en [opencode.ai](https://opencode.ai) usando `snacks.terminal`.
+
+
+| Keymap | Modo | Acción |
+|--------|------|--------|
+| `<leader>aa` | Normal | Toggle OpenCode |
+| `<leader>av` | Normal | OpenCode bottom |
+| `<leader>ah` | Normal | OpenCode right |
+| `ctrl + q` | insert | interrupt OpenCode |
+
+
+### csvview.nvim
+
+| Tipo | Atajo / Comando | Modo | Acción |
+|-----|-----------------|------|-------|
+| Text object | `if` | Operador / Visual | Seleccionar **contenido interno del campo** |
+| Text object | `af` | Operador / Visual | Seleccionar **campo completo** |
+| Navegación | `<Tab>` | Normal / Visual | Ir al **siguiente campo** (fin del campo) |
+| Navegación | `<S-Tab>` | Normal / Visual | Ir al **campo anterior** (fin del campo) |
+| Navegación | `<Enter>` | Normal / Visual | Ir a la **siguiente fila** |
+| Navegación | `<S-Enter>` | Normal / Visual | Ir a la **fila anterior** |
+| Comando | `:CsvViewEnable` | Comando | Habilitar vista CSV |
+| Comando | `:CsvViewDisable` | Comando | Deshabilitar vista CSV |
+| Comando | `:CsvViewToggle` | Comando | Alternar vista CSV |
+
 
 ### Mantenimiento
 
@@ -60,50 +108,3 @@ Usa el script `theme-selector.sh` para gestionar temas fácilmente:
 ./theme-selector.sh catppuccin
 ./theme-selector.sh carbonfox
 ```
-
-### Cheatsheet
-
-| Edición de Código | Búsqueda y Navegación | Buffers y Ventanas | Productividad | LSP y Debug |
-|--------------------|------------------------|----------------------|-----------------|--------------|
-| `i` Insertar después del cursor | `<leader>ff` Buscar archivos | `<leader>bb` Buffer anterior | `<leader>w` Guardar archivo | `<leader>xx` Warnings/errores LSP |
-| `a` Insertar antes del cursor | `<leader>sg` Buscar texto (grep) | `Shift + →` Buffer siguiente | `<leader>q` Cerrar buffer | `<leader>ls` Símbolos del buffer |
-| `I` Insertar al final de línea | `<leader>fb` Buffers abiertos | `Shift + ←` Buffer anterior | `<leader>e` Explorador archivos | `<leader>lR` Rename proyecto |
-| `A` Insertar al inicio de línea | `<leader>fh` Ayuda | `<leader>bd` Cerrar buffer | `<leader>gg` Git status | `<leader>la` Code actions |
-| `gcc` Comentar línea | `<leader>fr` Archivos recientes | `<leader>bD` Cerrar otros buffers | `<leader>gl` Git log | `<leader>le` Diagnósticos |
-| `gc` + mov. Comentar múltiple | `gd` Ir a definición | `Shift + ↓↓` Ventana superior | `<leader>ca` Code actions | `<leader>ld` Ir a definición |
-| `yi"` Copiar entre comillas | `gr` Ir a referencias | `Shift + ↑↑` Ventana inferior | `<leader>rn` Renombrar variable | `<leader>lr` Mostrar referencias |
-| `ci"` Cambiar entre comillas | `gi` Ir a implementación | `Shift + ←←` Ventana izquierda |`:qall` Cerrar Neovim | `<leader>li` Mostrar info |
-| `di"` Eliminar entre comillas | `K` Documentación flotante | `Shift + →→` Ventana derecha |`<leader>.` Clipboard | `F5` Start / Continue debug |
-| | `<leader>ft` Terminal flotante | `<S-Left>` Buffer anterior | | `F10` Step over |
-| | | `<S-Right>` Buffer siguiente | | |
-| | | `<C-w>s` Split horizontal | | |
-| | | `<C-w>v` Split vertical | | |
-| | | `<C-w>c` Cerrar ventana | | |
-
-
-### OpenCode
-
-IA basada en [opencode.ai](https://opencode.ai) usando `snacks.terminal`.
-
-
-| Keymap | Modo | Acción |
-|--------|------|--------|
-| `<leader>aa` | Normal | Toggle OpenCode |
-| `<leader>av` | Normal | OpenCode bottom |
-| `<leader>ah` | Normal | OpenCode right |
-
-
-### csvview.nvim
-
-| Tipo | Atajo / Comando | Modo | Acción |
-|-----|-----------------|------|-------|
-| Text object | `if` | Operador / Visual | Seleccionar **contenido interno del campo** |
-| Text object | `af` | Operador / Visual | Seleccionar **campo completo** |
-| Navegación | `<Tab>` | Normal / Visual | Ir al **siguiente campo** (fin del campo) |
-| Navegación | `<S-Tab>` | Normal / Visual | Ir al **campo anterior** (fin del campo) |
-| Navegación | `<Enter>` | Normal / Visual | Ir a la **siguiente fila** |
-| Navegación | `<S-Enter>` | Normal / Visual | Ir a la **fila anterior** |
-| Comando | `:CsvViewEnable` | Comando | Habilitar vista CSV |
-| Comando | `:CsvViewDisable` | Comando | Deshabilitar vista CSV |
-| Comando | `:CsvViewToggle` | Comando | Alternar vista CSV |
-
