@@ -43,6 +43,11 @@ config.keys = {
     mods = "CMD|CTRL",
     action = wezterm.action.ToggleFullScreen,
   },
+  {
+    key = "h",
+    mods = "CMD",
+    action = wezterm.action.Hide,
+  },
 }
 
 return config
