@@ -10,6 +10,8 @@ Este repositorio es el motor de mi productividad que facilita la experiencia des
 ## Instalación
 
 ```bash
+cd ~/
+git clone https://github.com/PonchoCeniceros/workflow.git
 ln -s ~/workflow/ai ~/.config/opencode
 ln -s ~/workflow/ide ~/.config/nvim
 ln -s ~/workflow/.wezterm.lua ~/.wezterm.lua
