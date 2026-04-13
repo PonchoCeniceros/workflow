@@ -19,6 +19,16 @@ echo '[ -f ~/workflow/.cmds.sh ] && source ~/workflow/.cmds.sh' >> ~/.zshrc
 source ~/.zshrc
 ```
 
+## SSH
+
+Conexión rápida a servidores vía `sssh` — selecciona un servidor del catálogo con `fzf` y se conecta automáticamente por SSH con la llave correcta.
+
+```bash
+sssh
+```
+
+Los servidores están definidos en `.wallet/ssh.csv` y las llaves en `.wallet/pem/`.
+
 ## IDE
 
 ### Cheatsheet

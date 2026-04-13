@@ -52,7 +52,6 @@ nv() {
 # -------------------------------------------------------------------
 # Selecciona un proyecto con fzf y abre nvc
 # -------------------------------------------------------------------
-# 'nvcp' (Neovim Catppuccin Project):
 nvcp() {
   local project_dir="$HOME/Projects"
   local selected=$(ls -1 "$project_dir" | fzf \
@@ -106,4 +105,34 @@ nvxd() {
     --header="Projects")
   [[ -z "$selected" ]] && return
   cd "$project_dir/$selected" && nvx
+}
+
+# -------------------------------------------------------------------
+# Selecciona un servidor del CSV y se conecta por SSH
+# -------------------------------------------------------------------
+sssh() {
+  local csv_file="$HOME/workflow/.wallet/ssh.csv"
+  local pem_dir="$HOME/workflow/.wallet/pem"
+
+  [[ ! -f "$csv_file" ]] && echo "$csv_file not found" && return 1
+
+  local selected=$(awk -F',' 'NR>1 {printf "%-4s %s\n", $1, $2}' "$csv_file" | fzf \
+    --prompt=" SSH > " \
+    --height=40% \
+    --layout=reverse \
+    --border=rounded \
+    --info=hidden \
+    --header="Type  Name")
+
+  [[ -z "$selected" ]] && return
+
+  local name=$(echo "$selected" | awk '{for(i=2;i<=NF;i++) printf "%s ", $i; print ""}' | sed 's/ $//')
+  local line=$(awk -F',' -v n="$name" 'NR>1 && $2==n' "$csv_file")
+  local user=$(echo "$line" | cut -d',' -f3)
+  local ip=$(echo "$line" | cut -d',' -f4)
+  local pem=$(echo "$line" | cut -d',' -f5)
+
+  echo "Conecting to $name ($ip)..."
+  chmod 600 "$pem_dir/$pem"
+  ssh -i "$pem_dir/$pem" "$user@$ip"
 }

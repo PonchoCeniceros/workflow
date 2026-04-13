@@ -1,0 +1,5 @@
+.wallet/*
+!.wallet/.gitkeep
+!.wallet/pem/
+.wallet/pem/*
+!.wallet/pem/.gitkeep
