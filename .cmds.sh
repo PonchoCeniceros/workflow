@@ -7,6 +7,7 @@
 # 'gtz' (Go To .zshrc) Acceder a la configuracion en .zshrc
 # 'srcz' (Source .zshrc) Guardar la configuracion en .zshrc
 # 'ot' (Open Tab) Abrir un nuevo tab en el mismo directorio
+# 'opwl' (Open Wallet) Abrir el archivo de credenciales de uso cotidiano
 # -------------------------------------------------------------------
 alias gtnv="cd ~/.config/nvim"
 alias gtoc="cd ~/.config/opencode"
@@ -16,6 +17,11 @@ alias srcz="source .zshrc"
 
 ot() {
   wezterm cli spawn --cwd "$(pwd)" >/dev/null 2>&1
+}
+
+opwl() {
+  local keys_file="$HOME/workflow/.wallet/keys.csv"
+  nv $keys_file
 }
 
 # -------------------------------------------------------------------
