@@ -13,7 +13,9 @@ alias gtnv="cd ~/.config/nvim"
 alias gtoc="cd ~/.config/opencode"
 alias cls="clear"
 alias gtz="nv ~/.zshrc"
-alias srcz="source .zshrc"
+srcz() {
+  cd ~ && source .zshrc
+}
 
 ot() {
   wezterm cli spawn --cwd "$(pwd)" >/dev/null 2>&1
@@ -127,21 +129,22 @@ sssh() {
 
   [[ ! -f "$csv_file" ]] && echo "$csv_file not found" && return 1
 
-  local selected=$(awk -F',' 'NR>1 {printf "%-4s %s\n", $1, $2}' "$csv_file" | fzf \
+  local selected=$(awk -F',' 'NR>1 {printf "%-4s %-4s %-25s %s\n", NR, $1, $2, $4}' "$csv_file" | fzf \
     --prompt=" SSH > " \
     --height=40% \
     --layout=reverse \
     --border=rounded \
     --info=hidden \
-    --header="Type  Name")
+    --header="Line Type Name                         Host")
 
   [[ -z "$selected" ]] && return
 
-  local name=$(echo "$selected" | awk '{for(i=2;i<=NF;i++) printf "%s ", $i; print ""}' | sed 's/ $//')
-  local line=$(awk -F',' -v n="$name" 'NR>1 && $2==n' "$csv_file")
-  local user=$(echo "$line" | cut -d',' -f3)
-  local ip=$(echo "$line" | cut -d',' -f4)
-  local pem=$(echo "$line" | cut -d',' -f5)
+  local line_num=$(echo "$selected" | awk '{print $1}')
+  local line=$(sed -n "${line_num}p" "$csv_file")
+  local name=$(echo "$line" | cut -d',' -f2 | tr -d '\r')
+  local user=$(echo "$line" | cut -d',' -f3 | tr -d '\r')
+  local ip=$(echo "$line" | cut -d',' -f4 | tr -d '\r')
+  local pem=$(echo "$line" | cut -d',' -f5 | tr -d '\r')
 
   echo "Conecting to $name ($ip)..."
   chmod 600 "$pem_dir/$pem"
