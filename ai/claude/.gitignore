@@ -1,0 +1,11 @@
+backups/
+cache/
+downloads/
+file-history/
+history.jsonl
+mcp-needs-auth-cache.json
+policy-limits.json
+projects/
+session-env/
+sessions/
+shell-snapshots/

@@ -5,6 +5,8 @@
 ![Zsh Badge](https://img.shields.io/badge/Zsh-F15A24?logo=zsh&logoColor=fff&style=for-the-badge)
 ![LazyVim Badge](https://img.shields.io/badge/LazyVim-2E7DE9?logo=lazyvim&logoColor=fff&style=for-the-badge)
 ![OpenCode Badge](https://img.shields.io/badge/OpenCode.ai-130F0F?logo=openai&logoColor=fff&style=for-the-badge)
+![Claude Badge](https://img.shields.io/badge/Claude-D97757?logo=claude&logoColor=fff&style=for-the-badge)
+
 
 Workflow es un monorepo de configuración personal que centraliza y sincroniza el entorno de desarrollo: **LazyVim** como IDE, **OpenCode.ai** como asistente de IA, **WezTerm** como terminal, y **shell aliases** como atajos productivos. Todo en un solo lugar, listo para clonar y enlazar.
 
@@ -14,15 +16,18 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
 # Instalar previamente nvim, OpenCode.ai y WezTerm
 # Agregar WezTerm al PATH
 echo 'export PATH="/Applications/WezTerm.app/Contents/MacOS:$PATH"' >> ~/.zshrc
+# Agregar herramienta de IA por defecto
+echo 'export AI_DEFAULT_TOOL=opencode' >> ~/.zshrc
 
 # Clonar el repositorio
 cd ~/
 git clone https://github.com/PonchoCeniceros/workflow.git
 
 # Enlazar configuraciones
-ln -s ~/workflow/ai ~/.config/opencode        # OpenCode
-ln -s ~/workflow/ide ~/.config/nvim           # LazyVim
-ln -s ~/workflow/.wezterm.lua ~/.wezterm.lua  # WezTerm
+ln -s ~/workflow/ai/opencode ~/.config/opencode # OpenCode
+ln -s ~/workflow/ai/claude ~/.claude            # Claude
+ln -s ~/workflow/ide ~/.config/nvim             # LazyVim
+ln -s ~/workflow/.wezterm.lua ~/.wezterm.lua    # WezTerm
 
 # Cargar comandos personalizados al iniciar la shell
 echo '[ -f ~/workflow/.cmds.sh ] && source ~/workflow/.cmds.sh' >> ~/.zshrc
@@ -74,17 +79,26 @@ source ~/.zshrc
 | | | `<C-w>c` Cerrar ventana | | |
 
 
-### OpenCode
+### AI Terminal
 
-IA basada en [opencode.ai](https://opencode.ai) usando `snacks.terminal`.
+Terminal de IA integrada via `snacks.terminal`. Soporta múltiples herramientas: **OpenCode**, **Claude Code** y **Kiro CLI**.
 
+La herramienta por defecto se configura con la variable de entorno `AI_DEFAULT_TOOL` en `.zshrc`:
+
+```bash
+export AI_DEFAULT_TOOL=claude     # trabajo
+export AI_DEFAULT_TOOL=opencode   # personal
+```
+
+Si la variable no está definida, `<leader>aa` abre el selector automáticamente.
 
 | Keymap | Modo | Acción |
 |--------|------|--------|
-| `<leader>aa` | Normal | Toggle OpenCode |
-| `<leader>av` | Normal | OpenCode bottom |
-| `<leader>ah` | Normal | OpenCode right |
-| `ctrl + q` | insert | interrupt OpenCode |
+| `<leader>aa` | Normal | Toggle herramienta por defecto |
+| `<leader>as` | Normal | Seleccionar herramienta (picker) |
+| `<leader>av` | Normal | AI Terminal bottom |
+| `<leader>ah` | Normal | AI Terminal float |
+| `ctrl + q` | insert | Interrumpir |
 
 
 ### csvview.nvim
