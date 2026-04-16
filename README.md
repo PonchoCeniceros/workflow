@@ -100,6 +100,18 @@ Si la variable no está definida, `<leader>aa` abre el selector automáticamente
 | `<leader>ah` | Normal | AI Terminal float |
 | `ctrl + q` | insert | Interrumpir |
 
+### OpenCode TUI
+
+Atajos configurados en `ai/opencode/tui.json`. Diseñados para evitar `ESC` (colisiona con modos de Neovim):
+
+| Shortcut | Acción |
+|----------|--------|
+| `ctrl+q` | Interrumpir sesión / Salir de la app |
+| `ctrl+c` | Cancelar preguntas interactivas |
+| `ctrl+z` | Suspender terminal |
+
+> **Nota**: `ctrl+q` reemplaza `ESC` para `session_interrupt`. `ctrl+c` es el estándar para cancelar en el TUI.
+
 
 ### csvview.nvim
 

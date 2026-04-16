@@ -2,6 +2,9 @@
   "$schema": "https://opencode.ai/tui.json",
   "theme": "catppuccin",
   "keybinds": {
-    "session_interrupt": "ctrl+q"
+    "leader": "ctrl+x",
+    "app_exit": "ctrl+q,ctrl+c,ctrl+d,<leader>q",
+    "session_interrupt": "ctrl+q",
+    "terminal_suspend": "ctrl+z"
   }
 }
