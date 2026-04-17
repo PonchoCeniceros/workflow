@@ -29,7 +29,8 @@ vim.keymap.set("n", "<S-Right>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 -- Quit all windows
 vim.keymap.set("n", "<leader>qq", "<cmd>qa!<cr>", { desc = "Quit all windows" })
 
--- Terminal siempre abajo
+-- Terminal de proposito general
+-- (desplegada siempre abajo para mayor comodidad)
 vim.keymap.set("n", "<leader>ft", function()
   Snacks.terminal(nil, {
     cwd = require("lazyvim.util").root(),
@@ -42,3 +43,22 @@ vim.keymap.set("n", "<leader>ft", function()
     },
   })
 end, { desc = "Terminal (Root Dir)" })
+
+-- Interfaz embebida de Git
+-- Implementacion de GitUI como interfaz.
+-- ajuste a la derecha para no inteferir
+-- con las herramientas de IA
+vim.keymap.del("n", "<leader>gG")
+
+vim.keymap.set("n", "<leader>gg", function()
+  Snacks.terminal("gitui", {
+    cwd = require("lazyvim.util").root(),
+    win = {
+      position = "left",
+      width = 0.5,
+      wo = {
+        -- winbar = " ",
+      },
+    },
+  })
+end, { desc = "Git (Root Dir)" })
