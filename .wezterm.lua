@@ -1,14 +1,25 @@
 local wezterm = require("wezterm")
+local mux = wezterm.mux
 local config = wezterm.config_builder()
+config.window_decorations = "RESIZE"
 
 --
 -- Escuchar el evento personalizado de Neovim
 --
 wezterm.on("user-var-changed", function(window, pane, name, value)
-  if name == "THEME" then
-    window:set_config_overrides({ color_scheme = value })
-  end
+	if name == "THEME" then
+		window:set_config_overrides({ color_scheme = value })
+	end
 end)
+
+--
+-- maximizar terminal
+--
+-- wezterm.on("gui-startup", function(cmd)
+-- 	local tab, pane, window = mux.spawn_window(cmd or {})
+-- 	window:gui_window():maximize()
+-- 	-- window:gui_window():toggle_fullscreen()
+-- end)
 
 -- tema clásico por defecto
 config.color_scheme = "Catppuccin Mocha"
@@ -26,28 +37,32 @@ config.window_decorations = "RESIZE"
 -- Añadir un poco de aire (padding)
 -- para que el código no toque los bordes
 config.window_padding = {
-  left = 15,
-  right = 15,
-  top = 15,
-  -- bottom = 10,
+	left = 15,
+	right = 15,
+	top = 15,
+	-- bottom = 10,
 }
 
+-- Configuración de dimensiones fijas (basadas en tu stty size)
 -- Define el ancho (columnas) y alto (filas)
-config.initial_cols = 120
-config.initial_rows = 20
+config.initial_cols = 179
+config.initial_rows = 43
+
+-- config.initial_cols = 120
+-- config.initial_rows = 20
 
 -- comando para maximizar la terminal
 config.keys = {
-  {
-    key = "f",
-    mods = "CMD|CTRL",
-    action = wezterm.action.ToggleFullScreen,
-  },
-  {
-    key = "h",
-    mods = "CMD",
-    action = wezterm.action.Hide,
-  },
+	{
+		key = "f",
+		mods = "CMD|CTRL",
+		action = wezterm.action.ToggleFullScreen,
+	},
+	{
+		key = "h",
+		mods = "CMD",
+		action = wezterm.action.Hide,
+	},
 }
 
 return config
