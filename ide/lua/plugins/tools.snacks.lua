@@ -37,6 +37,17 @@ return {
               mode = "t",
               desc = "Escape to normal mode",
             },
+            -- bloqueo del cambio de modo con el scroll
+            scroll_up = {
+              "<ScrollWheelUp>",
+              function() end,
+              mode = "t",
+            },
+            scroll_down = {
+              "<ScrollWheelDown>",
+              function() end,
+              mode = "t",
+            },
           },
         },
       },

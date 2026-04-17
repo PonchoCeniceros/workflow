@@ -35,6 +35,7 @@ vim.keymap.set("n", "<leader>ft", function()
     cwd = require("lazyvim.util").root(),
     win = {
       position = "bottom",
+      height = 15, -- 15 lineas de altura para la terminal flotante
       wo = {
         -- winbar = " ",
       },
