@@ -20,12 +20,6 @@ vim.keymap.set("n", "<S-Right><S-Right>", "<C-w>l", { desc = "Go to Right Window
 vim.keymap.set("n", "<S-Left>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 vim.keymap.set("n", "<S-Right>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 
--- Invertir efecto de 'i' y 'a'
--- vim.keymap.set("n", "i", "a", { desc = "Append after cursor" })
--- vim.keymap.set("n", "a", "i", { desc = "Insert before cursor" })
--- vim.keymap.set("n", "I", "A", { desc = "Append at end of line" })
--- vim.keymap.set("n", "A", "I", { desc = "Insert at start of line" })
-
 -- Quit all windows
 vim.keymap.set("n", "<leader>qq", "<cmd>qa!<cr>", { desc = "Quit all windows" })
 
@@ -44,21 +38,28 @@ vim.keymap.set("n", "<leader>ft", function()
   })
 end, { desc = "Terminal (Root Dir)" })
 
+-- Invertir efecto de 'i' y 'a'
+-- vim.keymap.set("n", "i", "a", { desc = "Append after cursor" })
+-- vim.keymap.set("n", "a", "i", { desc = "Insert before cursor" })
+-- vim.keymap.set("n", "I", "A", { desc = "Append at end of line" })
+-- vim.keymap.set("n", "A", "I", { desc = "Insert at start of line" })
+
 -- Interfaz embebida de Git
 -- Implementacion de GitUI como interfaz.
 -- ajuste a la derecha para no inteferir
 -- con las herramientas de IA
-vim.keymap.del("n", "<leader>gG")
 
-vim.keymap.set("n", "<leader>gg", function()
-  Snacks.terminal("gitui", {
-    cwd = require("lazyvim.util").root(),
-    win = {
-      position = "left",
-      width = 0.5,
-      wo = {
-        -- winbar = " ",
-      },
-    },
-  })
-end, { desc = "Git (Root Dir)" })
+-- vim.keymap.del("n", "<leader>gG")
+--
+-- vim.keymap.set("n", "<leader>gg", function()
+--   Snacks.terminal("gitui", {
+--     cwd = require("lazyvim.util").root(),
+--     win = {
+--       position = "left",
+--       width = 0.5,
+--       wo = {
+--         -- winbar = " ",
+--       },
+--     },
+--   })
+-- end, { desc = "Git (Root Dir)" })
