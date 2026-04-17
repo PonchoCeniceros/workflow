@@ -49,7 +49,8 @@ end, { desc = "Terminal (Root Dir)" })
 -- ajuste a la derecha para no inteferir
 -- con las herramientas de IA
 
--- vim.keymap.del("n", "<leader>gG")
+vim.keymap.del("n", "<leader>gG")
+vim.keymap.del("n", "<leader>gg")
 --
 -- vim.keymap.set("n", "<leader>gg", function()
 --   Snacks.terminal("gitui", {
