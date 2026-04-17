@@ -10,34 +10,24 @@
 
 Workflow es un monorepo de configuración personal que centraliza y sincroniza el entorno de desarrollo: **LazyVim** como IDE, **OpenCode.ai** como asistente de IA, **WezTerm** como terminal, y **shell aliases** como atajos productivos. Todo en un solo lugar, listo para clonar y enlazar.
 
+## Requisitos
+
+- `nvim`
+- `git`
+- `OpenCode.ai` y `WezTerm` (opcional)
+
 ## Instalación
 
 ```bash
-# Instalar previamente nvim, OpenCode.ai y WezTerm
-
-# agregar rutas relevantes al PATH
-echo 'export PATH="/Applications/WezTerm.app/Contents/MacOS:$PATH"' >> ~/.zshrc
-echo 'export AI_DEFAULT_TOOL=opencode' >> ~/.zshrc
-
-# configuraciones previas
-git config --global core.editor nano # para que no interfiera con la configuracion
-
 # Clonar el repositorio
-cd ~/
 git clone https://github.com/PonchoCeniceros/workflow.git
 
-# Enlazar configuraciones
-ln -s ~/workflow/ai/opencode ~/.config/opencode # OpenCode
-ln -s ~/workflow/ai/claude ~/.claude            # Claude
-ln -s ~/workflow/ide ~/.config/nvim             # LazyVim
-ln -s ~/workflow/.wezterm.lua ~/.wezterm.lua    # WezTerm
-
-# Cargar comandos personalizados al iniciar la shell
-echo '[ -f ~/workflow/.cmds.sh ] && source ~/workflow/.cmds.sh' >> ~/.zshrc
-
-# Recargar la configuración de la shell
+# Ejecutar el instalador
+cd workflow && ./install.sh
 source ~/.zshrc
 ```
+
+El instalador crea los symlinks y configura `.zshrc` automáticamente.
 
 ## Comandos
 
@@ -84,36 +74,23 @@ source ~/.zshrc
 
 ### AI Terminal
 
-Terminal de IA integrada via `snacks.terminal`. Soporta múltiples herramientas: **OpenCode**, **Claude Code** y **Kiro CLI**.
-
-La herramienta por defecto se configura con la variable de entorno `AI_DEFAULT_TOOL` en `.zshrc`:
+Terminal de IA integrada via `snacks.terminal` — soporta **OpenCode**, **Claude Code** y **Kiro CLI**. Configura la herramienta por defecto con `AI_DEFAULT_TOOL` en `.zshrc`:
 
 ```bash
-export AI_DEFAULT_TOOL=claude     # trabajo
 export AI_DEFAULT_TOOL=opencode   # personal
+export AI_DEFAULT_TOOL=claude     # trabajo
 ```
-
-Si la variable no está definida, `<leader>aa` abre el selector automáticamente.
 
 | Keymap | Modo | Acción |
 |--------|------|--------|
 | `<leader>aa` | Normal | Toggle herramienta por defecto |
-| `<leader>as` | Normal | Seleccionar herramienta (picker) |
+| `<leader>as` | Normal | Seleccionar herramienta |
 | `<leader>av` | Normal | AI Terminal bottom |
 | `<leader>ah` | Normal | AI Terminal float |
-| `ctrl + q` | insert | Interrumpir |
+| `<leader>ft` | Normal | Terminal flotante |
+| `ctrl+q` | insert | Interrumpir |
 
-### OpenCode TUI
-
-Atajos configurados en `ai/opencode/tui.json`. Diseñados para evitar `ESC` (colisiona con modos de Neovim):
-
-| Shortcut | Acción |
-|----------|--------|
-| `ctrl+q` | Interrumpir sesión / Salir de la app |
-| `ctrl+c` | Cancelar preguntas interactivas |
-| `ctrl+z` | Suspender terminal |
-
-> **Nota**: `ctrl+q` reemplaza `ESC` para `session_interrupt`. `ctrl+c` es el estándar para cancelar en el TUI.
+> **Nota**: `ctrl+q` reemplaza `ESC` (colisiona con modos de Neovim). Configurado en `ai/opencode/tui.json`.
 
 
 ### csvview.nvim
@@ -134,16 +111,13 @@ Atajos configurados en `ai/opencode/tui.json`. Diseñados para evitar `ESC` (col
 ### Mantenimiento
 
 ```bash
-# 1. Borrar datos de ejecución y plugins (Esto NO borra tu código en ~/workflow/ide)
-rm -rf ~/.local/share/nvim
-rm -rf ~/.local/state/nvim
-rm -rf ~/.cache/nvim
+# 1. Borrar datos de ejecución y plugins
+rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
 
-# 2. (Opcional) Si quieres re-crear el enlace simbólico por seguridad
-rm ~/.config/nvim
-ln -s ~/workflow/ide ~/.config/nvim
+# 2. Re-crear symlinks (si es necesario)
+./install.sh
 
-# 3. Abrir Neovim para que reinstale todo desde cero
+# 3. Abrir Neovim para reinstallar plugins
 nvim
 ```
 
