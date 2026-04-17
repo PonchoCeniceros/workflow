@@ -14,10 +14,13 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
 
 ```bash
 # Instalar previamente nvim, OpenCode.ai y WezTerm
-# Agregar WezTerm al PATH
+
+# agregar rutas relevantes al PATH
 echo 'export PATH="/Applications/WezTerm.app/Contents/MacOS:$PATH"' >> ~/.zshrc
-# Agregar herramienta de IA por defecto
 echo 'export AI_DEFAULT_TOOL=opencode' >> ~/.zshrc
+
+# configuraciones previas
+git config --global core.editor nano # para que no interfiera con la configuracion
 
 # Clonar el repositorio
 cd ~/
@@ -66,7 +69,7 @@ source ~/.zshrc
 | `i` Insertar después del cursor | `<leader>ff` Buscar archivos | `<leader>bb` Buffer anterior | `<leader>w` Guardar archivo | `<leader>xx` Warnings/errores LSP |
 | `a` Insertar antes del cursor | `<leader>sg` Buscar texto (grep) | `Shift + →` Buffer siguiente | `<leader>q` Cerrar buffer | `<leader>ls` Símbolos del buffer |
 | `I` Insertar al final de línea | `<leader>fb` Buffers abiertos | `Shift + ←` Buffer anterior | `<leader>e` Explorador archivos | `<leader>lR` Rename proyecto |
-| `A` Insertar al inicio de línea | `<leader>fh` Ayuda | `<leader>bd` Cerrar buffer | `<leader>gg` Git status | `<leader>la` Code actions |
+| `A` Insertar al inicio de línea | `<leader>fh` Ayuda | `<leader>bd` Cerrar buffer | `<leader>gs` Git status | `<leader>la` Code actions |
 | `gcc` Comentar línea | `<leader>fr` Archivos recientes | `<leader>bD` Cerrar otros buffers | `<leader>gl` Git log | `<leader>le` Diagnósticos |
 | `gc` + mov. Comentar múltiple | `gd` Ir a definición | `Shift + ↓↓` Ventana superior | `<leader>ca` Code actions | `<leader>ld` Ir a definición |
 | `yi"` Copiar entre comillas | `gr` Ir a referencias | `Shift + ↑↑` Ventana inferior | `<leader>rn` Renombrar variable | `<leader>lr` Mostrar referencias |
