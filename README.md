@@ -1,4 +1,14 @@
-# Workflow
+```
+                                   __         ___  ___                         
+   __                             /\ \      /'___\/\_ \                        
+  /'_`\_  __  __  __    ___   _ __\ \ \/'\ /\ \__/\//\ \     ___   __  __  __  
+ /'/'_` \/\ \/\ \/\ \  / __`\/\`'__\ \ , < \ \ ,__\ \ \ \   / __`\/\ \/\ \/\ \ 
+/\ \ \L\ \ \ \_/ \_/ \/\ \L\ \ \ \/ \ \ \\`\\ \ \_/  \_\ \_/\ \L\ \ \ \_/ \_/ \
+\ \ `\__,_\ \___x___/'\ \____/\ \_\  \ \_\ \_\ \_\   /\____\ \____/\ \___x___/'
+ \ `\_____\\/__//__/   \/___/  \/_/   \/_/\/_/\/_/   \/____/\/___/  \/__//__/  
+  `\/_____/                                                                    
+
+```
 
 ![WezTerm Badge](https://img.shields.io/badge/WezTerm-4E49EE?logo=wezterm&logoColor=fff&style=for-the-badge)
 ![GNU Bash Badge](https://img.shields.io/badge/GNU%20Bash-4EAA25?logo=gnubash&logoColor=fff&style=for-the-badge)
@@ -74,23 +84,36 @@ El instalador crea los symlinks y configura `.zshrc` automáticamente.
 
 ### AI Terminal
 
-Terminal de IA integrada via `snacks.terminal` — soporta **OpenCode**, **Claude Code** y **Kiro CLI**. Configura la herramienta por defecto con `AI_DEFAULT_TOOL` en `.zshrc`:
+Terminal de IA integrada via `snacks.terminal`. Soporta múltiples herramientas: **OpenCode**, **Claude Code** y **Kiro CLI**.
+
+La herramienta por defecto se configura con la variable de entorno `AI_DEFAULT_TOOL` en `.zshrc`:
 
 ```bash
-export AI_DEFAULT_TOOL=opencode   # personal
 export AI_DEFAULT_TOOL=claude     # trabajo
+export AI_DEFAULT_TOOL=opencode   # personal
 ```
+
+Si la variable no está definida, `<leader>aa` abre el selector automáticamente.
 
 | Keymap | Modo | Acción |
 |--------|------|--------|
 | `<leader>aa` | Normal | Toggle herramienta por defecto |
-| `<leader>as` | Normal | Seleccionar herramienta |
+| `<leader>as` | Normal | Seleccionar herramienta (picker) |
 | `<leader>av` | Normal | AI Terminal bottom |
 | `<leader>ah` | Normal | AI Terminal float |
-| `<leader>ft` | Normal | Terminal flotante |
-| `ctrl+q` | insert | Interrumpir |
+| `ctrl + q` | insert | Interrumpir |
 
-> **Nota**: `ctrl+q` reemplaza `ESC` (colisiona con modos de Neovim). Configurado en `ai/opencode/tui.json`.
+### OpenCode TUI
+
+Atajos configurados en `ai/opencode/tui.json`. Diseñados para evitar `ESC` (colisiona con modos de Neovim):
+
+| Shortcut | Acción |
+|----------|--------|
+| `ctrl+q` | Interrumpir sesión / Salir de la app |
+| `ctrl+c` | Cancelar preguntas interactivas |
+| `ctrl+z` | Suspender terminal |
+
+> **Nota**: `ctrl+q` reemplaza `ESC` para `session_interrupt`. `ctrl+c` es el estándar para cancelar en el TUI.
 
 
 ### csvview.nvim
