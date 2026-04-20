@@ -1,4 +1,14 @@
-# Workflow
+```
+                                           __         ___  ___                         
+           __                             /\ \      /'___\/\_ \                        
+          /'_`\_  __  __  __    ___   _ __\ \ \/'\ /\ \__/\//\ \     ___   __  __  __  
+         /'/'_` \/\ \/\ \/\ \  / __`\/\`'__\ \ , < \ \ ,__\ \ \ \   / __`\/\ \/\ \/\ \ 
+        /\ \ \L\ \ \ \_/ \_/ \/\ \L\ \ \ \/ \ \ \\`\\ \ \_/  \_\ \_/\ \L\ \ \ \_/ \_/ \
+        \ \ `\__,_\ \___x___/'\ \____/\ \_\  \ \_\ \_\ \_\   /\____\ \____/\ \___x___/'
+         \ `\_____\\/__//__/   \/___/  \/_/   \/_/\/_/\/_/   \/____/\/___/  \/__//__/  
+          `\/_____/                                                                    
+        
+```
 
 ![WezTerm Badge](https://img.shields.io/badge/WezTerm-4E49EE?logo=wezterm&logoColor=fff&style=for-the-badge)
 ![GNU Bash Badge](https://img.shields.io/badge/GNU%20Bash-4EAA25?logo=gnubash&logoColor=fff&style=for-the-badge)
@@ -10,34 +20,24 @@
 
 Workflow es un monorepo de configuración personal que centraliza y sincroniza el entorno de desarrollo: **LazyVim** como IDE, **OpenCode.ai** como asistente de IA, **WezTerm** como terminal, y **shell aliases** como atajos productivos. Todo en un solo lugar, listo para clonar y enlazar.
 
+## Requisitos
+
+- `nvim`
+- `git`
+- `OpenCode.ai` y `WezTerm` (opcional)
+
 ## Instalación
 
 ```bash
-# Instalar previamente nvim, OpenCode.ai y WezTerm
-
-# agregar rutas relevantes al PATH
-echo 'export PATH="/Applications/WezTerm.app/Contents/MacOS:$PATH"' >> ~/.zshrc
-echo 'export AI_DEFAULT_TOOL=opencode' >> ~/.zshrc
-
-# configuraciones previas
-git config --global core.editor nano # para que no interfiera con la configuracion
-
 # Clonar el repositorio
-cd ~/
 git clone https://github.com/PonchoCeniceros/workflow.git
 
-# Enlazar configuraciones
-ln -s ~/workflow/ai/opencode ~/.config/opencode # OpenCode
-ln -s ~/workflow/ai/claude ~/.claude            # Claude
-ln -s ~/workflow/ide ~/.config/nvim             # LazyVim
-ln -s ~/workflow/.wezterm.lua ~/.wezterm.lua    # WezTerm
-
-# Cargar comandos personalizados al iniciar la shell
-echo '[ -f ~/workflow/.cmds.sh ] && source ~/workflow/.cmds.sh' >> ~/.zshrc
-
-# Recargar la configuración de la shell
+# Ejecutar el instalador
+cd workflow && ./install.sh
 source ~/.zshrc
 ```
+
+El instalador crea los symlinks y configura `.zshrc` automáticamente.
 
 ## Comandos
 
@@ -134,16 +134,13 @@ Atajos configurados en `ai/opencode/tui.json`. Diseñados para evitar `ESC` (col
 ### Mantenimiento
 
 ```bash
-# 1. Borrar datos de ejecución y plugins (Esto NO borra tu código en ~/workflow/ide)
-rm -rf ~/.local/share/nvim
-rm -rf ~/.local/state/nvim
-rm -rf ~/.cache/nvim
+# 1. Borrar datos de ejecución y plugins
+rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
 
-# 2. (Opcional) Si quieres re-crear el enlace simbólico por seguridad
-rm ~/.config/nvim
-ln -s ~/workflow/ide ~/.config/nvim
+# 2. Re-crear symlinks (si es necesario)
+./install.sh
 
-# 3. Abrir Neovim para que reinstale todo desde cero
+# 3. Abrir Neovim para reinstallar plugins
 nvim
 ```
 

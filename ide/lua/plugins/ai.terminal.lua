@@ -4,7 +4,7 @@ local tools = {
   { name = "Kiro CLI", cmd = "kiro-cli" },
 }
 
-local width_term = 0.27
+local width_term = 0.33
 
 local function pick_terminal(win_opts)
   vim.ui.select(tools, {

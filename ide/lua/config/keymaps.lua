@@ -2,6 +2,8 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+local term_height = 12
+
 -- Deshabilitar keymaps originales de navegación de ventanas y buffers
 vim.keymap.del("n", "<C-h>")
 vim.keymap.del("n", "<C-j>")
@@ -30,7 +32,7 @@ vim.keymap.set("n", "<leader>ft", function()
     cwd = require("lazyvim.util").root(),
     win = {
       position = "bottom",
-      height = 15, -- 15 lineas de altura para la terminal flotante
+      height = term_height, -- lineas de altura para la terminal flotante
       wo = {
         -- winbar = " ",
       },
@@ -51,7 +53,7 @@ end, { desc = "Terminal (Root Dir)" })
 
 vim.keymap.del("n", "<leader>gG")
 vim.keymap.del("n", "<leader>gg")
---
+
 -- vim.keymap.set("n", "<leader>gg", function()
 --   Snacks.terminal("gitui", {
 --     cwd = require("lazyvim.util").root(),

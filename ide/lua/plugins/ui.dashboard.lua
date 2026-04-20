@@ -3,15 +3,17 @@ return {
   lazy = false,
   opts = function()
     local logo = [[
-    ____  ____                  _            ____           _                        
-   / __ \|  _ \ ___  _ __   ___| |__   ___  / ___|___ _ __ (_) ___ ___ _ __ ___  ___ 
-  / / _` | |_) / _ \| '_ \ / __| '_ \ / _ \| |   / _ \ '_ \| |/ __/ _ \ '__/ _ \/ __|
- | | (_| |  __/ (_) | | | | (__| | | | (_) | |__|  __/ | | | | (_|  __/ | | (_) \__ \
-  \ \__,_|_|   \___/|_| |_|\___|_| |_|\___/ \____\___|_| |_|_|\___\___|_|  \___/|___/
-   \____/                                                                            
+                                   __         ___  ___                         
+   __                             /\ \      /'___\/\_ \                        
+  /'_`\_  __  __  __    ___   _ __\ \ \/'\ /\ \__/\//\ \     ___   __  __  __  
+ /'/'_` \/\ \/\ \/\ \  / __`\/\`'__\ \ , < \ \ ,__\ \ \ \   / __`\/\ \/\ \/\ \ 
+/\ \ \L\ \ \ \_/ \_/ \/\ \L\ \ \ \/ \ \ \\`\\ \ \_/  \_\ \_/\ \L\ \ \ \_/ \_/ \
+\ \ `\__,_\ \___x___/'\ \____/\ \_\  \ \_\ \_\ \_\   /\____\ \____/\ \___x___/'
+ \ `\_____\\/__//__/   \/___/  \/_/   \/_/\/_/\/_/   \/____/\/___/  \/__//__/  
+  `\/_____/                                                                    
 ]]
 
-    logo = string.rep("\n", 8) .. logo .. "\n\n"
+    logo = string.rep("\n", 15) .. logo .. "\n\n"
 
     local opts = {
       theme = "doom",
@@ -21,20 +23,21 @@ return {
       config = {
         header = vim.split(logo, "\n"),
         center = {
-          { action = "ene | startinsert", desc = " New File", icon = " ", key = "n" },
-          { action = "Telescope find_files", desc = " Find File", icon = " ", key = "f" },
-          { action = "Telescope oldfiles", desc = " Recent Files", icon = " ", key = "r" },
-          { action = "Telescope live_grep", desc = " Find Text", icon = " ", key = "g" },
-          -- { action = "Telescope config_files", desc = " Config Files", icon = " ", key = "c" }, -- no se como funciona esta linea
-          { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
-          { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "x" },
-          { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
-          { action = "qa", desc = " Quit", icon = " ", key = "q" },
+          -- comentar los comandos para mantener el minimalismo
+          --
+          -- { action = "ene | startinsert", desc = " New File", icon = " ", key = "n" },
+          -- { action = "Telescope find_files", desc = " Find File", icon = " ", key = "f" },
+          -- { action = "Telescope oldfiles", desc = " Recent Files", icon = " ", key = "r" },
+          -- { action = "Telescope live_grep", desc = " Find Text", icon = " ", key = "g" },
+          -- { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
+          -- { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "x" },
+          -- { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
+          -- { action = "qa", desc = " Quit", icon = " ", key = "q" },
         },
         footer = function()
           local stats = require("lazy").stats()
           local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-          return { "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms" }
+          return { "Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms" }
         end,
       },
     }
