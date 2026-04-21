@@ -17,10 +17,10 @@ set -e
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 ZSHRC="$HOME/.zshrc"
 
-msg() { echo -e "\033[1;36m[workflow]\033[0m $1"; }
-skip() { echo -e "\033[1;33m[SKIP]\033[0m $1"; }
-ok() { echo -e "\033[1;32m[OK]\033[0m $1"; }
-err() { echo -e "\033[1;31m[ERR]\033[0m $1" >&2; }
+msg() { echo -e "\033[1;36m[@]\033[0m $1"; }
+skip() { echo -e "\033[1;33m[↪]\033[0m $1"; }
+ok() { echo -e "\033[1;32m[✓]\033[0m $1"; }
+err() { echo -e "\033[1;31m[✕]\033[0m $1" >&2; }
 
 msg "Verificando dependencias..."
 
