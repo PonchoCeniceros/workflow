@@ -16,6 +16,7 @@ local function set_wezterm_theme()
   local theme_map = {
     ["catppuccin-mocha"] = "Catppuccin Mocha",
     ["nightfox"] = "carbonfox",
+    ["dracula"] = "Dracula",
   }
 
   local wez_theme = theme_map[theme] or theme

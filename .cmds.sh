@@ -43,12 +43,21 @@ nvx() {
 }
 
 # -------------------------------------------------------------------
+# Abre IDE directamente con el tema Dracula
+# -------------------------------------------------------------------
+nvd() {
+  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"dracula\"/" ~/.config/opencode/tui.json
+  NVIM_THEME=dracula nvim "$@"
+}
+
+# -------------------------------------------------------------------
 # Comando maestro para Neovim
 #
 # Uso:
 #   'nv'          -> Abre Neovim normal.
 #   'nv c [arch]' -> Abre con Catppuccin.
 #   'nv x [arch]' -> Abre con Carbonfox.
+#   'nv d [arch]' -> Abre con Dracula.
 # -------------------------------------------------------------------
 nv() {
   if [[ "$1" == "c" ]]; then
@@ -57,6 +66,9 @@ nv() {
   elif [[ "$1" == "x" ]]; then
     shift
     NVIM_THEME=carbonfox nvim "$@"
+  elif [[ "$1" == "d" ]]; then
+    shift
+    NVIM_THEME=dracula nvim "$@"
   else
     nvim "$@"
   fi
@@ -118,6 +130,35 @@ nvxd() {
     --header="Projects")
   [[ -z "$selected" ]] && return
   cd "$project_dir/$selected" && nvx
+}
+
+# -------------------------------------------------------------------
+# Selecciona un proyecto con fzf y abre nvd
+# -------------------------------------------------------------------
+nvdp() {
+  local project_dir="$HOME/Projects"
+  local selected=$(ls -1 "$project_dir" | fzf \
+    --prompt=" Choose Project > " \
+    --height=20% \
+    --layout=reverse \
+    --border=rounded \
+    --info=hidden \
+    --header="Projects")
+  [[ -z "$selected" ]] && return
+  cd "$project_dir/$selected" && nvd
+}
+
+nvdd() {
+  local project_dir="$HOME/Development"
+  local selected=$(ls -1 "$project_dir" | fzf \
+    --prompt=" Choose Project > " \
+    --height=20% \
+    --layout=reverse \
+    --border=rounded \
+    --info=hidden \
+    --header="Projects")
+  [[ -z "$selected" ]] && return
+  cd "$project_dir/$selected" && nvd
 }
 
 # -------------------------------------------------------------------

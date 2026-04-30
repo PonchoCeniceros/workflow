@@ -65,6 +65,25 @@ return {
     },
   },
   --
+  -- tema dracula
+  --
+  {
+    "Mofiqul/dracula.nvim",
+    name = "dracula",
+    priority = 1000,
+    opts = {
+      transparent_background = false,
+      term_colors = true,
+      styles = {
+        comments = { "italic" },
+        functions = { "bold" },
+        keywords = { "italic" },
+        variables = {},
+        types = { "italic" },
+      },
+    },
+  },
+  --
   -- Configura LazyVim para cargar un tema de color dinámicamente
   --
   {
@@ -75,8 +94,9 @@ return {
         return { colorscheme = "catppuccin" }
       elseif chosen_colorscheme == "carbonfox" then
         return { colorscheme = "carbonfox" }
+      elseif chosen_colorscheme == "dracula" then
+        return { colorscheme = "dracula" }
       else
-        -- Por defecto usa catppuccin
         return { colorscheme = "catppuccin" }
       end
     end,
