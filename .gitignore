@@ -1,3 +1,8 @@
+# configuraciones del agente ia
+# @todo comentar en caso de feature
+ai/opencode/tui.json
+
+# wallet de contraseñas
 .wallet/*
 !.wallet/.gitkeep
 !.wallet/pem/
