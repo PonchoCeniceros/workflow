@@ -9,7 +9,6 @@
 ![OpenCode Badge](https://img.shields.io/badge/OpenCode.ai-130F0F?logo=openai&logoColor=fff&style=for-the-badge)
 ![Claude Badge](https://img.shields.io/badge/Claude-D97757?logo=claude&logoColor=fff&style=for-the-badge)
 
-
 Workflow es un monorepo de configuración personal que centraliza y sincroniza el entorno de desarrollo: **LazyVim** como IDE, **OpenCode.ai** como asistente de IA, **WezTerm** como terminal, y **shell aliases** como atajos productivos. Todo en un solo lugar, listo para clonar y enlazar.
 
 ## Requisitos
@@ -73,6 +72,90 @@ El instalador crea los symlinks y configura `.zshrc` automáticamente.
 | | | `<C-w>v` Split vertical | | |
 | | | `<C-w>c` Cerrar ventana | | |
 
+
+### Debugger Visual (Rust)
+
+El debugger visual para Rust integra varias capas que trabajan en conjunto:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    nvim-dap-ui                          │
+│   (Panel de variables, pila, watches, REPL)             │
+├─────────────────────────────────────────────────────────┤
+│                    nvim-dap                             │
+│   (Motor de debugging — manage sessions, breakpoints)   │
+├─────────────────────────────────────────────────────────┤
+│              rustaceanvim + codelldb                    │
+│   (Adaptador DAP con --liblldb para macOS)              │
+├─────────────────────────────────────────────────────────┤
+│              mason-nvim-dap.nvim                        │
+│   (Auto-instalación y gestión de adaptadores)           │
+└─────────────────────────────────────────────────────────┘
+```
+
+| Capa | Plugin | Rol |
+|------|--------|-----|
+| Interfaz | `rcarriga/nvim-dap-ui` | Paneles visuales (variables, pila, watches, REPL) |
+| Virtual text | `theHamsta/nvim-dap-virtual-text` | Muestra valores de variables inline |
+| Motor | `mfussenegger/nvim-dap` | Sesiones, breakpoints, step, etc. |
+| Adapter | `mrcjkb/rustaceanvim` | Configuración de `codelldb` + `--liblldb` |
+| Gestión | `jay-babu/mason-nvim-dap.nvim` | Instalación automática de adaptadores |
+
+
+#### Funcionamiento
+
+El debugger se maneja desde **rustaceanvim** — `rust-analyzer` detecta automáticamente los targets debuggeables de tu proyecto (binarios, librerías, tests) y los expone vía `SPC dR`.
+
+**Flujo típico:**
+
+1. Abrí un archivo Rust (`.rs`)
+2. Poné breakpoints con `SPC db` en las líneas que quieras inspeccionar
+3. Ejecutá `SPC dR` para abrir el menú de debuggables de `rust-analyzer`
+4. Seleccioná el target deseado:
+   - `build --package ...` para debuggear el binario
+   - `test --no-run --package ...` para debuggear tests
+5. rustaceanvim compila automáticamente el proyecto en modo debug
+6. Busca el binario compilado en la salida de `cargo build`
+7. Configura y lanza `codelldb` con la ruta correcta
+8. `nvim-dap-ui` se abre automáticamente mostrando variables, pila y watches
+9. La ejecución se pausa en el primer breakpoint
+
+> **Importante**: No uses las opciones "LLDB: Launch" genéricas de `mason-nvim-dap`. Esas preguntan la ruta del binario manualmente. Siempre usa `SPC dR` para que rustaceanvim maneje todo automáticamente.
+
+#### Comandos
+
+| Keymap | Acción |
+|--------|--------|
+| `<leader>db` | Toggle breakpoint en la línea actual |
+| `<leader>dB` | Breakpoint condicional (pide expresión) |
+| `<leader>dc` | Run/Continue — inicia o reanuda la ejecución |
+| `<leader>da` | Run with Args — ejecuta con argumentos |
+| `<leader>dC` | Run to Cursor — corre hasta la línea del cursor |
+| `<leader>dO` | Step Over — avanza sin entrar en funciones |
+| `<leader>di` | Step Into — entra en la función |
+| `<leader>do` | Step Out — sale de la función actual |
+| `<leader>dt` | Terminate — termina la sesión de debug |
+| `<leader>dr` | Toggle REPL — consola interactiva de debug |
+| `<leader>du` | Toggle DAP UI — abre/cierra los paneles |
+| `<leader>de` | Evaluar expresión (modo normal o visual) |
+| `<leader>dR` | Rust Debuggables — lista targets debuggeables |
+| `<leader>dP` | Pausar ejecución |
+| `<leader>ds` | Mostrar sesión actual |
+| `<leader>dl` | Re-ejecutar última configuración |
+| `<leader>dw` | Widgets hover — información de variable bajo el cursor |
+| `<leader>dg` | Ir a línea sin ejecutar |
+| `<leader>dj` / `<leader>dk` | Navegar pila de llamadas (down/up) |
+
+#### Debuggear tests
+
+1. Poné breakpoints dentro del test (ej. en un `assert_eq!`)
+2. `<leader>dR` → selecciona `test --no-run --package <name> --all-targets`
+3. Elegí el test específico de la lista
+4. El debugger se detendrá en los breakpoints del test
+
+#### Configuración
+
+Las opciones se definen en `ide/lua/plugins/dev.rust.lua` (rustaceanvim) y `ide/lua/plugins/tools.dap.lua` (DAP core + handler de mason-nvim-dap).
 
 ### AI Terminal
 
