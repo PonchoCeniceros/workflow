@@ -11,6 +11,21 @@
 
 Workflow es un monorepo de configuración personal que centraliza y sincroniza el entorno de desarrollo: **LazyVim** como IDE, **OpenCode.ai** como asistente de IA, **WezTerm** como terminal, y **shell aliases** como atajos productivos. Todo en un solo lugar, listo para clonar y enlazar.
 
+## Contenidos
+
+- [Requisitos](#requisitos)
+- [Instalación](#instalación)
+- [Comandos](#comandos)
+- [IDE](#ide)
+  - [Cheatsheet](#cheatsheet)
+  - [Debugger Visual](#debugger-visual)
+  - [AI Terminal](#ai-terminal)
+  - [OpenCode TUI](#opencode-tui)
+  - [csvview.nvim](#csvviewnvim)
+  - [Temas Disponibles](#temas-disponibles)
+  - [Mantenimiento](#mantenimiento)
+- [SSH](#ssh)
+
 ## Requisitos
 
 - `nvim`
@@ -49,6 +64,9 @@ El instalador crea los symlinks y configura `.zshrc` automáticamente.
 | `nvcd` | Seleccionar proyecto (Development) con fzf + Catppuccin |
 | `nvxp` | Seleccionar proyecto (Projects) con fzf + Carbonfox |
 | `nvxd` | Seleccionar proyecto (Development) con fzf + Carbonfox |
+| `nvd [arch]` | Abrir Neovim con tema Dracula directo |
+| `nvdp` | Seleccionar proyecto (Projects) con fzf + Dracula |
+| `nvdd` | Seleccionar proyecto (Development) con fzf + Dracula |
 | `sssh` | Seleccionar servidor SSH del catálogo con fzf |
 
 ## IDE
@@ -73,9 +91,9 @@ El instalador crea los symlinks y configura `.zshrc` automáticamente.
 | | | `<C-w>c` Cerrar ventana | | |
 
 
-### Debugger Visual (Rust)
+### Debugger Visual
 
-El debugger visual para Rust integra varias capas que trabajan en conjunto:
+El debugger integra varias capas basadas en el **Debug Adapter Protocol (DAP)** — el mismo protocolo que usa VS Code, lo que permite reutilizar sus adaptadores por lenguaje.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -83,46 +101,36 @@ El debugger visual para Rust integra varias capas que trabajan en conjunto:
 │   (Panel de variables, pila, watches, REPL)             │
 ├─────────────────────────────────────────────────────────┤
 │                    nvim-dap                             │
-│   (Motor de debugging — manage sessions, breakpoints)   │
+│   (Motor de debugging — sesiones, breakpoints, step)    │
 ├─────────────────────────────────────────────────────────┤
-│              rustaceanvim + codelldb                    │
-│   (Adaptador DAP con --liblldb para macOS)              │
+│         codelldb  |  debugpy  |  js-debug-adapter       │
+│   (Adaptadores DAP por lenguaje, gestionados por Mason) │
 ├─────────────────────────────────────────────────────────┤
 │              mason-nvim-dap.nvim                        │
 │   (Auto-instalación y gestión de adaptadores)           │
 └─────────────────────────────────────────────────────────┘
 ```
 
-| Capa | Plugin | Rol |
-|------|--------|-----|
-| Interfaz | `rcarriga/nvim-dap-ui` | Paneles visuales (variables, pila, watches, REPL) |
-| Virtual text | `theHamsta/nvim-dap-virtual-text` | Muestra valores de variables inline |
-| Motor | `mfussenegger/nvim-dap` | Sesiones, breakpoints, step, etc. |
-| Adapter | `mrcjkb/rustaceanvim` | Configuración de `codelldb` + `--liblldb` |
-| Gestión | `jay-babu/mason-nvim-dap.nvim` | Instalación automática de adaptadores |
+| Lenguaje | Adaptador | Cómo lanzar |
+|----------|-----------|-------------|
+| Rust | `codelldb` + rustaceanvim | `<leader>dR` → seleccionar target |
+| Python | `debugpy` | `<leader>dc` |
+| JS / TS | `js-debug-adapter` | `<leader>dc` |
 
+#### Proyectos de prueba
 
-#### Funcionamiento
+En `debug/` hay proyectos minimalistas para probar cada debugger:
 
-El debugger se maneja desde **rustaceanvim** — `rust-analyzer` detecta automáticamente los targets debuggeables de tu proyecto (binarios, librerías, tests) y los expone vía `SPC dR`.
+```
+debug/
+├── rs/   → Cargo project (Rust)
+├── py/   → script Python
+└── js/   → script JavaScript
+```
 
-**Flujo típico:**
+Los tres implementan el mismo programa (sumar una lista) para comparar el comportamiento del debugger entre lenguajes.
 
-1. Abrí un archivo Rust (`.rs`)
-2. Poné breakpoints con `SPC db` en las líneas que quieras inspeccionar
-3. Ejecutá `SPC dR` para abrir el menú de debuggables de `rust-analyzer`
-4. Seleccioná el target deseado:
-   - `build --package ...` para debuggear el binario
-   - `test --no-run --package ...` para debuggear tests
-5. rustaceanvim compila automáticamente el proyecto en modo debug
-6. Busca el binario compilado en la salida de `cargo build`
-7. Configura y lanza `codelldb` con la ruta correcta
-8. `nvim-dap-ui` se abre automáticamente mostrando variables, pila y watches
-9. La ejecución se pausa en el primer breakpoint
-
-> **Importante**: No uses las opciones "LLDB: Launch" genéricas de `mason-nvim-dap`. Esas preguntan la ruta del binario manualmente. Siempre usa `SPC dR` para que rustaceanvim maneje todo automáticamente.
-
-#### Comandos
+#### Comandos generales
 
 | Keymap | Acción |
 |--------|--------|
@@ -138,7 +146,6 @@ El debugger se maneja desde **rustaceanvim** — `rust-analyzer` detecta automá
 | `<leader>dr` | Toggle REPL — consola interactiva de debug |
 | `<leader>du` | Toggle DAP UI — abre/cierra los paneles |
 | `<leader>de` | Evaluar expresión (modo normal o visual) |
-| `<leader>dR` | Rust Debuggables — lista targets debuggeables |
 | `<leader>dP` | Pausar ejecución |
 | `<leader>ds` | Mostrar sesión actual |
 | `<leader>dl` | Re-ejecutar última configuración |
@@ -146,16 +153,59 @@ El debugger se maneja desde **rustaceanvim** — `rust-analyzer` detecta automá
 | `<leader>dg` | Ir a línea sin ejecutar |
 | `<leader>dj` / `<leader>dk` | Navegar pila de llamadas (down/up) |
 
-#### Debuggear tests
+#### Rust
 
-1. Poné breakpoints dentro del test (ej. en un `assert_eq!`)
-2. `<leader>dR` → selecciona `test --no-run --package <name> --all-targets`
-3. Elegí el test específico de la lista
-4. El debugger se detendrá en los breakpoints del test
+El debugger se maneja desde **rustaceanvim** — `rust-analyzer` detecta automáticamente los targets debuggeables del proyecto (binarios, librerías, tests) y los expone vía `<leader>dR`.
+
+**Flujo típico:**
+
+1. Abrir un archivo Rust (`.rs`)
+2. Poner breakpoints con `<leader>db`
+3. Ejecutar `<leader>dR` para abrir el menú de debuggables
+4. Seleccionar el target (`build --package ...` o `test --no-run ...`)
+5. rustaceanvim compila en modo debug y lanza `codelldb` automáticamente
+6. `nvim-dap-ui` se abre mostrando variables, pila y watches
+
+> **Importante**: No usar las opciones "LLDB: Launch" genéricas de `mason-nvim-dap` — piden la ruta del binario manualmente. Siempre usar `<leader>dR`.
+
+| Keymap | Acción |
+|--------|--------|
+| `<leader>dR` | Rust Debuggables — lista targets debuggeables |
+| `<leader>cR` | Rust Code Actions |
+
+**Debuggear tests:**
+1. Poner breakpoints dentro del test
+2. `<leader>dR` → seleccionar `test --no-run --package <name> --all-targets`
+3. Elegir el test específico de la lista
+
+#### Python
+
+Usa `debugpy` como adaptador. No requiere configuración adicional — `<leader>dc` lanza el archivo actual directamente.
+
+**Flujo típico:**
+
+1. Abrir un archivo Python (`.py`)
+2. Poner breakpoints con `<leader>db`
+3. Ejecutar `<leader>dc` para lanzar el debugger
+
+#### JS / TS
+
+Usa `js-debug-adapter` (vscode-js-debug). Funciona igual que Python — `<leader>dc` lanza el archivo actual con Node.js.
+
+**Flujo típico:**
+
+1. Abrir un archivo `.js` o `.ts`
+2. Poner breakpoints con `<leader>db`
+3. Ejecutar `<leader>dc` para lanzar el debugger
 
 #### Configuración
 
-Las opciones se definen en `ide/lua/plugins/dev.rust.lua` (rustaceanvim) y `ide/lua/plugins/tools.dap.lua` (DAP core + handler de mason-nvim-dap).
+| Archivo | Qué configura |
+|---------|---------------|
+| `ide/lua/plugins/dev.rust.lua` | rustaceanvim + keymaps de Rust |
+| `ide/lua/plugins/dev.js.lua` | Adaptador DAP para JS/TS |
+| `ide/lua/plugins/tools.dap.lua` | Handler de mason-nvim-dap |
+| `ide/lua/plugins/lsp.mason.lua` | Instalación de codelldb, debugpy, js-debug-adapter |
 
 ### AI Terminal
 
@@ -230,6 +280,9 @@ NVIM_THEME=catppuccin nvim
 # para usuarios que buscan un aspecto serio, profesional
 # y de alto rendimiento.
 NVIM_THEME=carbonfox nvim
+
+# clásico oscuro con toques de púrpura.
+NVIM_THEME=dracula nvim
 ```
 
 Usa el script `theme-selector.sh` para gestionar temas fácilmente:
@@ -241,6 +294,7 @@ Usa el script `theme-selector.sh` para gestionar temas fácilmente:
 # cambiar tema predeterminado
 ./theme-selector.sh catppuccin
 ./theme-selector.sh carbonfox
+./theme-selector.sh dracula
 ```
 
 ## SSH
