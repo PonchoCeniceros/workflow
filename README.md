@@ -11,7 +11,7 @@
 
 Workflow es un monorepo de configuración personal que centraliza y sincroniza el entorno de desarrollo: **LazyVim** como IDE, **OpenCode.ai** como asistente de IA, **WezTerm** como terminal, y **shell aliases** como atajos productivos. Todo en un solo lugar, listo para clonar y enlazar.
 
-> Para una guía paso a paso del flujo de trabajo diario, ver [WORKFLOW.md](WORKFLOW.md).
+> Revisa la guía paso a paso del [flujo de trabajo diario para desarrollo](WORKFLOW.md).
 
 # Contenidos
 
