@@ -11,6 +11,8 @@
 
 Workflow es un monorepo de configuración personal que centraliza y sincroniza el entorno de desarrollo: **LazyVim** como IDE, **OpenCode.ai** como asistente de IA, **WezTerm** como terminal, y **shell aliases** como atajos productivos. Todo en un solo lugar, listo para clonar y enlazar.
 
+> Para una guía paso a paso del flujo de trabajo diario, ver [WORKFLOW.md](WORKFLOW.md).
+
 # Contenidos
 
 - [Requisitos](#requisitos)
@@ -85,7 +87,7 @@ El instalador crea los symlinks y configura `.zshrc` automáticamente.
 | `ci"` Cambiar entre comillas | `gi` Ir a implementación | `Shift + ←←` Ventana izquierda |`:qall` Cerrar Neovim | `<leader>li` Mostrar info |
 | `di"` Eliminar entre comillas | `K` Documentación flotante | `Shift + →→` Ventana derecha |`<leader>.` Clipboard | `F5` Start / Continue debug |
 | | `<leader>ft` Terminal flotante | `<S-Left>` Buffer anterior | | `F10` Step over |
-| | | `<S-Right>` Buffer siguiente | | |
+| | | `<S-Right>` Buffer siguiente | | `<leader>ud` Toggle diagnósticos |
 | | | `<C-w>s` Split horizontal | | |
 | | | `<C-w>v` Split vertical | | |
 | | | `<C-w>c` Cerrar ventana | | |
