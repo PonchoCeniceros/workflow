@@ -91,13 +91,13 @@ return {
     opts = function()
       local chosen_colorscheme = os.getenv("NVIM_THEME")
       if chosen_colorscheme == "catppuccin" then
-        return { colorscheme = "catppuccin" }
+        return { colorscheme = "catppuccin-mocha" }
       elseif chosen_colorscheme == "carbonfox" then
         return { colorscheme = "carbonfox" }
       elseif chosen_colorscheme == "dracula" then
         return { colorscheme = "dracula" }
       else
-        return { colorscheme = "catppuccin" }
+        return { colorscheme = "catppuccin-mocha" }
       end
     end,
   },
