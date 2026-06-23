@@ -27,6 +27,7 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
   - [Temas Disponibles](#temas-disponibles)
   - [Mantenimiento](#mantenimiento)
 - [SSH](#ssh)
+- [Utilidades](uUtilidades)
 
 # Requisitos
 
@@ -307,3 +308,23 @@ Conexión rápida a servidores vía `sssh` — selecciona un servidor del catál
 sssh
 ```
 Los servidores están definidos en `.wallet/ssh.csv` y las llaves en `.wallet/pem/`.
+
+# Utilidades
+
+Letras griegas en `ASCII`:
+
+```
+α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
+```
+
+subíndices y superíndices en `ASCII`:
+
+```
+# Subíndice:
+₀ ₁ ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉
+
+# Superíndice:
+⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹
+
+```
