@@ -70,6 +70,10 @@ El instalador crea los symlinks y configura `.zshrc` automáticamente.
 | `nvd [arch]` | Abrir Neovim con tema Dracula directo |
 | `nvdp` | Seleccionar proyecto (Projects) con fzf + Dracula |
 | `nvdd` | Seleccionar proyecto (Development) con fzf + Dracula |
+| `nv g [arch]` | Abrir Neovim con tema Gruvbox |
+| `nvg [arch]` | Abrir Neovim con Gruvbox directo |
+| `nvgp` | Seleccionar proyecto (Projects) con fzf + Gruvbox |
+| `nvgd` | Seleccionar proyecto (Development) con fzf + Gruvbox |
 | `sssh` | Seleccionar servidor SSH del catálogo con fzf |
 
 # IDE
@@ -286,6 +290,10 @@ NVIM_THEME=carbonfox nvim
 
 # clásico oscuro con toques de púrpura.
 NVIM_THEME=dracula nvim
+
+# retro y cálido, para quienes prefieren tonos terrosos
+# y alta legibilidad con contraste ajustado.
+NVIM_THEME=gruvbox nvim
 ```
 
 Usa el script `theme-selector.sh` para gestionar temas fácilmente:
@@ -298,6 +306,7 @@ Usa el script `theme-selector.sh` para gestionar temas fácilmente:
 ./theme-selector.sh catppuccin
 ./theme-selector.sh carbonfox
 ./theme-selector.sh dracula
+./theme-selector.sh gruvbox
 ```
 
 # SSH

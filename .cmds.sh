@@ -51,6 +51,14 @@ nvd() {
 }
 
 # -------------------------------------------------------------------
+# Abre IDE directamente con el tema Gruvbox
+# -------------------------------------------------------------------
+nvg() {
+  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"gruvbox\"/" ~/.config/opencode/tui.json
+  NVIM_THEME=gruvbox nvim "$@"
+}
+
+# -------------------------------------------------------------------
 # Comando maestro para Neovim
 #
 # Uso:
@@ -58,6 +66,7 @@ nvd() {
 #   'nv c [arch]' -> Abre con Catppuccin.
 #   'nv x [arch]' -> Abre con Carbonfox.
 #   'nv d [arch]' -> Abre con Dracula.
+#   'nv g [arch]' -> Abre con Gruvbox.
 # -------------------------------------------------------------------
 nv() {
   if [[ "$1" == "c" ]]; then
@@ -69,6 +78,9 @@ nv() {
   elif [[ "$1" == "d" ]]; then
     shift
     NVIM_THEME=dracula nvim "$@"
+  elif [[ "$1" == "g" ]]; then
+    shift
+    NVIM_THEME=gruvbox nvim "$@"
   else
     nvim "$@"
   fi
@@ -104,6 +116,8 @@ nvxp() { _nvopen nvx "$HOME/Projects" }
 nvxd() { _nvopen nvx "$HOME/Development" }
 nvdp() { _nvopen nvd "$HOME/Projects" }
 nvdd() { _nvopen nvd "$HOME/Development" }
+nvgp() { _nvopen nvg "$HOME/Projects" }
+nvgd() { _nvopen nvg "$HOME/Development" }
 
 # -------------------------------------------------------------------
 # Selecciona un servidor del CSV y se conecta por SSH
