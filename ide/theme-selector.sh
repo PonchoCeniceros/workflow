@@ -6,7 +6,7 @@
 THEME_FILE="$HOME/.config/nvim/.theme"
 
 # Lista de temas disponibles
-THEMES=("catppuccin" "carbonfox")
+THEMES=("catppuccin" "carbonfox" "dracula" "gruvbox")
 
 # Función para mostrar uso
 show_usage() {

@@ -58,18 +58,10 @@ El instalador crea los symlinks y configura `.zshrc` automáticamente.
 | `srcz` | Recargar configuración de `.zshrc` |
 | `cls` | Limpiar pantalla |
 | `ot` | Abrir nuevo tab en el mismo directorio |
-| `nv` | Abrir Neovim |
-| `nv c [arch]` | Abrir Neovim con tema Catppuccin |
-| `nv x [arch]` | Abrir Neovim con tema Carbonfox |
-| `nvc [arch]` | Abrir Neovim con Catppuccin directo |
-| `nvx [arch]` | Abrir Neovim con Carbonfox directo |
-| `nvcp` | Seleccionar proyecto (Projects) con fzf + Catppuccin |
-| `nvcd` | Seleccionar proyecto (Development) con fzf + Catppuccin |
-| `nvxp` | Seleccionar proyecto (Projects) con fzf + Carbonfox |
-| `nvxd` | Seleccionar proyecto (Development) con fzf + Carbonfox |
-| `nvd [arch]` | Abrir Neovim con tema Dracula directo |
-| `nvdp` | Seleccionar proyecto (Projects) con fzf + Dracula |
-| `nvdd` | Seleccionar proyecto (Development) con fzf + Dracula |
+| `nv` | Selector de tema + abrir Neovim |
+| `nv [arch]` | Selector de tema + abrir archivo |
+| `nvp` | Selector de proyecto (~/Projects) + selector de tema |
+| `nvd` | Selector de proyecto (~/Development) + selector de tema |
 | `sssh` | Seleccionar servidor SSH del catálogo con fzf |
 
 # IDE
@@ -273,22 +265,26 @@ nvim
 ```
 
 ## Temas Disponibles
-Puedes seleccionar el tema al iniciar Neovim utilizando la variable de entorno `NVIM_THEME`:
+
+Los temas se seleccionan con `fzf` al lanzar Neovim desde los comandos `nv`, `nvp` o `nvd`.
+
+| Tema | Descripción |
+|------|-------------|
+| `catppuccin` | Acogedor y visualmente cohesivo, ideal para largas sesiones |
+| `carbonfox` | Serio y profesional, alto rendimiento visual |
+| `dracula` | Clásico oscuro con toques de púrpura |
+| `gruvbox` | Retro y cálido, tonos terrosos con contraste ajustado |
+
+También puedes forzar un tema manualmente con la variable de entorno:
 
 ```bash
-# para quienes pasan horas frente a la pantalla y quieren
-# un entorno acogedor y visualmente cohesivo.
 NVIM_THEME=catppuccin nvim
-
-# para usuarios que buscan un aspecto serio, profesional
-# y de alto rendimiento.
 NVIM_THEME=carbonfox nvim
-
-# clásico oscuro con toques de púrpura.
 NVIM_THEME=dracula nvim
+NVIM_THEME=gruvbox nvim
 ```
 
-Usa el script `theme-selector.sh` para gestionar temas fácilmente:
+Usa el script `theme-selector.sh` para cambiar el tema predeterminado:
 
 ```bash
 # ver tema actual
@@ -298,6 +294,7 @@ Usa el script `theme-selector.sh` para gestionar temas fácilmente:
 ./theme-selector.sh catppuccin
 ./theme-selector.sh carbonfox
 ./theme-selector.sh dracula
+./theme-selector.sh gruvbox
 ```
 
 # SSH

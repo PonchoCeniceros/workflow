@@ -84,6 +84,38 @@ return {
     },
   },
   --
+  -- tema gruvbox
+  --
+  {
+    "ellisonleao/gruvbox.nvim",
+    name = "gruvbox",
+    priority = 1000,
+    opts = {
+      terminal_colors = true,
+      undercurl = true,
+      underline = true,
+      bold = true,
+      italic = {
+        strings = false,
+        emphasis = true,
+        comments = true,
+        operators = false,
+        folds = true,
+      },
+      strikethrough = true,
+      invert_selection = false,
+      invert_signs = false,
+      invert_tabline = false,
+      invert_intend_guides = false,
+      inverse = true,
+      contrast = "hard",
+      palette_overrides = {},
+      overrides = {},
+      dim_inactive = false,
+      transparent_mode = false,
+    },
+  },
+  --
   -- Configura LazyVim para cargar un tema de color dinámicamente
   --
   {
@@ -96,6 +128,9 @@ return {
         return { colorscheme = "carbonfox" }
       elseif chosen_colorscheme == "dracula" then
         return { colorscheme = "dracula" }
+      elseif chosen_colorscheme == "gruvbox" then
+        vim.o.background = "dark"
+        return { colorscheme = "gruvbox" }
       else
         return { colorscheme = "catppuccin-mocha" }
       end

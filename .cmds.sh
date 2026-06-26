@@ -1,4 +1,20 @@
 # -------------------------------------------------------------------
+# Bienvenida al abrir la terminal
+# -------------------------------------------------------------------
+cat << 'EOF'
+
+                                   __         ___  ___
+   __                             /\ \      /'___\/\_ \
+  /'_`\_  __  __  __    ___   _ __\ \ \/'\ /\ \__/\//\ \     ___   __  __  __
+ /'/'_` \/\ \/\ \/\ \  / __`\/\`'__\ \ , < \ \ ,__\ \ \ \   / __`\/\ \/\ \/\ \
+/\ \ \L\ \ \ \_/ \_/ \/\ \L\ \ \ \/ \ \ \\`\\ \ \_/  \_\ \_/\ \L\ \ \ \_/ \_/ \
+\ \ `\__,_\ \___x___/'\ \____/\ \_\  \ \_\ \_\ \_\   /\____\ \____/\ \___x___/'
+ \ `\_____\\/__//__/   \/___/  \/_/   \/_/\/_/\/_/   \/____/\/___/  \/__//__/
+  `\/_____/
+
+EOF
+
+# -------------------------------------------------------------------
 # Comandos generales
 #
 # 'gtnv' (Go To Neovim) Dirigirme a la configuracion de mi IDE Lazyvim
@@ -12,7 +28,7 @@
 alias gtnv="cd ~/.config/nvim"
 alias gtoc="cd ~/.config/opencode"
 alias cls="clear"
-alias gtz="nv ~/.zshrc"
+alias gtz="nvim ~/.zshrc"
 srcz() {
   cd ~ && source .zshrc
 }
@@ -23,87 +39,74 @@ ot() {
 
 opwl() {
   local keys_file="$HOME/workflow/.wallet/keys.csv"
-  nv $keys_file
+  nvim $keys_file
 }
 
 # -------------------------------------------------------------------
-# Abre IDE directamente con el tema Catppuccin
+# Helper: selector de tema con fzf
 # -------------------------------------------------------------------
-nvc() {
-  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"catppuccin\"/" ~/.config/opencode/tui.json
-  NVIM_THEME=catppuccin nvim "$@"
+_nvtheme() {
+  printf '%s\n' "catppuccin" "carbonfox" "dracula" "gruvbox" | fzf \
+    --prompt=" Theme > " \
+    --height=25% \
+    --layout=reverse \
+    --border=rounded \
+    --info=hidden \
+    --header="Color Theme"
 }
 
 # -------------------------------------------------------------------
-# Abre IDE directamente con el tema Carbonfox (Nightfox)
-# -------------------------------------------------------------------
-nvx() {
-  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"carbonfox\"/" ~/.config/opencode/tui.json
-  NVIM_THEME=carbonfox nvim "$@"
-}
-
-# -------------------------------------------------------------------
-# Abre IDE directamente con el tema Dracula
-# -------------------------------------------------------------------
-nvd() {
-  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"dracula\"/" ~/.config/opencode/tui.json
-  NVIM_THEME=dracula nvim "$@"
-}
-
-# -------------------------------------------------------------------
-# Comando maestro para Neovim
+# Abre Neovim con selector de tema
 #
 # Uso:
-#   'nv'          -> Abre Neovim normal.
-#   'nv c [arch]' -> Abre con Catppuccin.
-#   'nv x [arch]' -> Abre con Carbonfox.
-#   'nv d [arch]' -> Abre con Dracula.
+#   'nv'        -> selector de tema + abre Neovim.
+#   'nv [arch]' -> selector de tema + abre archivo.
 # -------------------------------------------------------------------
 nv() {
-  if [[ "$1" == "c" ]]; then
-    shift
-    NVIM_THEME=catppuccin nvim "$@"
-  elif [[ "$1" == "x" ]]; then
-    shift
-    NVIM_THEME=carbonfox nvim "$@"
-  elif [[ "$1" == "d" ]]; then
-    shift
-    NVIM_THEME=dracula nvim "$@"
-  else
-    nvim "$@"
-  fi
+  local theme
+  theme=$(_nvtheme)
+  [[ -z "$theme" ]] && return
+  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"$theme\"/" ~/.config/opencode/tui.json
+  NVIM_THEME="$theme" nvim "$@"
 }
 
 # -------------------------------------------------------------------
-# Helper: selecciona proyecto con fzf y abre README.md > package.json > bare
+# Helper: selecciona proyecto con fzf, luego tema, abre README.md > package.json > bare
 # -------------------------------------------------------------------
-_nvopen() {
-  local cmd="$1"
-  local project_dir="$2"
-  local selected=$(ls -1 "$project_dir" | fzf \
-    --prompt=" Choose Project > " \
-    --height=20% \
+_nvproject() {
+  local project_dir="$1"
+  local selected
+  selected=$(ls -1 "$project_dir" | fzf \
+    --prompt=" Project > " \
+    --height=25% \
     --layout=reverse \
     --border=rounded \
     --info=hidden \
     --header="Projects")
   [[ -z "$selected" ]] && return
+
+  local theme
+  theme=$(_nvtheme)
+  [[ -z "$theme" ]] && return
+
   cd "$project_dir/$selected"
+  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"$theme\"/" ~/.config/opencode/tui.json
+
   if [[ -f "README.md" ]]; then
-    $cmd "README.md"
+    NVIM_THEME="$theme" nvim "README.md"
   elif [[ -f "package.json" ]]; then
-    $cmd "package.json"
+    NVIM_THEME="$theme" nvim "package.json"
   else
-    $cmd
+    NVIM_THEME="$theme" nvim
   fi
 }
 
-nvcp() { _nvopen nvc "$HOME/Projects" }
-nvcd() { _nvopen nvc "$HOME/Development" }
-nvxp() { _nvopen nvx "$HOME/Projects" }
-nvxd() { _nvopen nvx "$HOME/Development" }
-nvdp() { _nvopen nvd "$HOME/Projects" }
-nvdd() { _nvopen nvd "$HOME/Development" }
+# -------------------------------------------------------------------
+# nvp -> selecciona proyecto de ~/Projects + selector de tema
+# nvd -> selecciona proyecto de ~/Development + selector de tema
+# -------------------------------------------------------------------
+nvp() { _nvproject "$HOME/Projects" }
+nvd() { _nvproject "$HOME/Development" }
 
 # -------------------------------------------------------------------
 # Selecciona un servidor del CSV y se conecta por SSH

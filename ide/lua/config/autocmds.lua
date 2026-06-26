@@ -17,6 +17,7 @@ local function set_wezterm_theme()
     ["catppuccin-mocha"] = "Catppuccin Mocha",
     ["nightfox"] = "carbonfox",
     ["dracula"] = "Dracula",
+    ["gruvbox"] = "Gruvbox dark, pale (base16)",
   }
 
   local wez_theme = theme_map[theme] or theme
