@@ -27,7 +27,7 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
   - [Temas Disponibles](#temas-disponibles)
   - [Mantenimiento](#mantenimiento)
 - [SSH](#ssh)
-- [Utilidades](uUtilidades)
+- [Utilidades](#utilidades)
 
 # Requisitos
 
@@ -318,10 +318,16 @@ Letras griegas en `ASCII`:
 subíndices y superíndices en `ASCII`:
 
 ```
-# Subíndice:
+# Subíndice numérico:
 ₀ ₁ ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉
 
-# Superíndice:
+# Subíndice alfabético:
+ₐ ₑ ₕ ᵢ ⱼ ₖ ₗ ₘ ₙ ₒ ₚ ᵣ ₛ ₜ ᵤ ᵥ ₓ
+
+# Superíndice numérico:
 ⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹
+
+# Superíndice alfabético (minúsculas):
+ᵃ ᵇ ᶜ ᵈ ᵉ ᶠ ᵍ ʰ ⁱ ʲ ᵏ ˡ ᵐ ⁿ ᵒ ᵖ ʳ ˢ ᵗ ᵘ ᵛ ʷ ˣ ʸ ᶻ
 
 ```
