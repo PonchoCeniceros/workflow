@@ -11,10 +11,17 @@
 
 Workflow es un monorepo de configuración personal que centraliza y sincroniza el entorno de desarrollo: **LazyVim** como IDE, **OpenCode.ai** como asistente de IA, **WezTerm** como terminal, y **shell aliases** como atajos productivos. Todo en un solo lugar, listo para clonar y enlazar.
 
-> Revisa la guía paso a paso del [flujo de trabajo diario para desarrollo](WORKFLOW.md).
+> Revisa la guía paso a paso del [flujo de trabajo diario para desarrollo](docs/WORKFLOW.md).
+
+# Documentación
+
+- [Flujo de trabajo diario](docs/WORKFLOW.md)
+- [Guía de levantamiento de VPS (DevOps)](docs/DEVOPS.md)
+- [Utilidades](docs/UTILIDADES.md)
 
 # Contenidos
 
+- [Documentación](#documentación)
 - [Requisitos](#requisitos)
 - [Instalación](#instalación)
 - [Comandos](#comandos)
@@ -28,7 +35,6 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
   - [Mantenimiento](#mantenimiento)
 - [WezTerm](#wezterm)
 - [SSH](#ssh)
-- [Utilidades](#utilidades)
 
 # Requisitos
 
@@ -316,29 +322,3 @@ Conexión rápida a servidores vía `sssh` — selecciona un servidor del catál
 sssh
 ```
 Los servidores están definidos en `.wallet/ssh.csv` y las llaves en `.wallet/pem/`.
-
-# Utilidades
-
-Letras griegas en `ASCII`:
-
-```
-α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
-Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω
-```
-
-subíndices y superíndices en `ASCII`:
-
-```
-# Subíndice numérico:
-₀ ₁ ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉
-
-# Subíndice alfabético:
-ₐ ₑ ₕ ᵢ ⱼ ₖ ₗ ₘ ₙ ₒ ₚ ᵣ ₛ ₜ ᵤ ᵥ ₓ
-
-# Superíndice numérico:
-⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹
-
-# Superíndice alfabético (minúsculas):
-ᵃ ᵇ ᶜ ᵈ ᵉ ᶠ ᵍ ʰ ⁱ ʲ ᵏ ˡ ᵐ ⁿ ᵒ ᵖ ʳ ˢ ᵗ ᵘ ᵛ ʷ ˣ ʸ ᶻ
-
-```
