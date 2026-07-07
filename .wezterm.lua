@@ -63,6 +63,19 @@ config.keys = {
 		mods = "CMD",
 		action = wezterm.action.Hide,
 	},
+	{
+		-- renombrar la ventana actual (útil al abrir una nueva)
+		key = "r",
+		mods = "CMD|SHIFT",
+		action = wezterm.action.PromptInputLine({
+			description = "Nombre para la ventana:",
+			action = wezterm.action_callback(function(window, pane, line)
+				if line then
+					window:set_title(line)
+				end
+			end),
+		}),
+	},
 }
 
 return config
