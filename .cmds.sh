@@ -96,6 +96,8 @@ _nvproject() {
     NVIM_THEME="$theme" nvim "README.md"
   elif [[ -f "package.json" ]]; then
     NVIM_THEME="$theme" nvim "package.json"
+  elif [[ -f "CLAUDE.md" ]]; then
+    NVIM_THEME="$theme" nvim "CLAUDE.md"
   else
     NVIM_THEME="$theme" nvim
   fi

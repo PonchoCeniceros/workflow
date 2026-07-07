@@ -26,6 +26,7 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
   - [Manejo de .CSV](#manejo-de-csv)
   - [Temas Disponibles](#temas-disponibles)
   - [Mantenimiento](#mantenimiento)
+- [WezTerm](#wezterm)
 - [SSH](#ssh)
 - [Utilidades](#utilidades)
 
@@ -296,6 +297,16 @@ Usa el script `theme-selector.sh` para cambiar el tema predeterminado:
 ./theme-selector.sh dracula
 ./theme-selector.sh gruvbox
 ```
+
+# WezTerm
+
+Configuración en `.wezterm.lua`.
+
+| Shortcut | Acción |
+|----------|--------|
+| `CMD + CTRL + F` | Toggle fullscreen |
+| `CMD + H` | Ocultar ventana |
+| `CMD + SHIFT + R` | Renombrar la ventana actual (útil para identificarla en Mission Control / Dock cuando tienes varias abiertas) |
 
 # SSH
 
