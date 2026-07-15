@@ -1,6 +1,7 @@
 # -------------------------------------------------------------------
-# Bienvenida al abrir la terminal
+# Bienvenida al abrir la terminal (omitida dentro de una terminal de Neovim)
 # -------------------------------------------------------------------
+if [ -z "$NVIM" ]; then
 cat << 'EOF'
 
                                    __         ___  ___
@@ -13,6 +14,7 @@ cat << 'EOF'
   `\/_____/
 
 EOF
+fi
 
 # -------------------------------------------------------------------
 # Comandos generales
