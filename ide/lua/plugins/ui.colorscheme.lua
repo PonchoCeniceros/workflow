@@ -132,7 +132,7 @@ return {
         vim.o.background = "dark"
         return { colorscheme = "gruvbox" }
       else
-        return { colorscheme = "catppuccin-mocha" }
+        return { colorscheme = "carbonfox" }
       end
     end,
   },
