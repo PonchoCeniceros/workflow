@@ -40,6 +40,7 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
 
 - `nvim`
 - `git`
+- `oh-my-zsh`
 - `OpenCode.ai` y `WezTerm` (opcional)
 
 # Instalación
@@ -53,7 +54,7 @@ cd workflow && ./install.sh
 source ~/.zshrc
 ```
 
-El instalador crea los symlinks y configura `.zshrc` automáticamente.
+El instalador crea los symlinks, configura `.zshrc` automáticamente e instala **Powerlevel10k** (vía Homebrew) como theme de oh-my-zsh, incluyendo el symlink de `ai/zsh/p10k.zsh` -> `~/.p10k.zsh`. Para personalizar la apariencia del prompt corre `p10k configure`.
 
 # Comandos
 
@@ -70,6 +71,8 @@ El instalador crea los symlinks y configura `.zshrc` automáticamente.
 | `nvp` | Selector de proyecto (~/Projects) + selector de tema |
 | `nvd` | Selector de proyecto (~/Development) + selector de tema |
 | `sssh` | Seleccionar servidor SSH del catálogo con fzf |
+| `theme` | Selector de tema + cambia el default de WezTerm y LazyVim |
+| `theme [tema]` | Cambia directamente el tema default de WezTerm y LazyVim |
 
 # IDE
 
@@ -291,18 +294,20 @@ NVIM_THEME=dracula nvim
 NVIM_THEME=gruvbox nvim
 ```
 
-Usa el script `theme-selector.sh` para cambiar el tema predeterminado:
+Usa el comando `theme` para cambiar el tema predeterminado de **WezTerm y LazyVim a la vez** (actualiza `ide/.theme` y `config.color_scheme` en `.wezterm.lua`):
 
 ```bash
-# ver tema actual
-./theme-selector.sh
+# selector con fzf
+theme
 
-# cambiar tema predeterminado
-./theme-selector.sh catppuccin
-./theme-selector.sh carbonfox
-./theme-selector.sh dracula
-./theme-selector.sh gruvbox
+# cambiar tema predeterminado directamente
+theme catppuccin
+theme carbonfox
+theme dracula
+theme gruvbox
 ```
+
+Reinicia WezTerm y Neovim para ver el cambio aplicado.
 
 # WezTerm
 

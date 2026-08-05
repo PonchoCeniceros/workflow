@@ -34,6 +34,16 @@ for dep in "${deps[@]}"; do
   fi
 done
 
+msg "Verificando Powerlevel10k..."
+if [[ -d "/opt/homebrew/share/powerlevel10k" || -d "/usr/local/share/powerlevel10k" ]]; then
+  ok "powerlevel10k"
+elif command -v brew &>/dev/null; then
+  brew install powerlevel10k
+  ok "powerlevel10k instalado"
+else
+  err "Homebrew no encontrado. Instala powerlevel10k manualmente."
+fi
+
 msg "Creando directorios..."
 mkdir -p "$HOME/.config"
 
@@ -74,6 +84,7 @@ msg "Creando symlinks..."
 
 link_if_missing "ai/opencode" "$HOME/.config/opencode"
 link_if_missing "ai/claude" "$HOME/.claude"
+link_if_missing "ai/zsh/p10k.zsh" "$HOME/.p10k.zsh"
 link_if_missing "ide" "$HOME/.config/nvim"
 link_if_missing ".wezterm.lua" "$HOME/.wezterm.lua"
 
@@ -95,6 +106,18 @@ append_if_missing() {
 append_if_missing 'WezTerm.app/Contents/MacOS' 'export PATH="/Applications/WezTerm.app/Contents/MacOS:$PATH"'
 append_if_missing 'AI_DEFAULT_TOOL=opencode' 'export AI_DEFAULT_TOOL=opencode'
 append_if_missing 'workflow/.cmds.sh' '[ -f "$HOME/workflow/.cmds.sh" ] && source "$HOME/workflow/.cmds.sh"'
+
+msg "Configurando Powerlevel10k en .zshrc..."
+
+if grep -q 'ZSH_THEME="robbyrussell"' "$ZSHRC" 2>/dev/null; then
+  sed -i '' 's/ZSH_THEME="robbyrussell"/ZSH_THEME=""/' "$ZSHRC"
+  ok "ZSH_THEME desactivado (robbyrussell -> vacío)"
+else
+  skip "ZSH_THEME ya no es robbyrussell"
+fi
+
+append_if_missing 'powerlevel10k.zsh-theme' 'source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme'
+append_if_missing 'source ~/.p10k.zsh' '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh'
 
 echo ""
 msg "Instalación completa."

@@ -73,6 +73,36 @@ nv() {
 }
 
 # -------------------------------------------------------------------
+# Cambia el tema por defecto de WezTerm + LazyVim (persistente, no solo runtime)
+#
+# Uso:
+#   'theme'        -> selector de tema, actualiza el default.
+#   'theme [tema]' -> aplica directamente el tema indicado.
+# -------------------------------------------------------------------
+theme() {
+  local theme="$1"
+  [[ -z "$theme" ]] && theme=$(_nvtheme)
+  [[ -z "$theme" ]] && return
+
+  local repo="$HOME/workflow"
+  local wezterm_scheme
+  case "$theme" in
+  catppuccin) wezterm_scheme="Catppuccin Mocha" ;;
+  carbonfox) wezterm_scheme="carbonfox" ;;
+  dracula) wezterm_scheme="Dracula" ;;
+  gruvbox) wezterm_scheme="GruvboxDark" ;;
+  *)
+    echo "Tema desconocido: $theme"
+    return 1
+    ;;
+  esac
+
+  echo "$theme" >"$repo/ide/.theme"
+  sed -i "" "s/config.color_scheme = \".*\"/config.color_scheme = \"$wezterm_scheme\"/" "$repo/.wezterm.lua"
+  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"$theme\"/" ~/.config/opencode/tui.json
+}
+
+# -------------------------------------------------------------------
 # Helper: selecciona proyecto con fzf, luego tema, abre README.md > package.json > bare
 # -------------------------------------------------------------------
 _nvproject() {
