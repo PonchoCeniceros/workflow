@@ -3,6 +3,9 @@ node_modules
 package.json
 bun.lock
 
+# config local (contiene tokens de MCPs)
+opencode.json
+
 # ignorar skills propietarias
 skills/*/
 agents/*/
