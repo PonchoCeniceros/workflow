@@ -56,7 +56,7 @@ source ~/.zshrc
 
 El instalador crea los symlinks, configura `.zshrc` automáticamente e instala **Powerlevel10k** (vía Homebrew) como theme de oh-my-zsh, incluyendo el symlink de `ai/zsh/p10k.zsh` -> `~/.p10k.zsh`. Para personalizar la apariencia del prompt corre `p10k configure`.
 
-> **Nota manual:** en `~/.zshrc` (fuera de este repo) se agregó un guard `[[ -n "$NVIM" ]] ||` antes de cargar Powerlevel10k, para que la terminal embebida de Neovim/LazyVim no muestre el prompt de p10k. Si reinstalas o regeneras `.zshrc`, hay que volver a agregarlo a mano.
+El instalador agrega un guard `[[ -n "$NVIM" ]] ||` antes de cargar Powerlevel10k en `.zshrc`, para que la terminal embebida de Neovim/LazyVim no muestre el prompt de p10k.
 
 # Comandos
 

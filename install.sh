@@ -116,8 +116,8 @@ else
   skip "ZSH_THEME ya no es robbyrussell"
 fi
 
-append_if_missing 'powerlevel10k.zsh-theme' 'source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme'
-append_if_missing 'source ~/.p10k.zsh' '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh'
+append_if_missing 'powerlevel10k.zsh-theme' '[[ -n "$NVIM" ]] || source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme'
+append_if_missing 'source ~/.p10k.zsh' '[[ -n "$NVIM" ]] || { [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh }'
 
 echo ""
 msg "Instalación completa."
