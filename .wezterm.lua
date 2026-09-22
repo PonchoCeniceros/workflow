@@ -22,7 +22,7 @@ end)
 -- end)
 
 -- tema clásico por defecto
-config.color_scheme = "GruvboxDark"
+config.color_scheme = "Catppuccin Mocha"
 config.font = wezterm.font("JetBrains Mono")
 config.font_size = 12.5
 

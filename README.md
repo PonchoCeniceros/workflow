@@ -73,8 +73,10 @@ El instalador agrega un guard `[[ -n "$NVIM" ]] ||` antes de cargar Powerlevel10
 | `nvp` | Selector de proyecto (~/Projects) + selector de tema |
 | `nvd` | Selector de proyecto (~/Development) + selector de tema |
 | `sssh` | Seleccionar servidor SSH del catálogo con fzf |
-| `theme` | Selector de tema + cambia el default de WezTerm y LazyVim |
-| `theme [tema]` | Cambia directamente el tema default de WezTerm y LazyVim |
+| `theme` | Selector de tema + cambio rápido de WezTerm y OpenCode |
+| `theme [tema]` | Cambia directamente el tema de WezTerm y OpenCode |
+| `dtheme` | Selector de tema + fija el default de LazyVim |
+| `dtheme [tema]` | Fija directamente el tema default de LazyVim |
 
 # IDE
 
@@ -282,31 +284,45 @@ Los temas se seleccionan con `fzf` al lanzar Neovim desde los comandos `nv`, `nv
 
 | Tema | Descripción |
 |------|-------------|
-| `catppuccin` | Acogedor y visualmente cohesivo, ideal para largas sesiones |
+| `catppuccin-mocha` | Acogedor y visualmente cohesivo, ideal para largas sesiones |
+| `catppuccin-macchiato` | Como mocha pero un punto más claro y menos saturado |
+| `catppuccin-frappe` | El intermedio de la familia, contraste suave |
+| `catppuccin-latte` | La variante clara de la familia |
 | `carbonfox` | Serio y profesional, alto rendimiento visual |
 | `dracula` | Clásico oscuro con toques de púrpura |
 | `gruvbox` | Retro y cálido, tonos terrosos con contraste ajustado |
 
+`catppuccin` a secas sigue funcionando como alias de `catppuccin-mocha`.
+
 También puedes forzar un tema manualmente con la variable de entorno:
 
 ```bash
-NVIM_THEME=catppuccin nvim
+NVIM_THEME=catppuccin-mocha nvim
+NVIM_THEME=catppuccin-latte nvim
 NVIM_THEME=carbonfox nvim
 NVIM_THEME=dracula nvim
 NVIM_THEME=gruvbox nvim
 ```
 
-Usa el comando `theme` para cambiar el tema predeterminado de **WezTerm y LazyVim a la vez** (actualiza `ide/.theme` y `config.color_scheme` en `.wezterm.lua`):
+Usa el comando `theme` para un cambio rápido de **WezTerm y OpenCode** (actualiza `ide/.theme`, `config.color_scheme` en `.wezterm.lua` y el tema de `tui.json`):
 
 ```bash
 # selector con fzf
 theme
 
-# cambiar tema predeterminado directamente
-theme catppuccin
+# cambiar directamente
+theme catppuccin-latte
 theme carbonfox
-theme dracula
-theme gruvbox
+```
+
+Usa `dtheme` para fijar el **tema por defecto de LazyVim**, que es el que se usa al abrir `nvim` sin pasar por `nv`, `nvp` o `nvd` (reescribe `default_colorscheme` en `ide/lua/plugins/ui.colorscheme.lua`):
+
+```bash
+# selector con fzf
+dtheme
+
+# fijar directamente
+dtheme carbonfox
 ```
 
 Reinicia WezTerm y Neovim para ver el cambio aplicado.

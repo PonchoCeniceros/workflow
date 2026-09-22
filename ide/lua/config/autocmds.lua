@@ -23,6 +23,9 @@ local function set_wezterm_theme()
   -- de Neovim no se llama igual en WezTerm
   local theme_map = {
     ["catppuccin-mocha"] = "Catppuccin Mocha",
+    ["catppuccin-macchiato"] = "Catppuccin Macchiato",
+    ["catppuccin-frappe"] = "Catppuccin Frappe",
+    ["catppuccin-latte"] = "Catppuccin Latte",
     ["nightfox"] = "carbonfox",
     ["dracula"] = "Dracula",
     ["gruvbox"] = "Gruvbox dark, pale (base16)",

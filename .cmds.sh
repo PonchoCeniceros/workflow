@@ -36,8 +36,9 @@ _wf_welcome() {
   cells="$(_wf_braille_cells)"
   aw=$((10 * cells))
 
-  # colores de la paleta ansi (0-15), no truecolor: asi los remapea cada tema
-  local cream=$'\033[38;5;7m'   # blanco normal
+  # la interfaz usa la paleta ansi (0-15) para que la remapee cada tema;
+  # el avatar va en truecolor porque es su color propio, no del tema
+  local cream=$'\033[38;2;213;216;198m' # D5D8C6
   local accent=$'\033[38;5;3m'  # amarillo
   local dim=$'\033[38;5;8m'     # gris (negro brillante)
   local val=$'\033[39m'         # foreground por defecto
@@ -127,13 +128,33 @@ opwl() {
 # Helper: selector de tema con fzf
 # -------------------------------------------------------------------
 _nvtheme() {
-  printf '%s\n' "catppuccin" "carbonfox" "dracula" "gruvbox" | fzf \
+  printf '%s\n' \
+    "catppuccin-mocha" \
+    "catppuccin-macchiato" \
+    "catppuccin-frappe" \
+    "catppuccin-latte" \
+    "carbonfox" \
+    "dracula" \
+    "gruvbox" | fzf \
     --prompt=" Theme > " \
-    --height=25% \
+    --height=35% \
     --layout=reverse \
     --border=rounded \
     --info=hidden \
     --header="Color Theme"
+}
+
+# OpenCode no tiene las variantes de catppuccin: se queda con la familia
+_octheme() {
+  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"${1%%-*}\"/" ~/.config/opencode/tui.json
+}
+
+# Reescribe 'default_colorscheme' en ui.colorscheme.lua, que es de donde
+# LazyVim toma el tema cuando no viene NVIM_THEME
+_nvdefault() {
+  sed -i "" \
+    "s/local default_colorscheme = \".*\"/local default_colorscheme = \"$1\"/" \
+    "$HOME/workflow/ide/lua/plugins/ui.colorscheme.lua"
 }
 
 # -------------------------------------------------------------------
@@ -147,15 +168,28 @@ nv() {
   local theme
   theme=$(_nvtheme)
   [[ -z "$theme" ]] && return
-  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"$theme\"/" ~/.config/opencode/tui.json
+  _octheme "$theme"
   NVIM_THEME="$theme" nvim "$@"
 }
 
+_wezscheme() {
+  case "$1" in
+  catppuccin | catppuccin-mocha) echo "Catppuccin Mocha" ;;
+  catppuccin-macchiato) echo "Catppuccin Macchiato" ;;
+  catppuccin-frappe) echo "Catppuccin Frappe" ;;
+  catppuccin-latte) echo "Catppuccin Latte" ;;
+  carbonfox) echo "carbonfox" ;;
+  dracula) echo "Dracula" ;;
+  gruvbox) echo "GruvboxDark" ;;
+  *) return 1 ;;
+  esac
+}
+
 # -------------------------------------------------------------------
-# Cambia el tema por defecto de WezTerm + LazyVim (persistente, no solo runtime)
+# Cambia el tema de WezTerm + OpenCode al vuelo (no toca el default de LazyVim)
 #
 # Uso:
-#   'theme'        -> selector de tema, actualiza el default.
+#   'theme'        -> selector de tema.
 #   'theme [tema]' -> aplica directamente el tema indicado.
 # -------------------------------------------------------------------
 theme() {
@@ -165,20 +199,38 @@ theme() {
 
   local repo="$HOME/workflow"
   local wezterm_scheme
-  case "$theme" in
-  catppuccin) wezterm_scheme="Catppuccin Mocha" ;;
-  carbonfox) wezterm_scheme="carbonfox" ;;
-  dracula) wezterm_scheme="Dracula" ;;
-  gruvbox) wezterm_scheme="GruvboxDark" ;;
-  *)
+  wezterm_scheme=$(_wezscheme "$theme") || {
     echo "Tema desconocido: $theme"
     return 1
-    ;;
-  esac
+  }
+  [[ "$theme" == "catppuccin" ]] && theme="catppuccin-mocha"
 
   echo "$theme" >"$repo/ide/.theme"
   sed -i "" "s/config.color_scheme = \".*\"/config.color_scheme = \"$wezterm_scheme\"/" "$repo/.wezterm.lua"
-  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"$theme\"/" ~/.config/opencode/tui.json
+  _octheme "$theme"
+}
+
+# -------------------------------------------------------------------
+# Fija el tema por defecto de LazyVim: el que usa 'nvim' cuando no se
+# le pasa NVIM_THEME (es decir, cuando no se abre con 'nv', 'nvp' o 'nvd')
+#
+# Uso:
+#   'dtheme'        -> selector de tema.
+#   'dtheme [tema]' -> fija directamente el tema indicado.
+# -------------------------------------------------------------------
+dtheme() {
+  local theme="$1"
+  [[ -z "$theme" ]] && theme=$(_nvtheme)
+  [[ -z "$theme" ]] && return
+
+  _wezscheme "$theme" >/dev/null || {
+    echo "Tema desconocido: $theme"
+    return 1
+  }
+  [[ "$theme" == "catppuccin" ]] && theme="catppuccin-mocha"
+
+  _nvdefault "$theme"
+  echo "Tema por defecto de LazyVim: $theme"
 }
 
 # -------------------------------------------------------------------
@@ -201,7 +253,7 @@ _nvproject() {
   [[ -z "$theme" ]] && return
 
   cd "$project_dir/$selected"
-  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"$theme\"/" ~/.config/opencode/tui.json
+  _octheme "$theme"
 
   if [[ -f "README.md" ]]; then
     NVIM_THEME="$theme" nvim "README.md"

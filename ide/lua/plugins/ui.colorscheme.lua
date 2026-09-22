@@ -121,9 +121,25 @@ return {
   {
     "LazyVim/LazyVim",
     opts = function()
+      -- tema por defecto: lo reescribe el comando 'theme' de .cmds.sh
+      local default_colorscheme = "carbonfox"
+
       local chosen_colorscheme = os.getenv("NVIM_THEME")
+      if chosen_colorscheme == nil or chosen_colorscheme == "" then
+        chosen_colorscheme = default_colorscheme
+      end
+
       if chosen_colorscheme == "catppuccin" then
         return { colorscheme = "catppuccin-mocha" }
+      elseif chosen_colorscheme == "catppuccin-latte" then
+        vim.o.background = "light"
+        return { colorscheme = "catppuccin-latte" }
+      elseif
+        chosen_colorscheme == "catppuccin-mocha"
+        or chosen_colorscheme == "catppuccin-macchiato"
+        or chosen_colorscheme == "catppuccin-frappe"
+      then
+        return { colorscheme = chosen_colorscheme }
       elseif chosen_colorscheme == "carbonfox" then
         return { colorscheme = "carbonfox" }
       elseif chosen_colorscheme == "dracula" then
