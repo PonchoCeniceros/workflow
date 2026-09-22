@@ -1,19 +1,98 @@
 # -------------------------------------------------------------------
 # Bienvenida al abrir la terminal (omitida dentro de una terminal de Neovim)
+# El avatar ascii viene de https://blobatar.dev/
 # -------------------------------------------------------------------
+
+# Cuantas celdas ocupa un caracter braille: depende del font fallback de la
+# terminal (JetBrains Mono no trae braille y el fallback suele ser doble ancho).
+# Se mide preguntandole a la terminal la posicion del cursor.
+_wf_braille_cells() {
+  local resp col
+  if [ -n "$WF_AVATAR_CELLS" ]; then
+    print -r -- "$WF_AVATAR_CELLS"
+    return
+  fi
+  if [[ ! -t 1 ]]; then
+    print -r -- 1
+    return
+  fi
+  printf '\r⠿\033[6n' >/dev/tty
+  if ! IFS= read -rs -d R -t 0.3 resp </dev/tty 2>/dev/null; then
+    printf '\r    \r' >/dev/tty
+    print -r -- 1
+    return
+  fi
+  printf '\r    \r' >/dev/tty
+  col="${resp##*;}"
+  if [[ "$col" == <-> ]] && (( col >= 3 )); then
+    print -r -- 2
+  else
+    print -r -- 1
+  fi
+}
+
+_wf_welcome() {
+  local cells aw gap=4
+  cells="$(_wf_braille_cells)"
+  aw=$((10 * cells))
+
+  # colores de la paleta ansi (0-15), no truecolor: asi los remapea cada tema
+  local cream=$'\033[38;5;7m'   # blanco normal
+  local accent=$'\033[38;5;3m'  # amarillo
+  local dim=$'\033[38;5;8m'     # gris (negro brillante)
+  local val=$'\033[39m'         # foreground por defecto
+  local bold=$'\033[1m'
+  local rst=$'\033[0m'
+  local bar="${accent}▎${rst}"
+
+  local -a avatar lines
+  avatar=(
+    '⠀⢀⣴⣾⣿⣿⣿⣶⣄⠀'
+    '⢠⣿⠿⣿⣿⣿⠿⣿⣿⣆'
+    '⣿⣿⣀⣿⣿⣿⣀⣿⣿⣿'
+    '⠹⣿⣿⣿⣿⣿⣿⣿⣿⠏'
+    '⠀⠈⠻⢿⣿⣿⣿⠿⠋⠀'
+  )
+
+  local name
+  name="$(git config --global user.name 2>/dev/null)"
+  name="${name%% *}"
+  [ -n "$name" ] || name="$USER"
+
+  lines=(
+    "${bar} ${bold}Welcome back, ${name}!${rst}"
+    "${bar} ${dim}host   ${rst}${val}${HOST%%.*}${rst}"
+    "${bar} ${dim}os     ${rst}${val}macOS $(sw_vers -productVersion 2>/dev/null)${rst}"
+    "${bar} ${dim}shell  ${rst}${val}zsh ${ZSH_VERSION}${rst}"
+    "${bar} ${dim}dir    ${rst}${val}${PWD/#$HOME/~}${rst}"
+  )
+
+  # las dos columnas tienen distinto alto: cada una se centra verticalmente
+  local i j k n ao io
+  n=${#avatar[@]}
+  (( ${#lines[@]} > n )) && n=${#lines[@]}
+  ao=$(((n - ${#avatar[@]}) / 2))
+  io=$(((n - ${#lines[@]}) / 2))
+
+  echo
+  for i in {1..$n}; do
+    # zsh indexa desde 1 y los negativos cuentan desde el final: hay que acotar
+    j=$((i - ao)); k=$((i - io))
+    if (( j >= 1 && j <= ${#avatar[@]} )); then
+      printf '  %s%s%s' "$cream" "${avatar[$j]}" "$rst"
+    else
+      printf '  %*s' $aw ""
+    fi
+    if (( k >= 1 && k <= ${#lines[@]} )); then
+      printf '%*s%s' $gap "" "${lines[$k]}"
+    fi
+    printf '\n'
+  done
+  echo
+}
+
 if [ -z "$NVIM" ]; then
-cat << 'EOF'
-
-                                   __         ___  ___
-   __                             /\ \      /'___\/\_ \
-  /'_`\_  __  __  __    ___   _ __\ \ \/'\ /\ \__/\//\ \     ___   __  __  __
- /'/'_` \/\ \/\ \/\ \  / __`\/\`'__\ \ , < \ \ ,__\ \ \ \   / __`\/\ \/\ \/\ \
-/\ \ \L\ \ \ \_/ \_/ \/\ \L\ \ \ \/ \ \ \\`\\ \ \_/  \_\ \_/\ \L\ \ \ \_/ \_/ \
-\ \ `\__,_\ \___x___/'\ \____/\ \_\  \ \_\ \_\ \_\   /\____\ \____/\ \___x___/'
- \ `\_____\\/__//__/   \/___/  \/_/   \/_/\/_/\/_/   \/____/\/___/  \/__//__/
-  `\/_____/
-
-EOF
+  _wf_welcome
 fi
 
 # -------------------------------------------------------------------
