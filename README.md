@@ -68,10 +68,12 @@ El instalador agrega un guard `[[ -n "$NVIM" ]] ||` antes de cargar Powerlevel10
 | `srcz` | Recargar configuración de `.zshrc` |
 | `cls` | Limpiar pantalla |
 | `ot` | Abrir nuevo tab en el mismo directorio |
-| `nv` | Selector de tema + abrir Neovim |
-| `nv [arch]` | Selector de tema + abrir archivo |
-| `nvp` | Selector de proyecto (~/Projects) + selector de tema |
-| `nvd` | Selector de proyecto (~/Development) + selector de tema |
+| `nv` | Abrir Neovim con el tema actual |
+| `nv [arch]` | Abrir archivo con el tema actual |
+| `nv -t [arch]` | Igual, pero eligiendo el tema con fzf |
+| `nvp` | Selector de proyecto (~/Projects) |
+| `nvd` | Selector de proyecto (~/Development) |
+| `nvp -t` / `nvd -t` | Igual, agregando el selector de tema |
 | `sssh` | Seleccionar servidor SSH del catálogo con fzf |
 | `theme` | Selector de tema + cambio rápido de WezTerm y OpenCode |
 | `theme [tema]` | Cambia directamente el tema de WezTerm y OpenCode |
@@ -280,7 +282,7 @@ nvim
 
 ## Temas Disponibles
 
-Los temas se seleccionan con `fzf` al lanzar Neovim desde los comandos `nv`, `nvp` o `nvd`.
+El tema lo fija el comando `theme` y aplica a toda la terminal, así que `nv`, `nvp` y `nvd` lo heredan sin preguntar. Para casos puntuales en que quieras otro tema solo para ese Neovim, pásales `-t` y aparece el selector de `fzf`.
 
 | Tema | Descripción |
 |------|-------------|

@@ -157,18 +157,34 @@ _nvdefault() {
     "$HOME/workflow/ide/lua/plugins/ui.colorscheme.lua"
 }
 
+# Tema para abrir nvim: por defecto el que dejo 'theme', o uno elegido
+# con fzf si se paso -t. Devuelve 1 si se cancelo el selector.
+_nvtheme_for() {
+  if [[ "$1" == "-t" || "$1" == "--theme" ]]; then
+    local picked
+    picked=$(_nvtheme)
+    [[ -z "$picked" ]] && return 1
+    _octheme "$picked"
+    print -r -- "$picked"
+  else
+    local theme_file="$HOME/workflow/ide/.theme"
+    [[ -f "$theme_file" ]] && head -1 "$theme_file"
+    return 0
+  fi
+}
+
 # -------------------------------------------------------------------
-# Abre Neovim con selector de tema
+# Abre Neovim con el tema actual de la terminal
 #
 # Uso:
-#   'nv'        -> selector de tema + abre Neovim.
-#   'nv [arch]' -> selector de tema + abre archivo.
+#   'nv'           -> abre Neovim.
+#   'nv [arch]'    -> abre archivo.
+#   'nv -t [arch]' -> selector de tema antes de abrir.
 # -------------------------------------------------------------------
 nv() {
   local theme
-  theme=$(_nvtheme)
-  [[ -z "$theme" ]] && return
-  _octheme "$theme"
+  theme=$(_nvtheme_for "$1") || return
+  [[ "$1" == "-t" || "$1" == "--theme" ]] && shift
   NVIM_THEME="$theme" nvim "$@"
 }
 
@@ -237,7 +253,7 @@ dtheme() {
 # Helper: selecciona proyecto con fzf, luego tema, abre README.md > package.json > bare
 # -------------------------------------------------------------------
 _nvproject() {
-  local project_dir="$1"
+  local project_dir="$1" flag="$2"
   local selected
   selected=$(ls -1 "$project_dir" | fzf \
     --prompt=" Project > " \
@@ -249,11 +265,9 @@ _nvproject() {
   [[ -z "$selected" ]] && return
 
   local theme
-  theme=$(_nvtheme)
-  [[ -z "$theme" ]] && return
+  theme=$(_nvtheme_for "$flag") || return
 
   cd "$project_dir/$selected"
-  _octheme "$theme"
 
   if [[ -f "README.md" ]]; then
     NVIM_THEME="$theme" nvim "README.md"
@@ -267,11 +281,13 @@ _nvproject() {
 }
 
 # -------------------------------------------------------------------
-# nvp -> selecciona proyecto de ~/Projects + selector de tema
-# nvd -> selecciona proyecto de ~/Development + selector de tema
+# nvp -> selecciona proyecto de ~/Projects
+# nvd -> selecciona proyecto de ~/Development
+#
+# Con -t agregan el selector de tema antes de abrir.
 # -------------------------------------------------------------------
-nvp() { _nvproject "$HOME/Projects" }
-nvd() { _nvproject "$HOME/Development" }
+nvp() { _nvproject "$HOME/Projects" "$1" }
+nvd() { _nvproject "$HOME/Development" "$1" }
 
 # -------------------------------------------------------------------
 # Selecciona un servidor del CSV y se conecta por SSH
