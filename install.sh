@@ -88,6 +88,16 @@ link_if_missing "ai/zsh/p10k.zsh" "$HOME/.p10k.zsh"
 link_if_missing "ide" "$HOME/.config/nvim"
 link_if_missing ".wezterm.lua" "$HOME/.wezterm.lua"
 
+msg "Verificando tema actual..."
+
+theme_file="$REPO_DIR/ide/.theme"
+if [[ -f "$theme_file" ]]; then
+  skip "$theme_file"
+else
+  echo "catppuccin-frappe" >"$theme_file"
+  ok "$theme_file creado (catppuccin-frappe)"
+fi
+
 msg "Configurando .zshrc..."
 
 append_if_missing() {
