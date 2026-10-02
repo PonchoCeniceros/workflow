@@ -1,7 +1,11 @@
 # -------------------------------------------------------------------
 # Bienvenida al abrir la terminal (omitida dentro de una terminal de Neovim)
-# El avatar ascii viene de https://blobatar.dev/
+# En WezTerm el avatar es una imagen (wezterm imgcat); en cualquier otra
+# terminal cae al avatar ascii de https://blobatar.dev/
 # -------------------------------------------------------------------
+
+_wf_dir="${${(%):-%x}:A:h}"
+_wf_avatar_img="$_wf_dir/.assets/profiles/ponchoceniceros_term.png"
 
 # Cuantas celdas ocupa un caracter braille: depende del font fallback de la
 # terminal (JetBrains Mono no trae braille y el fallback suele ser doble ancho).
@@ -32,9 +36,14 @@ _wf_braille_cells() {
 }
 
 _wf_welcome() {
-  local cells aw gap=4
-  cells="$(_wf_braille_cells)"
-  aw=$((10 * cells))
+  local cells aw gap=4 use_img=0
+  if [[ "$TERM_PROGRAM" == WezTerm && -z "$TMUX" && -t 1 && -f "$_wf_avatar_img" ]] && (( $+commands[wezterm] )); then
+    use_img=1
+    aw=10
+  else
+    cells="$(_wf_braille_cells)"
+    aw=$((10 * cells))
+  fi
 
   # la interfaz usa la paleta ansi (0-15) para que la remapee cada tema;
   # el avatar va en truecolor porque es su color propio, no del tema
@@ -75,6 +84,20 @@ _wf_welcome() {
   ao=$(((n - ${#avatar[@]}) / 2))
   io=$(((n - ${#lines[@]}) / 2))
 
+  if (( use_img )); then
+    echo
+    for k in {1..${#lines[@]}}; do
+      printf '\r\033[%dC%s\n' $((2 + aw + gap)) "${lines[$k]}"
+    done
+    printf '\r\033[%dA\033[2C' ${#lines[@]}
+    if wezterm imgcat --no-move-cursor --width $aw --height ${#lines[@]} "$_wf_avatar_img" 2>/dev/null; then
+      printf '\r\033[%dB\n' ${#lines[@]}
+      return
+    fi
+    printf '\r\033[A\033[J'
+    aw=$((10 * $(_wf_braille_cells)))
+  fi
+
   echo
   for i in {1..$n}; do
     # zsh indexa desde 1 y los negativos cuentan desde el final: hay que acotar
@@ -110,7 +133,7 @@ fi
 alias gtnv="cd ~/.config/nvim"
 alias gtoc="cd ~/.config/opencode"
 alias cls="clear"
-alias gtz="nvim ~/.zshrc"
+alias gtz="nv ~/.zshrc"
 srcz() {
   cd ~ && source .zshrc
 }
@@ -121,7 +144,7 @@ ot() {
 
 opwl() {
   local keys_file="$HOME/workflow/.wallet/keys.csv"
-  nvim $keys_file
+  nv "$keys_file"
 }
 
 # -------------------------------------------------------------------
