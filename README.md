@@ -75,8 +75,10 @@ El instalador agrega un guard `[[ -n "$NVIM" ]] ||` antes de cargar Powerlevel10
 | `nvd` | Selector de proyecto (~/Development) |
 | `nvp -t` / `nvd -t` | Igual, agregando el selector de tema |
 | `sssh` | Seleccionar servidor SSH del catálogo con fzf |
-| `theme` | Selector de tema + cambio rápido de WezTerm y OpenCode |
-| `theme [tema]` | Cambia directamente el tema de WezTerm y OpenCode |
+| `theme` | Selector de tema + cambio rápido de la ventana actual de WezTerm y OpenCode |
+| `theme [tema]` | Cambia directamente el tema de la ventana actual de WezTerm y OpenCode |
+| `wtheme` | Selector de tema + fija el default de WezTerm |
+| `wtheme [tema]` | Fija directamente el tema default de WezTerm |
 | `dtheme` | Selector de tema + fija el default de LazyVim |
 | `dtheme [tema]` | Fija directamente el tema default de LazyVim |
 
@@ -282,7 +284,7 @@ nvim
 
 ## Temas Disponibles
 
-El tema lo fija el comando `theme` y aplica a toda la terminal, así que `nv`, `nvp` y `nvd` lo heredan sin preguntar. Para casos puntuales en que quieras otro tema solo para ese Neovim, pásales `-t` y aparece el selector de `fzf`.
+El tema lo fija el comando `theme` y queda guardado en `ide/.theme`, así que `nv`, `nvp` y `nvd` lo heredan sin preguntar. Para casos puntuales en que quieras otro tema solo para ese Neovim, pásales `-t` y aparece el selector de `fzf`.
 
 | Tema | Descripción |
 |------|-------------|
@@ -306,7 +308,7 @@ NVIM_THEME=dracula nvim
 NVIM_THEME=gruvbox nvim
 ```
 
-Usa el comando `theme` para un cambio rápido de **WezTerm y OpenCode** (actualiza `ide/.theme`, `config.color_scheme` en `.wezterm.lua` y el tema de `tui.json`):
+Usa el comando `theme` para un cambio rápido de **la ventana actual de WezTerm y OpenCode** (actualiza `ide/.theme` y el tema de `tui.json`, y manda la variable de usuario `THEME` a WezTerm, que solo afecta a esa ventana; no funciona dentro de tmux sin passthrough):
 
 ```bash
 # selector con fzf
@@ -315,6 +317,16 @@ theme
 # cambiar directamente
 theme catppuccin-latte
 theme carbonfox
+```
+
+Usa `wtheme` para fijar el **tema por defecto de WezTerm**, que es el que usan las ventanas nuevas y las que no han cambiado de tema con `theme` (reescribe `config.color_scheme` en `.wezterm.lua`):
+
+```bash
+# selector con fzf
+wtheme
+
+# fijar directamente
+wtheme dracula
 ```
 
 Usa `dtheme` para fijar el **tema por defecto de LazyVim**, que es el que se usa al abrir `nvim` sin pasar por `nv`, `nvp` o `nvd` (reescribe `default_colorscheme` en `ide/lua/plugins/ui.colorscheme.lua`):

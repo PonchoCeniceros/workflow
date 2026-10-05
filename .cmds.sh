@@ -225,7 +225,8 @@ _wezscheme() {
 }
 
 # -------------------------------------------------------------------
-# Cambia el tema de WezTerm + OpenCode al vuelo (no toca el default de LazyVim)
+# Cambia el tema de la ventana actual de WezTerm + OpenCode al vuelo
+# (no toca el default de LazyVim ni el de WezTerm)
 #
 # Uso:
 #   'theme'        -> selector de tema.
@@ -245,8 +246,31 @@ theme() {
   [[ "$theme" == "catppuccin" ]] && theme="catppuccin-mocha"
 
   echo "$theme" >"$repo/ide/.theme"
-  sed -i "" "s/config.color_scheme = \".*\"/config.color_scheme = \"$wezterm_scheme\"/" "$repo/.wezterm.lua"
+  printf '\033]1337;SetUserVar=THEME=%s\007' "$(printf '%s' "$wezterm_scheme" | base64)"
   _octheme "$theme"
+}
+
+# -------------------------------------------------------------------
+# Fija el tema por defecto de WezTerm: el que usan las ventanas nuevas
+# y las que no han cambiado de tema con 'theme'
+#
+# Uso:
+#   'wtheme'        -> selector de tema.
+#   'wtheme [tema]' -> fija directamente el tema indicado.
+# -------------------------------------------------------------------
+wtheme() {
+  local theme="$1"
+  [[ -z "$theme" ]] && theme=$(_nvtheme)
+  [[ -z "$theme" ]] && return
+
+  local wezterm_scheme
+  wezterm_scheme=$(_wezscheme "$theme") || {
+    echo "Tema desconocido: $theme"
+    return 1
+  }
+
+  sed -i "" "s/config.color_scheme = \".*\"/config.color_scheme = \"$wezterm_scheme\"/" "$HOME/workflow/.wezterm.lua"
+  echo "Tema por defecto de WezTerm: $wezterm_scheme"
 }
 
 # -------------------------------------------------------------------
