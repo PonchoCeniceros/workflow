@@ -67,6 +67,7 @@ El instalador agrega un guard `[[ -n "$NVIM" ]] ||` antes de cargar Powerlevel10
 | `gtz` | Abrir `.zshrc` en Neovim |
 | `srcz` | Recargar configuración de `.zshrc` |
 | `cls` | Limpiar pantalla |
+| `q` | Salir de la terminal (`exit`) |
 | `ot` | Abrir nuevo tab en el mismo directorio |
 | `nv` | Abrir Neovim con el tema actual |
 | `nv [arch]` | Abrir archivo con el tema actual |

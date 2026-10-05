@@ -133,6 +133,7 @@ fi
 alias gtnv="cd ~/.config/nvim"
 alias gtoc="cd ~/.config/opencode"
 alias cls="clear"
+alias q="exit"
 alias gtz="nv ~/.zshrc"
 srcz() {
   cd ~ && source .zshrc
