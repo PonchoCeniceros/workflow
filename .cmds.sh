@@ -115,8 +115,17 @@ _wf_welcome() {
   echo
 }
 
+# Se difiere al primer prompt en vez de correrla aqui: durante el sourcing
+# del .zshrc, Powerlevel10k todavia se esta inicializando y sus consultas a
+# la terminal se cruzan con las de 'wezterm imgcat', que entonces falla y
+# deja sus respuestas sueltas en la linea de comandos
 if [ -z "$NVIM" ]; then
-  _wf_welcome
+  autoload -Uz add-zsh-hook
+  _wf_welcome_once() {
+    add-zsh-hook -d precmd _wf_welcome_once
+    _wf_welcome
+  }
+  add-zsh-hook precmd _wf_welcome_once
 fi
 
 # -------------------------------------------------------------------
