@@ -115,8 +115,17 @@ _wf_welcome() {
   echo
 }
 
+# Se difiere al primer prompt en vez de correrla aqui: durante el sourcing
+# del .zshrc, Powerlevel10k todavia se esta inicializando y sus consultas a
+# la terminal se cruzan con las de 'wezterm imgcat', que entonces falla y
+# deja sus respuestas sueltas en la linea de comandos
 if [ -z "$NVIM" ]; then
-  _wf_welcome
+  autoload -Uz add-zsh-hook
+  _wf_welcome_once() {
+    add-zsh-hook -d precmd _wf_welcome_once
+    _wf_welcome
+  }
+  add-zsh-hook precmd _wf_welcome_once
 fi
 
 # -------------------------------------------------------------------
@@ -151,15 +160,25 @@ opwl() {
 # -------------------------------------------------------------------
 # Helper: selector de tema con fzf
 # -------------------------------------------------------------------
+# Temas disponibles segun el perfil de la maquina, que fija install.sh
+# exportando WORKFLOW_PROFILE en el .zshrc
+_themes() {
+  case "$WORKFLOW_PROFILE" in
+  light)
+    print -l catppuccin-mocha catppuccin-macchiato catppuccin-frappe catppuccin-latte dracula
+    ;;
+  dark)
+    print -l gruvbox onedark carbonfox onedark_dark
+    ;;
+  *)
+    print -l catppuccin-mocha catppuccin-macchiato catppuccin-frappe catppuccin-latte \
+      dracula onedark onedark_dark carbonfox gruvbox
+    ;;
+  esac
+}
+
 _nvtheme() {
-  printf '%s\n' \
-    "catppuccin-mocha" \
-    "catppuccin-macchiato" \
-    "catppuccin-frappe" \
-    "catppuccin-latte" \
-    "carbonfox" \
-    "dracula" \
-    "gruvbox" | fzf \
+  _themes | fzf \
     --prompt=" Theme > " \
     --height=35% \
     --layout=reverse \
@@ -218,6 +237,8 @@ _wezscheme() {
   catppuccin-macchiato) echo "Catppuccin Macchiato" ;;
   catppuccin-frappe) echo "Catppuccin Frappe" ;;
   catppuccin-latte) echo "Catppuccin Latte" ;;
+  onedark) echo "OneDark (base16)" ;;
+  onedark_dark) echo "One Half Black (Gogh)" ;;
   carbonfox) echo "carbonfox" ;;
   dracula) echo "Dracula" ;;
   gruvbox) echo "GruvboxDark" ;;

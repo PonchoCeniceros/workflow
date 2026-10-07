@@ -32,6 +32,7 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
   - [OpenCode TUI](#opencode-tui)
   - [Manejo de .CSV](#manejo-de-csv)
   - [Temas Disponibles](#temas-disponibles)
+    - [Plugins instalados](#plugins-instalados)
   - [Mantenimiento](#mantenimiento)
 - [WezTerm](#wezterm)
 - [SSH](#ssh)
@@ -49,10 +50,20 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
 # Clonar el repositorio
 git clone https://github.com/PonchoCeniceros/workflow.git
 
-# Ejecutar el instalador
-cd workflow && ./install.sh
+# Ejecutar el instalador indicando el perfil de la máquina
+cd workflow && ./install.sh --dark
 source ~/.zshrc
 ```
+
+El perfil define qué temas quedan disponibles en esa máquina:
+
+| Bandera | Temas disponibles |
+|---------|-------------------|
+| `--dark` | `gruvbox`, `onedark`, `carbonfox`, `onedark_dark` |
+| `--light` | variantes de `catppuccin`, `dracula` |
+| *(sin bandera)* | todos |
+
+Se guarda como `export WORKFLOW_PROFILE` en el `.zshrc`, que no está versionado, así que cada equipo conserva el suyo. Reinstalar con la otra bandera reemplaza el valor en vez de duplicarlo.
 
 El instalador crea los symlinks, configura `.zshrc` automáticamente e instala **Powerlevel10k** (vía Homebrew) como theme de oh-my-zsh, incluyendo el symlink de `ai/zsh/p10k.zsh` -> `~/.p10k.zsh`. Para personalizar la apariencia del prompt corre `p10k configure`.
 
@@ -287,17 +298,53 @@ nvim
 
 El tema lo fija el comando `theme` y queda guardado en `ide/.theme`, así que `nv`, `nvp` y `nvd` lo heredan sin preguntar. Para casos puntuales en que quieras otro tema solo para ese Neovim, pásales `-t` y aparece el selector de `fzf`.
 
+Los temas que ofrece el selector dependen del perfil de la máquina (`WORKFLOW_PROFILE`, ver [Instalación](#instalación)).
+
+**Perfil `light`**
+
 | Tema | Descripción |
 |------|-------------|
 | `catppuccin-mocha` | Acogedor y visualmente cohesivo, ideal para largas sesiones |
 | `catppuccin-macchiato` | Como mocha pero un punto más claro y menos saturado |
 | `catppuccin-frappe` | El intermedio de la familia, contraste suave |
 | `catppuccin-latte` | La variante clara de la familia |
-| `carbonfox` | Serio y profesional, alto rendimiento visual |
 | `dracula` | Clásico oscuro con toques de púrpura |
-| `gruvbox` | Retro y cálido, tonos terrosos con contraste ajustado |
 
-`catppuccin` a secas sigue funcionando como alias de `catppuccin-mocha`.
+**Perfil `dark`**
+
+| Tema | Descripción |
+|------|-------------|
+| `gruvbox` | Retro y cálido, tonos terrosos con contraste ajustado |
+| `onedark` | El One Dark clásico de Atom, fondo `#282c34` |
+| `carbonfox` | Serio y profesional, alto rendimiento visual |
+| `onedark_dark` | Fondo negro puro `#000000`, el de mayor contraste |
+
+`catppuccin` a secas sigue funcionando como alias de `catppuccin-mocha`. Los temas fuera del perfil activo no salen en el selector, pero siguen funcionando si los escribes directo (`theme catppuccin-latte`); el perfil filtra el menú, no valida.
+
+### Plugins instalados
+
+Los cinco plugins se instalan en **ambas** máquinas, porque el repo es el mismo: lo único que cambia por perfil es qué ofrece el selector.
+
+| Plugin | Temas que aporta |
+|--------|------------------|
+| [`catppuccin/nvim`](https://github.com/catppuccin/nvim) | `catppuccin-mocha`, `catppuccin-macchiato`, `catppuccin-frappe`, `catppuccin-latte` |
+| [`olimorris/onedarkpro.nvim`](https://github.com/olimorris/onedarkpro.nvim) | `onedark`, `onedark_dark` |
+| [`EdenEast/nightfox.nvim`](https://github.com/EdenEast/nightfox.nvim) | `carbonfox` |
+| [`ellisonleao/gruvbox.nvim`](https://github.com/ellisonleao/gruvbox.nvim) | `gruvbox` |
+| [`Mofiqul/dracula.nvim`](https://github.com/Mofiqul/dracula.nvim) | `dracula` |
+
+Cada tema de Neovim se traduce a un esquema de WezTerm, para que la terminal y el editor vayan a juego:
+
+| Tema | Esquema de WezTerm | Fondo |
+|------|--------------------|-------|
+| `catppuccin-mocha` / `-macchiato` / `-frappe` / `-latte` | `Catppuccin Mocha` / `Macchiato` / `Frappe` / `Latte` | — |
+| `onedark` | `OneDark (base16)` | `#282c34` |
+| `onedark_dark` | `One Half Black (Gogh)` | `#000000` |
+| `carbonfox` | `carbonfox` | `#161616` |
+| `gruvbox` | `GruvboxDark` | `#282828` |
+| `dracula` | `Dracula` | — |
+
+`onedarkpro` también trae `onedark_vivid`, `onelight` y `vaporwave`, que no están mapeados: no salen en el selector y los comandos los rechazan, aunque siguen alcanzables con `:colorscheme` dentro de Neovim.
 
 También puedes forzar un tema manualmente con la variable de entorno:
 
