@@ -84,6 +84,28 @@ return {
     },
   },
   --
+  -- tema onedark
+  --
+  {
+    "olimorris/onedarkpro.nvim",
+    name = "onedarkpro",
+    priority = 1000,
+    opts = {
+      options = {
+        transparency = false,
+        terminal_colors = true,
+        bold = true,
+        italic = true,
+      },
+      styles = {
+        comments = "italic",
+        keywords = "italic",
+        functions = "bold",
+        types = "italic",
+      },
+    },
+  },
+  --
   -- tema gruvbox
   --
   {
@@ -139,6 +161,8 @@ return {
         or chosen_colorscheme == "catppuccin-macchiato"
         or chosen_colorscheme == "catppuccin-frappe"
       then
+        return { colorscheme = chosen_colorscheme }
+      elseif chosen_colorscheme == "onedark" or chosen_colorscheme == "onedark_dark" then
         return { colorscheme = chosen_colorscheme }
       elseif chosen_colorscheme == "carbonfox" then
         return { colorscheme = "carbonfox" }

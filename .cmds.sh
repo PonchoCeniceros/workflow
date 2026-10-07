@@ -151,15 +151,25 @@ opwl() {
 # -------------------------------------------------------------------
 # Helper: selector de tema con fzf
 # -------------------------------------------------------------------
+# Temas disponibles segun el perfil de la maquina, que fija install.sh
+# exportando WORKFLOW_PROFILE en el .zshrc
+_themes() {
+  case "$WORKFLOW_PROFILE" in
+  light)
+    print -l catppuccin-mocha catppuccin-macchiato catppuccin-frappe catppuccin-latte dracula
+    ;;
+  dark)
+    print -l gruvbox onedark carbonfox onedark_dark
+    ;;
+  *)
+    print -l catppuccin-mocha catppuccin-macchiato catppuccin-frappe catppuccin-latte \
+      dracula onedark onedark_dark carbonfox gruvbox
+    ;;
+  esac
+}
+
 _nvtheme() {
-  printf '%s\n' \
-    "catppuccin-mocha" \
-    "catppuccin-macchiato" \
-    "catppuccin-frappe" \
-    "catppuccin-latte" \
-    "carbonfox" \
-    "dracula" \
-    "gruvbox" | fzf \
+  _themes | fzf \
     --prompt=" Theme > " \
     --height=35% \
     --layout=reverse \
@@ -218,6 +228,8 @@ _wezscheme() {
   catppuccin-macchiato) echo "Catppuccin Macchiato" ;;
   catppuccin-frappe) echo "Catppuccin Frappe" ;;
   catppuccin-latte) echo "Catppuccin Latte" ;;
+  onedark) echo "OneDark (base16)" ;;
+  onedark_dark) echo "One Half Black (Gogh)" ;;
   carbonfox) echo "carbonfox" ;;
   dracula) echo "Dracula" ;;
   gruvbox) echo "GruvboxDark" ;;

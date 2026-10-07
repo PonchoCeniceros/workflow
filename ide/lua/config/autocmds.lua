@@ -26,6 +26,8 @@ local function set_wezterm_theme()
     ["catppuccin-macchiato"] = "Catppuccin Macchiato",
     ["catppuccin-frappe"] = "Catppuccin Frappe",
     ["catppuccin-latte"] = "Catppuccin Latte",
+    ["onedark"] = "OneDark (base16)",
+    ["onedark_dark"] = "One Half Black (Gogh)",
     ["nightfox"] = "carbonfox",
     ["dracula"] = "Dracula",
     ["gruvbox"] = "Gruvbox dark, pale (base16)",
