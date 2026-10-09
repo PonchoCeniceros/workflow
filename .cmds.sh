@@ -119,11 +119,13 @@ _wf_welcome() {
 # del .zshrc, Powerlevel10k todavia se esta inicializando y sus consultas a
 # la terminal se cruzan con las de 'wezterm imgcat', que entonces falla y
 # deja sus respuestas sueltas en la linea de comandos
-# WORKFLOW_BANNER=0 la desactiva; lo fija install.sh con --no-banner
-if [ -z "$NVIM" ] && [ "$WORKFLOW_BANNER" != "0" ]; then
+if [ -z "$NVIM" ]; then
   autoload -Uz add-zsh-hook
   _wf_welcome_once() {
     add-zsh-hook -d precmd _wf_welcome_once
+    # se consulta aqui y no al registrar el hook: install.sh agrega el export
+    # al final del .zshrc, despues de la linea que lee este archivo
+    [ "$WORKFLOW_BANNER" = "0" ] && return
     _wf_welcome
   }
   add-zsh-hook precmd _wf_welcome_once
