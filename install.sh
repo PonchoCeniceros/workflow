@@ -25,14 +25,20 @@ err() { echo -e "\033[1;31m[✕]\033[0m $1" >&2; }
 # El perfil define que temas quedan disponibles en esta maquina:
 #   --light -> variantes de catppuccin + dracula
 #   --dark  -> variantes de onedark + carbonfox + gruvbox
+#
+# --no-banner oculta la bienvenida con el avatar al abrir la terminal,
+# y --banner la vuelve a mostrar
 PROFILE=""
+BANNER=""
 for arg in "$@"; do
   case "$arg" in
   --light) PROFILE="light" ;;
   --dark) PROFILE="dark" ;;
+  --no-banner) BANNER="0" ;;
+  --banner) BANNER="1" ;;
   *)
     err "Opción desconocida: $arg"
-    echo "Uso: ./install.sh [--light | --dark]" >&2
+    echo "Uso: ./install.sh [--light | --dark] [--banner | --no-banner]" >&2
     exit 1
     ;;
   esac
@@ -133,23 +139,40 @@ append_if_missing 'WezTerm.app/Contents/MacOS' 'export PATH="/Applications/WezTe
 append_if_missing 'AI_DEFAULT_TOOL=' 'export AI_DEFAULT_TOOL=opencode'
 append_if_missing 'workflow/.cmds.sh' '[ -f "$HOME/workflow/.cmds.sh" ] && source "$HOME/workflow/.cmds.sh"'
 
-msg "Configurando perfil de la máquina..."
-
-# no se usa append_if_missing porque al reinstalar con la otra bandera
+# no se usa append_if_missing porque al reinstalar con otra bandera
 # hay que reemplazar el valor, no saltarlo
-if [[ -n "$PROFILE" ]]; then
-  if grep -q '^export WORKFLOW_PROFILE=' "$ZSHRC" 2>/dev/null; then
-    sed -i '' "s/^export WORKFLOW_PROFILE=.*/export WORKFLOW_PROFILE=$PROFILE/" "$ZSHRC"
-    ok "WORKFLOW_PROFILE actualizado a: $PROFILE"
+set_zshrc_var() {
+  local name="$1"
+  local value="$2"
+
+  if grep -q "^export $name=" "$ZSHRC" 2>/dev/null; then
+    sed -i '' "s/^export $name=.*/export $name=$value/" "$ZSHRC"
+    ok "$name actualizado a: $value"
   else
     echo "" >>"$ZSHRC"
-    echo "export WORKFLOW_PROFILE=$PROFILE" >>"$ZSHRC"
-    ok "agregado: WORKFLOW_PROFILE=$PROFILE"
+    echo "export $name=$value" >>"$ZSHRC"
+    ok "agregado: $name=$value"
   fi
+}
+
+msg "Configurando perfil de la máquina..."
+
+if [[ -n "$PROFILE" ]]; then
+  set_zshrc_var WORKFLOW_PROFILE "$PROFILE"
 elif grep -q '^export WORKFLOW_PROFILE=' "$ZSHRC" 2>/dev/null; then
   skip "WORKFLOW_PROFILE ya definido: $(sed -n 's/^export WORKFLOW_PROFILE=//p' "$ZSHRC" | head -1)"
 else
   skip "sin --light ni --dark: quedan disponibles todos los temas"
+fi
+
+msg "Configurando bienvenida..."
+
+if [[ -n "$BANNER" ]]; then
+  set_zshrc_var WORKFLOW_BANNER "$BANNER"
+elif grep -q '^export WORKFLOW_BANNER=' "$ZSHRC" 2>/dev/null; then
+  skip "WORKFLOW_BANNER ya definido: $(sed -n 's/^export WORKFLOW_BANNER=//p' "$ZSHRC" | head -1)"
+else
+  skip "sin --no-banner: la bienvenida se muestra"
 fi
 
 msg "Configurando Powerlevel10k en .zshrc..."

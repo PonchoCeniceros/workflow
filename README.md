@@ -24,6 +24,7 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
 - [Documentación](#documentación)
 - [Requisitos](#requisitos)
 - [Instalación](#instalación)
+  - [Bienvenida](#bienvenida)
 - [Comandos](#comandos)
 - [IDE](#ide)
   - [Cheatsheet](#cheatsheet)
@@ -64,6 +65,17 @@ El perfil define qué temas quedan disponibles en esa máquina:
 | *(sin bandera)* | todos |
 
 Se guarda como `export WORKFLOW_PROFILE` en el `.zshrc`, que no está versionado, así que cada equipo conserva el suyo. Reinstalar con la otra bandera reemplaza el valor en vez de duplicarlo.
+
+## Bienvenida
+
+Al abrir una terminal se muestra un banner con el avatar y los datos del equipo. Para ocultarlo:
+
+```bash
+./install.sh --no-banner    # ocultarlo
+./install.sh --banner       # volver a mostrarlo
+```
+
+Se guarda como `export WORKFLOW_BANNER` en el `.zshrc`. También puedes saltarlo solo en una sesión con `WORKFLOW_BANNER=0`, o imprimirlo a mano cuando quieras con `_wf_welcome`.
 
 El instalador crea los symlinks, configura `.zshrc` automáticamente e instala **Powerlevel10k** (vía Homebrew) como theme de oh-my-zsh, incluyendo el symlink de `ai/zsh/p10k.zsh` -> `~/.p10k.zsh`. Para personalizar la apariencia del prompt corre `p10k configure`.
 
