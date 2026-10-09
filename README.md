@@ -308,7 +308,7 @@ nvim
 
 ## Temas Disponibles
 
-El tema lo fija el comando `theme` y queda guardado en `ide/.theme`, así que `nv`, `nvp` y `nvd` lo heredan sin preguntar. Para casos puntuales en que quieras otro tema solo para ese Neovim, pásales `-t` y aparece el selector de `fzf`.
+El tema es **por ventana**: `theme` lo cambia solo en la ventana donde lo corres, y `nv`, `nvp` y `nvd` abren Neovim con el tema de esa ventana, así que la terminal y el editor siempre van a juego. Una ventana recién abierta usa el default de WezTerm (el que fija `wtheme`). Para casos puntuales en que quieras otro tema solo para ese Neovim, pásales `-t` y aparece el selector de `fzf`.
 
 Los temas que ofrece el selector dependen del perfil de la máquina (`WORKFLOW_PROFILE`, ver [Instalación](#instalación)).
 
@@ -368,7 +368,7 @@ NVIM_THEME=dracula nvim
 NVIM_THEME=gruvbox nvim
 ```
 
-Usa el comando `theme` para un cambio rápido de **la ventana actual de WezTerm y OpenCode** (actualiza `ide/.theme` y el tema de `tui.json`, y manda la variable de usuario `THEME` a WezTerm, que solo afecta a esa ventana; no funciona dentro de tmux sin passthrough):
+Usa el comando `theme` para un cambio rápido de **la ventana actual de WezTerm y OpenCode** (manda la variable de usuario `THEME` a WezTerm, que solo afecta a esa ventana — no funciona dentro de tmux sin passthrough —, actualiza el tema de `tui.json` y exporta `WORKFLOW_THEME` para que `nv`, `nvp` y `nvd` abran Neovim en el mismo tema):
 
 ```bash
 # selector con fzf

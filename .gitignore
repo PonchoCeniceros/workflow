@@ -12,5 +12,3 @@ ai/opencode/tui.json
 # proyectos para probar el debugger
 debug/*
 
-# tema actual de la terminal (lo escribe el comando theme)
-ide/.theme

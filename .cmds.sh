@@ -166,7 +166,7 @@ opwl() {
 # Temas disponibles segun el perfil de la maquina, que fija install.sh
 # exportando WORKFLOW_PROFILE en el .zshrc
 _themes() {
-  case "$WORKFLOW_PROFILE" in
+  case "${1:-$WORKFLOW_PROFILE}" in
   light)
     print -l catppuccin-mocha catppuccin-macchiato catppuccin-frappe catppuccin-latte dracula
     ;;
@@ -205,18 +205,34 @@ _nvdefault() {
 
 # Tema para abrir nvim: por defecto el que dejo 'theme', o uno elegido
 # con fzf si se paso -t. Devuelve 1 si se cancelo el selector.
-_nvtheme_for() {
-  if [[ "$1" == "-t" || "$1" == "--theme" ]]; then
-    local picked
-    picked=$(_nvtheme)
-    [[ -z "$picked" ]] && return 1
-    _octheme "$picked"
-    print -r -- "$picked"
-  else
-    local theme_file="$HOME/workflow/ide/.theme"
-    [[ -f "$theme_file" ]] && head -1 "$theme_file"
-    return 0
+# El tema de esta ventana: el que haya fijado 'theme' en esta shell, o si no,
+# el default de WezTerm con el que se abrio, traducido de vuelta a su nombre
+_curtheme() {
+  if [[ -n "$WORKFLOW_THEME" ]]; then
+    print -r -- "$WORKFLOW_THEME"
+    return
   fi
+
+  local scheme t
+  scheme=$(sed -n 's/^config\.color_scheme = "\(.*\)"/\1/p' "$HOME/workflow/.wezterm.lua" | head -1)
+  [[ -z "$scheme" ]] && return
+
+  for t in ${(f)"$(_themes all)"}; do
+    if [[ "$(_wezscheme "$t")" == "$scheme" ]]; then
+      print -r -- "$t"
+      return
+    fi
+  done
+}
+
+# Selector de tema que ademas lo aplica a la ventana, para que la terminal y
+# el Neovim que se abra enseguida queden en el mismo. No puede devolverlo por
+# stdout: 'theme' exporta WORKFLOW_THEME y eso se perderia en la subshell
+_nvtheme_apply() {
+  local picked
+  picked=$(_nvtheme)
+  [[ -z "$picked" ]] && return 1
+  theme "$picked"
 }
 
 # -------------------------------------------------------------------
@@ -228,10 +244,11 @@ _nvtheme_for() {
 #   'nv -t [arch]' -> selector de tema antes de abrir.
 # -------------------------------------------------------------------
 nv() {
-  local theme
-  theme=$(_nvtheme_for "$1") || return
-  [[ "$1" == "-t" || "$1" == "--theme" ]] && shift
-  NVIM_THEME="$theme" nvim "$@"
+  if [[ "$1" == "-t" || "$1" == "--theme" ]]; then
+    shift
+    _nvtheme_apply || return
+  fi
+  NVIM_THEME="$(_curtheme)" nvim "$@"
 }
 
 _wezscheme() {
@@ -250,8 +267,9 @@ _wezscheme() {
 }
 
 # -------------------------------------------------------------------
-# Cambia el tema de la ventana actual de WezTerm + OpenCode al vuelo
-# (no toca el default de LazyVim ni el de WezTerm)
+# Cambia el tema de la ventana actual: WezTerm, OpenCode y el Neovim que
+# se abra desde aqui con nv/nvp/nvd
+# (no toca el default de LazyVim ni el de WezTerm, ni las demas ventanas)
 #
 # Uso:
 #   'theme'        -> selector de tema.
@@ -262,7 +280,6 @@ theme() {
   [[ -z "$theme" ]] && theme=$(_nvtheme)
   [[ -z "$theme" ]] && return
 
-  local repo="$HOME/workflow"
   local wezterm_scheme
   wezterm_scheme=$(_wezscheme "$theme") || {
     echo "Tema desconocido: $theme"
@@ -270,7 +287,9 @@ theme() {
   }
   [[ "$theme" == "catppuccin" ]] && theme="catppuccin-mocha"
 
-  echo "$theme" >"$repo/ide/.theme"
+  # se exporta en vez de escribirse a un archivo: el tema es de esta ventana,
+  # asi nv/nvp/nvd la siguen sin afectar lo que abran las demas
+  export WORKFLOW_THEME="$theme"
   printf '\033]1337;SetUserVar=THEME=%s\007' "$(printf '%s' "$wezterm_scheme" | base64)"
   _octheme "$theme"
 }
@@ -336,10 +355,14 @@ _nvproject() {
     --header="Projects")
   [[ -z "$selected" ]] && return
 
-  local theme
-  theme=$(_nvtheme_for "$flag") || return
+  if [[ "$flag" == "-t" || "$flag" == "--theme" ]]; then
+    _nvtheme_apply || return
+  fi
 
   cd "$project_dir/$selected"
+
+  local theme
+  theme="$(_curtheme)"
 
   if [[ -f "README.md" ]]; then
     NVIM_THEME="$theme" nvim "README.md"
