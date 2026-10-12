@@ -51,20 +51,10 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
 # Clonar el repositorio
 git clone https://github.com/PonchoCeniceros/workflow.git
 
-# Ejecutar el instalador indicando el perfil de la máquina
-cd workflow && ./install.sh --dark
+# Ejecutar el instalador
+cd workflow && ./install.sh
 source ~/.zshrc
 ```
-
-El perfil define qué temas quedan disponibles en esa máquina:
-
-| Bandera | Temas disponibles |
-|---------|-------------------|
-| `--dark` | `gruvbox`, `onedark`, `carbonfox`, `onedark_dark` |
-| `--light` | variantes de `catppuccin`, `dracula` |
-| *(sin bandera)* | todos |
-
-Se guarda como `export WORKFLOW_PROFILE` en el `.zshrc`, que no está versionado, así que cada equipo conserva el suyo. Reinstalar con la otra bandera reemplaza el valor en vez de duplicarlo.
 
 ## Bienvenida
 
@@ -310,37 +300,30 @@ nvim
 
 El tema es **por ventana**: `theme` lo cambia solo en la ventana donde lo corres, y `nv`, `nvp` y `nvd` abren Neovim con el tema de esa ventana, así que la terminal y el editor siempre van a juego. Una ventana recién abierta usa el default de WezTerm (el que fija `wtheme`). Para casos puntuales en que quieras otro tema solo para ese Neovim, pásales `-t` y aparece el selector de `fzf`.
 
-Los temas que ofrece el selector dependen del perfil de la máquina (`WORKFLOW_PROFILE`, ver [Instalación](#instalación)).
+El selector muestra nombres cortos, ordenados del fondo más claro al más oscuro:
 
-**Perfil `light`**
+| Nombre | Colorscheme | Fondo | Descripción |
+|--------|-------------|-------|-------------|
+| `dawn` | `rose-pine-dawn` | `#faf4ed` | El único claro: beige cálido |
+| `frappe` | `catppuccin-frappe` | `#303446` | El más claro de los oscuros, contraste suave |
+| `macchiato` | `catppuccin-macchiato` | `#24273a` | Intermedio de la familia catppuccin |
+| `moon` | `rose-pine-moon` | `#232136` | Morado nocturno, un punto más claro que `pine` |
+| `dracula` | `dracula` | `#1e1f29` | Clásico oscuro con toques de púrpura |
+| `mocha` | `catppuccin-mocha` | `#1e1e2e` | El catppuccin más oscuro y el más popular |
+| `pine` | `rose-pine` | `#191724` | Morado nocturno de bajo contraste |
+| `carbon` | `carbonfox` | `#161616` | Gris neutro, el más oscuro |
 
-| Tema | Descripción |
-|------|-------------|
-| `catppuccin-mocha` | Acogedor y visualmente cohesivo, ideal para largas sesiones |
-| `catppuccin-macchiato` | Como mocha pero un punto más claro y menos saturado |
-| `catppuccin-frappe` | El intermedio de la familia, contraste suave |
-| `catppuccin-latte` | La variante clara de la familia |
-| `dracula` | Clásico oscuro con toques de púrpura |
-
-**Perfil `dark`**
-
-| Tema | Descripción |
-|------|-------------|
-| `gruvbox` | Retro y cálido, tonos terrosos con contraste ajustado |
-| `onedark` | El One Dark clásico de Atom, fondo `#282c34` |
-| `carbonfox` | Serio y profesional, alto rendimiento visual |
-| `onedark_dark` | Fondo negro puro `#000000`, el de mayor contraste |
-
-`catppuccin` a secas sigue funcionando como alias de `catppuccin-mocha`. Los temas fuera del perfil activo no salen en el selector, pero siguen funcionando si los escribes directo (`theme catppuccin-latte`); el perfil filtra el menú, no valida.
+Los nombres cortos son solo la interfaz: internamente se traducen al colorscheme real. También puedes escribir el nombre completo (`theme catppuccin-mocha`) o usar colorschemes que no están en la lista pero sí instalados, como `gruvbox` o `catppuccin-latte`.
 
 ### Plugins instalados
 
-Los cinco plugins se instalan en **ambas** máquinas, porque el repo es el mismo: lo único que cambia por perfil es qué ofrece el selector.
+Los temas del selector salen de estos plugins. Algunos aportan colorschemes que no están en la lista, pero siguen disponibles si los escribes directo.
 
 | Plugin | Temas que aporta |
 |--------|------------------|
 | [`catppuccin/nvim`](https://github.com/catppuccin/nvim) | `catppuccin-mocha`, `catppuccin-macchiato`, `catppuccin-frappe`, `catppuccin-latte` |
 | [`olimorris/onedarkpro.nvim`](https://github.com/olimorris/onedarkpro.nvim) | `onedark`, `onedark_dark` |
+| [`rose-pine/neovim`](https://github.com/rose-pine/neovim) | `rose-pine`, `rose-pine-moon`, `rose-pine-dawn` |
 | [`EdenEast/nightfox.nvim`](https://github.com/EdenEast/nightfox.nvim) | `carbonfox` |
 | [`ellisonleao/gruvbox.nvim`](https://github.com/ellisonleao/gruvbox.nvim) | `gruvbox` |
 | [`Mofiqul/dracula.nvim`](https://github.com/Mofiqul/dracula.nvim) | `dracula` |
@@ -355,6 +338,7 @@ Cada tema de Neovim se traduce a un esquema de WezTerm, para que la terminal y e
 | `carbonfox` | `carbonfox` | `#161616` |
 | `gruvbox` | `GruvboxDark` | `#282828` |
 | `dracula` | `Dracula` | — |
+| `rose-pine` / `-moon` / `-dawn` | mismo nombre en WezTerm | `#191724` / `#232136` / `#faf4ed` |
 
 `onedarkpro` también trae `onedark_vivid`, `onelight` y `vaporwave`, que no están mapeados: no salen en el selector y los comandos los rechazan, aunque siguen alcanzables con `:colorscheme` dentro de Neovim.
 
@@ -375,8 +359,8 @@ Usa el comando `theme` para un cambio rápido de **la ventana actual de WezTerm 
 theme
 
 # cambiar directamente
-theme catppuccin-latte
-theme carbonfox
+theme dawn
+theme carbon
 ```
 
 Usa `wtheme` para fijar el **tema por defecto de WezTerm**, que es el que usan las ventanas nuevas y las que no han cambiado de tema con `theme` (reescribe `config.color_scheme` en `.wezterm.lua`):
@@ -396,7 +380,7 @@ Usa `dtheme` para fijar el **tema por defecto de LazyVim**, que es el que se usa
 dtheme
 
 # fijar directamente
-dtheme carbonfox
+dtheme carbon
 ```
 
 Reinicia WezTerm y Neovim para ver el cambio aplicado.

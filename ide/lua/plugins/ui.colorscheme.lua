@@ -106,6 +106,21 @@ return {
     },
   },
   --
+  -- tema rose-pine
+  --
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    priority = 1000,
+    opts = {
+      styles = {
+        bold = true,
+        italic = true,
+        transparency = false,
+      },
+    },
+  },
+  --
   -- tema gruvbox
   --
   {
@@ -163,6 +178,11 @@ return {
       then
         return { colorscheme = chosen_colorscheme }
       elseif chosen_colorscheme == "onedark" or chosen_colorscheme == "onedark_dark" then
+        return { colorscheme = chosen_colorscheme }
+      elseif chosen_colorscheme == "rose-pine-dawn" then
+        vim.o.background = "light"
+        return { colorscheme = "rose-pine-dawn" }
+      elseif chosen_colorscheme == "rose-pine" or chosen_colorscheme == "rose-pine-moon" then
         return { colorscheme = chosen_colorscheme }
       elseif chosen_colorscheme == "carbonfox" then
         return { colorscheme = "carbonfox" }
