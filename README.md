@@ -1,5 +1,5 @@
 <h1 align="left">
-  <img src="https://github.com/PonchoCeniceros/workflow/blob/main/.assets/profiles/blobatar_ponchoceniceros_round.png" width="90" align="absmiddle">
+  <img src=".assets/profiles/blobatar_ponchoceniceros_round.png" width="90" align="absmiddle">
   &nbsp;
   Workflow
 </h1>
