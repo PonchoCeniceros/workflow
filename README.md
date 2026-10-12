@@ -44,6 +44,7 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
 
 - `nvim`
 - `git`
+- `fzf` — lo usan los selectores de tema, proyecto y servidor
 - `oh-my-zsh`
 - `OpenCode.ai` y `WezTerm` (opcional)
 

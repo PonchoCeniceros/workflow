@@ -202,6 +202,9 @@ _nvtheme() {
 # OpenCode nombra sus temas distinto y no tiene todas las variantes:
 # rose-pine es uno solo y catppuccin a secas es el mocha
 _octheme() {
+  # OpenCode es opcional y su tui.json no esta versionado
+  [ -f ~/.config/opencode/tui.json ] || return 0
+
   local oc
   case "$1" in
   catppuccin-frappe) oc="catppuccin-frappe" ;;

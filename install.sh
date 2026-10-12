@@ -39,7 +39,7 @@ done
 
 msg "Verificando dependencias..."
 
-deps=("nvim" "git")
+deps=("nvim" "git" "fzf")
 for dep in "${deps[@]}"; do
   if command -v "$dep" &>/dev/null; then
     ok "$dep"
