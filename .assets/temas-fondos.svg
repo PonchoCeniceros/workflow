@@ -1,27 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="826" height="212" viewBox="0 0 826 212">
+<svg xmlns="http://www.w3.org/2000/svg" width="826" height="300" viewBox="0 0 826 300">
 <text x="0" y="12" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">Fondos</text>
-<rect x="0" y="26" width="196" height="40" rx="6" fill="#faf4ed" stroke="#6e7681" stroke-opacity="0.45"/>
-<text x="0" y="82" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">dawn</text>
-<text x="0" y="96" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#faf4ed</text>
-<rect x="210" y="26" width="196" height="40" rx="6" fill="#303446" stroke="#6e7681" stroke-opacity="0.45"/>
-<text x="210" y="82" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">frappe</text>
-<text x="210" y="96" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#303446</text>
-<rect x="420" y="26" width="196" height="40" rx="6" fill="#24273a" stroke="#6e7681" stroke-opacity="0.45"/>
-<text x="420" y="82" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">macchiato</text>
-<text x="420" y="96" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#24273a</text>
-<rect x="630" y="26" width="196" height="40" rx="6" fill="#232136" stroke="#6e7681" stroke-opacity="0.45"/>
-<text x="630" y="82" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">moon</text>
-<text x="630" y="96" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#232136</text>
-<rect x="0" y="114" width="196" height="40" rx="6" fill="#1e1f29" stroke="#6e7681" stroke-opacity="0.45"/>
-<text x="0" y="170" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">dracula</text>
-<text x="0" y="184" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#1e1f29</text>
-<rect x="210" y="114" width="196" height="40" rx="6" fill="#1e1e2e" stroke="#6e7681" stroke-opacity="0.45"/>
-<text x="210" y="170" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">mocha</text>
-<text x="210" y="184" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#1e1e2e</text>
-<rect x="420" y="114" width="196" height="40" rx="6" fill="#191724" stroke="#6e7681" stroke-opacity="0.45"/>
-<text x="420" y="170" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">pine</text>
-<text x="420" y="184" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#191724</text>
-<rect x="630" y="114" width="196" height="40" rx="6" fill="#161616" stroke="#6e7681" stroke-opacity="0.45"/>
-<text x="630" y="170" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">carbon</text>
-<text x="630" y="184" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#161616</text>
+<rect x="0" y="26" width="196" height="40" rx="6" fill="#515683" stroke="#6e7681" stroke-opacity="0.45"/>
+<text x="0" y="82" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">base</text>
+<text x="0" y="96" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#515683</text>
+<rect x="210" y="26" width="196" height="40" rx="6" fill="#faf4ed" stroke="#6e7681" stroke-opacity="0.45"/>
+<text x="210" y="82" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">dawn</text>
+<text x="210" y="96" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#faf4ed</text>
+<rect x="420" y="26" width="196" height="40" rx="6" fill="#303446" stroke="#6e7681" stroke-opacity="0.45"/>
+<text x="420" y="82" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">frappe</text>
+<text x="420" y="96" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#303446</text>
+<rect x="630" y="26" width="196" height="40" rx="6" fill="#24273a" stroke="#6e7681" stroke-opacity="0.45"/>
+<text x="630" y="82" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">macchiato</text>
+<text x="630" y="96" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#24273a</text>
+<rect x="0" y="114" width="196" height="40" rx="6" fill="#232136" stroke="#6e7681" stroke-opacity="0.45"/>
+<text x="0" y="170" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">moon</text>
+<text x="0" y="184" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#232136</text>
+<rect x="210" y="114" width="196" height="40" rx="6" fill="#1e1f29" stroke="#6e7681" stroke-opacity="0.45"/>
+<text x="210" y="170" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">dracula</text>
+<text x="210" y="184" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#1e1f29</text>
+<rect x="420" y="114" width="196" height="40" rx="6" fill="#1e1e2e" stroke="#6e7681" stroke-opacity="0.45"/>
+<text x="420" y="170" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">mocha</text>
+<text x="420" y="184" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#1e1e2e</text>
+<rect x="630" y="114" width="196" height="40" rx="6" fill="#191724" stroke="#6e7681" stroke-opacity="0.45"/>
+<text x="630" y="170" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">pine</text>
+<text x="630" y="184" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#191724</text>
+<rect x="0" y="202" width="196" height="40" rx="6" fill="#161616" stroke="#6e7681" stroke-opacity="0.45"/>
+<text x="0" y="258" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="13" fill="#8b949e">carbon</text>
+<text x="0" y="272" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#6e7681">#161616</text>
 </svg>

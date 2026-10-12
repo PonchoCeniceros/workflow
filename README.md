@@ -1,6 +1,8 @@
-<p align="center">
-  <img src="https://github.com/PonchoCeniceros/workflow/blob/main/.assets/logo.png">
-</p>
+<h1 align="left">
+  <img src="https://github.com/PonchoCeniceros/workflow/blob/main/.assets/profiles/blobatar_ponchoceniceros_round.png" width="90" align="absmiddle">
+  &nbsp;
+  Workflow
+</h1>
 
 ![WezTerm Badge](https://img.shields.io/badge/WezTerm-4E49EE?logo=wezterm&logoColor=fff&style=for-the-badge)
 ![GNU Bash Badge](https://img.shields.io/badge/GNU%20Bash-4EAA25?logo=gnubash&logoColor=fff&style=for-the-badge)
@@ -304,6 +306,7 @@ El selector muestra nombres cortos, ordenados del fondo más claro al más oscur
 
 | Nombre | Colorscheme | Fondo | Descripción |
 |--------|-------------|-------|-------------|
+| `base` | — | `#515683` | Color de fondo de pantalla de siempre. No es un tema seleccionable, va aquí para no perderlo |
 | `dawn` | `rose-pine-dawn` | `#faf4ed` | El único claro: beige cálido |
 | `frappe` | `catppuccin-frappe` | `#303446` | El más claro de los oscuros, contraste suave |
 | `macchiato` | `catppuccin-macchiato` | `#24273a` | Intermedio de la familia catppuccin |

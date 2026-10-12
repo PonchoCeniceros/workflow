@@ -5,7 +5,7 @@
 # -------------------------------------------------------------------
 
 _wf_dir="${${(%):-%x}:A:h}"
-_wf_avatar_img="$_wf_dir/.assets/profiles/ponchoceniceros_term.png"
+_wf_avatar_img="$_wf_dir/.assets/profiles/blobatar_term.png"
 
 # Cuantas celdas ocupa un caracter braille: depende del font fallback de la
 # terminal (JetBrains Mono no trae braille y el fallback suele ser doble ancho).
