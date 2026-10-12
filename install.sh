@@ -22,23 +22,16 @@ skip() { echo -e "\033[1;33m[↪]\033[0m $1"; }
 ok() { echo -e "\033[1;32m[✓]\033[0m $1"; }
 err() { echo -e "\033[1;31m[✕]\033[0m $1" >&2; }
 
-# El perfil define que temas quedan disponibles en esta maquina:
-#   --light -> variantes de catppuccin + dracula
-#   --dark  -> variantes de onedark + carbonfox + gruvbox
-#
 # --no-banner oculta la bienvenida con el avatar al abrir la terminal,
 # y --banner la vuelve a mostrar
-PROFILE=""
 BANNER=""
 for arg in "$@"; do
   case "$arg" in
-  --light) PROFILE="light" ;;
-  --dark) PROFILE="dark" ;;
   --no-banner) BANNER="0" ;;
   --banner) BANNER="1" ;;
   *)
     err "Opción desconocida: $arg"
-    echo "Uso: ./install.sh [--light | --dark] [--banner | --no-banner]" >&2
+    echo "Uso: ./install.sh [--banner | --no-banner]" >&2
     exit 1
     ;;
   esac
@@ -144,16 +137,6 @@ set_zshrc_var() {
     ok "agregado: $name=$value"
   fi
 }
-
-msg "Configurando perfil de la máquina..."
-
-if [[ -n "$PROFILE" ]]; then
-  set_zshrc_var WORKFLOW_PROFILE "$PROFILE"
-elif grep -q '^export WORKFLOW_PROFILE=' "$ZSHRC" 2>/dev/null; then
-  skip "WORKFLOW_PROFILE ya definido: $(sed -n 's/^export WORKFLOW_PROFILE=//p' "$ZSHRC" | head -1)"
-else
-  skip "sin --light ni --dark: quedan disponibles todos los temas"
-fi
 
 msg "Configurando bienvenida..."
 

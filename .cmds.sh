@@ -5,7 +5,7 @@
 # -------------------------------------------------------------------
 
 _wf_dir="${${(%):-%x}:A:h}"
-_wf_avatar_img="$_wf_dir/.assets/profiles/ponchoceniceros_term.png"
+_wf_avatar_img="$_wf_dir/.assets/profiles/blobatar_term.png"
 
 # Cuantas celdas ocupa un caracter braille: depende del font fallback de la
 # terminal (JetBrains Mono no trae braille y el fallback suele ser doble ancho).
@@ -163,20 +163,29 @@ opwl() {
 # -------------------------------------------------------------------
 # Helper: selector de tema con fzf
 # -------------------------------------------------------------------
-# Temas disponibles segun el perfil de la maquina, que fija install.sh
-# exportando WORKFLOW_PROFILE en el .zshrc
+# Temas disponibles, del mas claro al mas oscuro
 _themes() {
-  case "${1:-$WORKFLOW_PROFILE}" in
-  light)
-    print -l catppuccin-mocha catppuccin-macchiato catppuccin-frappe catppuccin-latte dracula
-    ;;
-  dark)
-    print -l gruvbox onedark carbonfox onedark_dark
-    ;;
-  *)
-    print -l catppuccin-mocha catppuccin-macchiato catppuccin-frappe catppuccin-latte \
-      dracula onedark onedark_dark carbonfox gruvbox
-    ;;
+  print -l dawn frappe macchiato moon dracula mocha pine carbon
+}
+
+# Todas las llaves que _wezscheme sabe traducir, no solo las del menu:
+# el default de WezTerm puede ser cualquiera de estas
+_allkeys() {
+  print -l catppuccin-mocha catppuccin-macchiato catppuccin-frappe catppuccin-latte \
+    rose-pine rose-pine-moon rose-pine-dawn onedark onedark_dark carbonfox dracula gruvbox
+}
+
+# Traduce el nombre corto que se muestra al usuario al colorscheme real
+_themekey() {
+  case "$1" in
+  dawn) echo "rose-pine-dawn" ;;
+  frappe) echo "catppuccin-frappe" ;;
+  macchiato) echo "catppuccin-macchiato" ;;
+  moon) echo "rose-pine-moon" ;;
+  mocha) echo "catppuccin-mocha" ;;
+  pine) echo "rose-pine" ;;
+  carbon) echo "carbonfox" ;;
+  *) echo "$1" ;;
   esac
 }
 
@@ -217,7 +226,7 @@ _curtheme() {
   scheme=$(sed -n 's/^config\.color_scheme = "\(.*\)"/\1/p' "$HOME/workflow/.wezterm.lua" | head -1)
   [[ -z "$scheme" ]] && return
 
-  for t in ${(f)"$(_themes all)"}; do
+  for t in ${(f)"$(_allkeys)"}; do
     if [[ "$(_wezscheme "$t")" == "$scheme" ]]; then
       print -r -- "$t"
       return
@@ -259,6 +268,7 @@ _wezscheme() {
   catppuccin-latte) echo "Catppuccin Latte" ;;
   onedark) echo "OneDark (base16)" ;;
   onedark_dark) echo "One Half Black (Gogh)" ;;
+  rose-pine | rose-pine-moon | rose-pine-dawn) echo "$1" ;;
   carbonfox) echo "carbonfox" ;;
   dracula) echo "Dracula" ;;
   gruvbox) echo "GruvboxDark" ;;
@@ -279,6 +289,7 @@ theme() {
   local theme="$1"
   [[ -z "$theme" ]] && theme=$(_nvtheme)
   [[ -z "$theme" ]] && return
+  theme=$(_themekey "$theme")
 
   local wezterm_scheme
   wezterm_scheme=$(_wezscheme "$theme") || {
@@ -306,6 +317,7 @@ wtheme() {
   local theme="$1"
   [[ -z "$theme" ]] && theme=$(_nvtheme)
   [[ -z "$theme" ]] && return
+  theme=$(_themekey "$theme")
 
   local wezterm_scheme
   wezterm_scheme=$(_wezscheme "$theme") || {
@@ -329,6 +341,7 @@ dtheme() {
   local theme="$1"
   [[ -z "$theme" ]] && theme=$(_nvtheme)
   [[ -z "$theme" ]] && return
+  theme=$(_themekey "$theme")
 
   _wezscheme "$theme" >/dev/null || {
     echo "Tema desconocido: $theme"

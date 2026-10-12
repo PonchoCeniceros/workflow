@@ -19,6 +19,18 @@ vim.api.nvim_create_autocmd("BufRead", {
 -- Función para enviar el tema a WezTerm
 local function set_wezterm_theme()
   local theme = vim.g.colors_name
+
+  -- rose-pine usa el mismo colors_name para sus tres variantes,
+  -- asi que la real hay que sacarla de su config
+  if theme == "rose-pine" then
+    local ok, config = pcall(require, "rose-pine.config")
+    local variant = ok and config.options and config.options.variant or "auto"
+    if variant == "auto" then
+      variant = vim.o.background == "light" and "dawn" or "main"
+    end
+    theme = variant == "main" and "rose-pine" or "rose-pine-" .. variant
+  end
+
   -- Mapeo de nombres si el tema
   -- de Neovim no se llama igual en WezTerm
   local theme_map = {
