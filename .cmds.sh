@@ -199,9 +199,19 @@ _nvtheme() {
     --header="Color Theme"
 }
 
-# OpenCode no tiene las variantes de catppuccin: se queda con la familia
+# OpenCode nombra sus temas distinto y no tiene todas las variantes:
+# rose-pine es uno solo y catppuccin a secas es el mocha
 _octheme() {
-  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"${1%%-*}\"/" ~/.config/opencode/tui.json
+  local oc
+  case "$1" in
+  catppuccin-frappe) oc="catppuccin-frappe" ;;
+  catppuccin-macchiato) oc="catppuccin-macchiato" ;;
+  catppuccin*) oc="catppuccin" ;;
+  rose-pine*) oc="rosepine" ;;
+  onedark*) oc="one-dark" ;;
+  *) oc="$1" ;;
+  esac
+  sed -i "" "s/\"theme\": \".*\"/\"theme\": \"$oc\"/" ~/.config/opencode/tui.json
 }
 
 # Reescribe 'default_colorscheme' en ui.colorscheme.lua, que es de donde

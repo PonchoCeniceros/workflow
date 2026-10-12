@@ -359,7 +359,7 @@ NVIM_THEME=dracula nvim
 NVIM_THEME=gruvbox nvim
 ```
 
-Usa el comando `theme` para un cambio rápido de **la ventana actual de WezTerm y OpenCode** (manda la variable de usuario `THEME` a WezTerm, que solo afecta a esa ventana — no funciona dentro de tmux sin passthrough —, actualiza el tema de `tui.json` y exporta `WORKFLOW_THEME` para que `nv`, `nvp` y `nvd` abran Neovim en el mismo tema):
+Usa el comando `theme` para un cambio rápido de **la ventana actual de WezTerm y OpenCode** (manda la variable de usuario `THEME` a WezTerm, que solo afecta a esa ventana — no funciona dentro de tmux sin passthrough —, actualiza el tema de `tui.json` — OpenCode trae un solo `rosepine` para las tres variantes, y su `catppuccin` es el mocha — y exporta `WORKFLOW_THEME` para que `nv`, `nvp` y `nvd` abran Neovim en el mismo tema):
 
 ```bash
 # selector con fzf
