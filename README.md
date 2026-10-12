@@ -315,6 +315,10 @@ El selector muestra nombres cortos, ordenados del fondo más claro al más oscur
 
 Los nombres cortos son solo la interfaz: internamente se traducen al colorscheme real. También puedes escribir el nombre completo (`theme catppuccin-mocha`) o usar colorschemes que no están en la lista pero sí instalados, como `gruvbox` o `catppuccin-latte`.
 
+![Fondos de los temas](.assets/temas-fondos.svg)
+
+![Acentos de los temas](.assets/temas-acentos.svg)
+
 ### Plugins instalados
 
 Los temas del selector salen de estos plugins. Algunos aportan colorschemes que no están en la lista, pero siguen disponibles si los escribes directo.
