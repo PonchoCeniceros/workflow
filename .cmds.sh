@@ -225,11 +225,40 @@ _nvdefault() {
     "$HOME/workflow/ide/lua/plugins/ui.colorscheme.lua"
 }
 
-# Tema para abrir nvim: por defecto el que dejo 'theme', o uno elegido
-# con fzf si se paso -t. Devuelve 1 si se cancelo el selector.
-# El tema de esta ventana: el que haya fijado 'theme' en esta shell, o si no,
-# el default de WezTerm con el que se abrio, traducido de vuelta a su nombre
+# Archivo donde 'theme' guarda el tema de la ventana de WezTerm: los colores
+# se aplican a toda la ventana (todos sus tabs), asi que el tema no puede vivir
+# solo en la shell que corrio 'theme'. La llave lleva el socket del proceso de
+# WezTerm porque los ids de ventana se reinician al volver a abrirlo
+_wintheme_file() {
+  [[ -n "$WEZTERM_PANE" && -n "$WEZTERM_UNIX_SOCKET" ]] || return 1
+  (( $+commands[wezterm] )) || return 1
+  local win
+  win=$(wezterm cli list 2>/dev/null | awk -v p="$WEZTERM_PANE" 'NR > 1 && $3 == p { print $1; exit }')
+  [[ -n "$win" ]] || return 1
+  print -r -- "${XDG_STATE_HOME:-$HOME/.local/state}/workflow/themes/${WEZTERM_UNIX_SOCKET:t}-$win"
+}
+
+# Guarda el tema de la ventana y borra los de sesiones de WezTerm ya cerradas
+_wintheme_save() {
+  local file f
+  file=$(_wintheme_file) || return
+  mkdir -p "${file:h}"
+  for f in "${file:h}"/*(N); do
+    [[ "${f:t}" == "${WEZTERM_UNIX_SOCKET:t}"-* ]] || rm -f "$f"
+  done
+  print -r -- "$1" >"$file"
+}
+
+# El tema de esta ventana: el que haya fijado 'theme' en cualquiera de sus
+# tabs, o el de esta shell fuera de WezTerm, o si no, el default de WezTerm
+# con el que se abrio, traducido de vuelta a su nombre
 _curtheme() {
+  local file
+  if file=$(_wintheme_file) && [[ -s "$file" ]]; then
+    print -r -- "$(<"$file")"
+    return
+  fi
+
   if [[ -n "$WORKFLOW_THEME" ]]; then
     print -r -- "$WORKFLOW_THEME"
     return
@@ -291,7 +320,7 @@ _wezscheme() {
 
 # -------------------------------------------------------------------
 # Cambia el tema de la ventana actual: WezTerm, OpenCode y el Neovim que
-# se abra desde aqui con nv/nvp/nvd
+# se abra desde aqui o desde otro tab de la misma ventana con nv/nvp/nvd
 # (no toca el default de LazyVim ni el de WezTerm, ni las demas ventanas)
 #
 # Uso:
@@ -311,8 +340,9 @@ theme() {
   }
   [[ "$theme" == "catppuccin" ]] && theme="catppuccin-mocha"
 
-  # se exporta en vez de escribirse a un archivo: el tema es de esta ventana,
-  # asi nv/nvp/nvd la siguen sin afectar lo que abran las demas
+  # el tema es de esta ventana de WezTerm (y sus tabs, como los de 'ot'):
+  # asi nv/nvp/nvd lo siguen sin afectar lo que abran las demas ventanas
+  _wintheme_save "$theme"
   export WORKFLOW_THEME="$theme"
   printf '\033]1337;SetUserVar=THEME=%s\007' "$(printf '%s' "$wezterm_scheme" | base64)"
   _octheme "$theme"
