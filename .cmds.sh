@@ -397,18 +397,25 @@ dtheme() {
 }
 
 # -------------------------------------------------------------------
-# Helper: selecciona proyecto con fzf, luego tema, abre README.md > package.json > bare
+# Helper: selector de proyecto con fzf dentro de un directorio
 # -------------------------------------------------------------------
-_nvproject() {
-  local project_dir="$1" flag="$2"
-  local selected
-  selected=$(ls -1 "$project_dir" | fzf \
+_selproject() {
+  ls -1 "$1" | fzf \
     --prompt=" Project > " \
     --height=25% \
     --layout=reverse \
     --border=rounded \
     --info=hidden \
-    --header="Projects")
+    --header="Projects"
+}
+
+# -------------------------------------------------------------------
+# Helper: selecciona proyecto con fzf, luego tema, abre README.md > package.json > bare
+# -------------------------------------------------------------------
+_nvproject() {
+  local project_dir="$1" flag="$2"
+  local selected
+  selected=$(_selproject "$project_dir")
   [[ -z "$selected" ]] && return
 
   if [[ "$flag" == "-t" || "$flag" == "--theme" ]]; then
@@ -439,6 +446,21 @@ _nvproject() {
 # -------------------------------------------------------------------
 nvp() { _nvproject "$HOME/Projects" "$1" }
 nvd() { _nvproject "$HOME/Development" "$1" }
+
+# -------------------------------------------------------------------
+# gtp -> selecciona proyecto de ~/Projects y entra a la carpeta
+# gtd -> selecciona proyecto de ~/Development y entra a la carpeta
+# -------------------------------------------------------------------
+_gtproject() {
+  local project_dir="$1"
+  local selected
+  selected=$(_selproject "$project_dir")
+  [[ -z "$selected" ]] && return
+  cd "$project_dir/$selected"
+}
+
+gtp() { _gtproject "$HOME/Projects" }
+gtd() { _gtproject "$HOME/Development" }
 
 # -------------------------------------------------------------------
 # Selecciona un servidor del CSV y se conecta por SSH

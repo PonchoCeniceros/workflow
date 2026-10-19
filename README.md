@@ -91,6 +91,8 @@ El instalador agrega un guard `[[ -n "$NVIM" ]] ||` antes de cargar Powerlevel10
 | `nvp` | Selector de proyecto (~/Projects) |
 | `nvd` | Selector de proyecto (~/Development) |
 | `nvp -t` / `nvd -t` | Igual, agregando el selector de tema |
+| `gtp` | Selector de proyecto (~/Projects) y entra a la carpeta |
+| `gtd` | Selector de proyecto (~/Development) y entra a la carpeta |
 | `sssh` | Seleccionar servidor SSH del catálogo con fzf |
 | `theme` | Selector de tema + cambio rápido de la ventana actual de WezTerm y OpenCode |
 | `theme [tema]` | Cambia directamente el tema de la ventana actual de WezTerm y OpenCode |
