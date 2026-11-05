@@ -305,7 +305,7 @@ nvim
 
 El tema es **por ventana**: `theme` lo cambia solo en la ventana donde lo corres, y `nv`, `nvp` y `nvd` abren Neovim con el tema de esa ventana, así que la terminal y el editor siempre van a juego. Una ventana recién abierta usa el default de WezTerm (el que fija `wtheme`). Para casos puntuales en que quieras otro tema solo para ese Neovim, pásales `-t` y aparece el selector de `fzf`.
 
-El selector muestra nombres cortos, ordenados del fondo más claro al más oscuro:
+El selector tiene **vista previa en vivo**: al moverte por la lista, la ventana toma el color de la opción enfocada; `Enter` lo aplica y `Esc` regresa al tema que tenías. Arranca con el cursor en tu tema actual. Muestra nombres cortos, ordenados del fondo más claro al más oscuro:
 
 | Nombre | Colorscheme | Fondo | Descripción |
 |--------|-------------|-------|-------------|
@@ -407,7 +407,7 @@ Configuración en `.wezterm.lua`.
 | `CMD + SHIFT + R` | Renombrar la ventana actual; el nombre sale en el Dock y en Mission Control |
 | `CMD + SHIFT + T` | Renombrar la pestaña actual |
 
-Cada ventana y pestaña nueva pide su nombre al abrirse (`Enter` vacío la deja con el título automático); a una ventana nueva solo se le pide el de la ventana. Los nombres duran mientras WezTerm siga abierto.
+Cada ventana y pestaña nueva pide su nombre al abrirse (`Enter` vacío la deja con el título automático); a una ventana nueva solo se le pide el de la ventana, y su primera pestaña toma ese mismo nombre. Los nombres duran mientras WezTerm siga abierto.
 
 # SSH
 

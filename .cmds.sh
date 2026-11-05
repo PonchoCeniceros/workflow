@@ -189,14 +189,47 @@ _themekey() {
   esac
 }
 
+# Selector de tema con vista previa: al moverse por la lista, la ventana toma
+# el color de la opcion enfocada. Al salir se regresa al tema que tenia; aplicar
+# el elegido le toca a quien llama (theme, wtheme, dtheme).
+# La vista previa arranca apagada y se enciende al terminar de cargar la lista:
+# si no, el primer elemento recibe foco al llegar por el pipe, antes de que
+# pos() pueda mover el cursor, y la ventana parpadea con ese tema
 _nvtheme() {
-  _themes | fzf \
-    --prompt=" Theme > " \
-    --height=35% \
-    --layout=reverse \
-    --border=rounded \
-    --info=hidden \
-    --header="Color Theme"
+  local actual t picked pos=0 i=0
+  actual=$(_wezscheme "$(_curtheme)")
+
+  # arrancar con el cursor en el tema actual; si no esta en la lista, se queda
+  # en el primero pero sin previsualizarlo hasta que el usuario se mueva
+  for t in ${(f)"$(_themes)"}; do
+    (( i++ ))
+    [[ "$(_wezscheme "$(_themekey "$t")")" == "$actual" ]] && pos=$i
+  done
+  local al_cargar="load:rebind(focus)"
+  (( pos > 0 )) && al_cargar="load:pos($pos)+rebind(focus)"
+
+  picked=$(
+    for t in ${(f)"$(_themes)"}; do
+      printf '%s\t%s\n' "$t" "$(_wezscheme "$(_themekey "$t")")"
+    done | fzf \
+      --delimiter='\t' \
+      --with-nth=1 \
+      --accept-nth=1 \
+      --bind 'start:unbind(focus)' \
+      --bind "$al_cargar" \
+      --bind 'focus:execute-silent:printf "\033]1337;SetUserVar=THEME=%s\007" "$(printf %s {2} | base64)" > /dev/tty' \
+      --prompt=" Theme > " \
+      --height=35% \
+      --layout=reverse \
+      --border=rounded \
+      --info=hidden \
+      --header="Color Theme"
+  )
+
+  if [[ -n "$actual" ]]; then
+    printf '\033]1337;SetUserVar=THEME=%s\007' "$(printf %s "$actual" | base64)" >/dev/tty
+  fi
+  print -r -- "${picked%%$'\t'*}"
 }
 
 # OpenCode nombra sus temas distinto y no tiene todas las variantes:

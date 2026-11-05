@@ -68,13 +68,18 @@ local function global_set(clave, id, valor)
 	wezterm.GLOBAL[clave] = tabla
 end
 
-local function nombrar_ventana(window, pane)
+-- al_crear: la primera pestaña toma el mismo nombre. Solo al crear, para que
+-- renombrar la ventana despues no pise el nombre que ya tenga esa pestaña.
+local function nombrar_ventana(window, pane, al_crear)
 	window:perform_action(
 		wezterm.action.PromptInputLine({
 			description = "Nombre para la ventana (Enter vacío = automático):",
 			action = wezterm.action_callback(function(win, _, line)
 				if line and line ~= "" then
 					global_set("nombres_ventana", tostring(win:window_id()), line)
+					if al_crear then
+						win:mux_window():tabs()[1]:set_title(line)
+					end
 					-- el titulo solo se recalcula cuando algo cambia: reaplicar los
 					-- overrides fuerza que se vuelva a correr format-window-title
 					win:set_config_overrides(win:get_config_overrides() or {})
@@ -114,7 +119,7 @@ wezterm.on("update-status", function(window, pane)
 		for _, t in ipairs(window:mux_window():tabs()) do
 			global_set("pestanas_vistas", tostring(t:tab_id()), true)
 		end
-		nombrar_ventana(window, pane)
+		nombrar_ventana(window, pane, true)
 		return
 	end
 
@@ -171,7 +176,9 @@ config.keys = {
 		-- renombrar la ventana actual
 		key = "r",
 		mods = "CMD|SHIFT",
-		action = wezterm.action_callback(nombrar_ventana),
+		action = wezterm.action_callback(function(window, pane)
+			nombrar_ventana(window, pane, false)
+		end),
 	},
 	{
 		-- renombrar la pestaña actual
