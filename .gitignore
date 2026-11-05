@@ -8,6 +8,7 @@ ai/opencode/tui.json
 !.wallet/pem/
 .wallet/pem/*
 !.wallet/pem/.gitkeep
+.wallet/sessions.csv
 
 # proyectos para probar el debugger
 debug/*

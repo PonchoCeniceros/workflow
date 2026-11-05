@@ -39,6 +39,7 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
   - [Mantenimiento](#mantenimiento)
 - [WezTerm](#wezterm)
 - [SSH](#ssh)
+- [Sesiones de Claude](#sesiones-de-claude)
 
 # Requisitos
 
@@ -94,6 +95,7 @@ El instalador agrega un guard `[[ -n "$NVIM" ]] ||` antes de cargar Powerlevel10
 | `gtp` | Selector de proyecto (~/Projects) y entra a la carpeta |
 | `gtd` | Selector de proyecto (~/Development) y entra a la carpeta |
 | `sssh` | Seleccionar servidor SSH del catálogo con fzf |
+| `ccs` | Seleccionar una sesión de Claude del catálogo y retomarla |
 | `theme` | Selector de tema + cambio rápido de la ventana actual de WezTerm y OpenCode |
 | `theme [tema]` | Cambia directamente el tema de la ventana actual de WezTerm y OpenCode |
 | `wtheme` | Selector de tema + fija el default de WezTerm |
@@ -417,3 +419,20 @@ Conexión rápida a servidores vía `sssh` — selecciona un servidor del catál
 sssh
 ```
 Los servidores están definidos en `.wallet/ssh.csv` y las llaves en `.wallet/pem/`.
+
+# Sesiones de Claude
+
+Retoma una sesión de Claude Code vía `ccs` — selecciona una del catálogo con `fzf`, entra al directorio donde se creó y la retoma con `claude --resume`.
+
+```bash
+ccs
+```
+
+Las sesiones están en `.wallet/sessions.csv`, con el formato `nombre,sesion`:
+
+```csv
+nombre,sesion
+migracion a ECS,357e7169-8f12-4b5a-84a1-45dc3646dcd1
+```
+
+No hace falta guardar el directorio: Claude guarda cada sesión dentro de la carpeta de su proyecto y `--resume` solo la encuentra desde ahí, así que `ccs` lo lee del propio archivo de la sesión en `~/.claude/projects/`.

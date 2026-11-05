@@ -525,3 +525,42 @@ sssh() {
   chmod 600 "$pem_dir/$pem"
   ssh -i "$pem_dir/$pem" "$user@$ip"
 }
+
+# -------------------------------------------------------------------
+# Selecciona una sesion de Claude del CSV y la retoma
+#
+# 'ccs' -> selector de sesion; entra al directorio donde se creo y la retoma.
+# Claude guarda cada sesion en la carpeta de su proyecto y --resume solo la
+# encuentra desde ese directorio, que se saca del propio archivo de la sesion
+# -------------------------------------------------------------------
+ccs() {
+  local csv_file="$HOME/workflow/.wallet/sessions.csv"
+
+  [[ ! -f "$csv_file" ]] && echo "$csv_file not found" && return 1
+
+  local selected
+  selected=$(awk -F',' 'NR>1 && NF>=2 { gsub(/\r/, ""); printf "%s\t%s\n", $1, $2 }' "$csv_file" | fzf \
+    --delimiter='\t' \
+    --with-nth=1 \
+    --prompt=" Claude > " \
+    --height=40% \
+    --layout=reverse \
+    --border=rounded \
+    --info=hidden \
+    --header="Sesiones")
+
+  [[ -z "$selected" ]] && return
+
+  local id="${selected##*$'\t'}"
+  local -a found=(~/.claude/projects/*/"$id".jsonl(N))
+  if (( ${#found} == 0 )); then
+    echo "No encontre la sesion $id en ~/.claude/projects"
+    return 1
+  fi
+
+  local dir
+  dir=$(grep -m1 -o '"cwd":"[^"]*"' "${found[1]}" | cut -d'"' -f4)
+  [[ -n "$dir" && -d "$dir" ]] && cd "$dir"
+
+  claude --resume "$id"
+}
