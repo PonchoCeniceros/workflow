@@ -51,6 +51,93 @@ config.initial_rows = 43
 -- config.initial_cols = 120
 -- config.initial_rows = 20
 
+--
+-- Nombres de ventana y de pestaña
+--
+-- El titulo de la ventana WezTerm lo recalcula en cada cambio, asi que un
+-- set_title directo se pierde: el nombre se guarda en wezterm.GLOBAL (que
+-- sobrevive a las recargas de config) y format-window-title lo usa.
+-- Las pestañas si guardan su titulo de forma nativa (tab:set_title).
+local function global_get(clave)
+	return wezterm.GLOBAL[clave] or {}
+end
+
+local function global_set(clave, id, valor)
+	local tabla = global_get(clave)
+	tabla[id] = valor
+	wezterm.GLOBAL[clave] = tabla
+end
+
+local function nombrar_ventana(window, pane)
+	window:perform_action(
+		wezterm.action.PromptInputLine({
+			description = "Nombre para la ventana (Enter vacío = automático):",
+			action = wezterm.action_callback(function(win, _, line)
+				if line and line ~= "" then
+					global_set("nombres_ventana", tostring(win:window_id()), line)
+					-- el titulo solo se recalcula cuando algo cambia: reaplicar los
+					-- overrides fuerza que se vuelva a correr format-window-title
+					win:set_config_overrides(win:get_config_overrides() or {})
+				end
+			end),
+		}),
+		pane
+	)
+end
+
+local function nombrar_pestana(window, pane)
+	window:perform_action(
+		wezterm.action.PromptInputLine({
+			description = "Nombre para la pestaña (Enter vacío = automático):",
+			action = wezterm.action_callback(function(win, p, line)
+				if line and line ~= "" then
+					p:tab():set_title(line)
+				end
+			end),
+		}),
+		pane
+	)
+end
+
+-- Pide nombre al crear: no hay un evento de "ventana/pestaña nueva", asi que
+-- update-status (que corre cada segundo) detecta ids que aun no ha visto. Una
+-- ventana nueva pide solo su nombre; su primera pestaña se deja automatica.
+wezterm.on("update-status", function(window, pane)
+	local tab = pane:tab()
+	if not tab then
+		return
+	end
+
+	local wid = tostring(window:window_id())
+	if not global_get("ventanas_vistas")[wid] then
+		global_set("ventanas_vistas", wid, true)
+		for _, t in ipairs(window:mux_window():tabs()) do
+			global_set("pestanas_vistas", tostring(t:tab_id()), true)
+		end
+		nombrar_ventana(window, pane)
+		return
+	end
+
+	local tid = tostring(tab:tab_id())
+	if not global_get("pestanas_vistas")[tid] then
+		global_set("pestanas_vistas", tid, true)
+		nombrar_pestana(window, pane)
+	end
+end)
+
+wezterm.on("format-window-title", function(tab, pane, tabs, panes, cfg)
+	local titulo = tab.tab_title ~= "" and tab.tab_title or pane.title
+	local indice = ""
+	if #tabs > 1 then
+		indice = string.format("[%d/%d] ", tab.tab_index + 1, #tabs)
+	end
+	local nombre = global_get("nombres_ventana")[tostring(tab.window_id)]
+	if nombre then
+		return nombre .. " · " .. indice .. titulo
+	end
+	return indice .. titulo
+end)
+
 -- comando para maximizar la terminal
 config.keys = {
 	{
@@ -59,8 +146,8 @@ config.keys = {
 		action = wezterm.action.ToggleFullScreen,
 	},
 	{
-		-- 3/4 de la pantalla pegada a la izquierda, para dejar visible
-		-- la franja derecha del escritorio (iconos, imagenes para arrastrar)
+		-- ventana pegada a la izquierda, para dejar visible la franja
+		-- derecha del escritorio (iconos, imagenes para arrastrar)
 		-- no usar 'd': Ctrl+Cmd+D es el "Look Up" de macOS y nunca llega aqui
 		key = "l",
 		mods = "CMD|CTRL",
@@ -81,17 +168,16 @@ config.keys = {
 		action = wezterm.action.Hide,
 	},
 	{
-		-- renombrar la ventana actual (útil al abrir una nueva)
+		-- renombrar la ventana actual
 		key = "r",
 		mods = "CMD|SHIFT",
-		action = wezterm.action.PromptInputLine({
-			description = "Nombre para la ventana:",
-			action = wezterm.action_callback(function(window, pane, line)
-				if line then
-					window:set_title(line)
-				end
-			end),
-		}),
+		action = wezterm.action_callback(nombrar_ventana),
+	},
+	{
+		-- renombrar la pestaña actual
+		key = "t",
+		mods = "CMD|SHIFT",
+		action = wezterm.action_callback(nombrar_pestana),
 	},
 }
 

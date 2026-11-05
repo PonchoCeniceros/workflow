@@ -84,7 +84,7 @@ El instalador agrega un guard `[[ -n "$NVIM" ]] ||` antes de cargar Powerlevel10
 | `srcz` | Recargar configuración de `.zshrc` |
 | `cls` | Limpiar pantalla |
 | `q` | Salir de la terminal (`exit`) |
-| `ot` | Abrir nuevo tab en el mismo directorio |
+| `ot` | Abrir nuevo tab en el mismo directorio (pide nombre para la pestaña, como cualquier tab nuevo) |
 | `nv` | Abrir Neovim con el tema actual |
 | `nv [arch]` | Abrir archivo con el tema actual |
 | `nv -t [arch]` | Igual, pero eligiendo el tema con fzf |
@@ -404,7 +404,10 @@ Configuración en `.wezterm.lua`.
 | `CMD + CTRL + F` | Toggle fullscreen |
 | `CMD + CTRL + L` | Ventana al 85% del ancho de la pantalla, pegada a la izquierda (deja libre la franja derecha del escritorio) |
 | `CMD + H` | Ocultar ventana |
-| `CMD + SHIFT + R` | Renombrar la ventana actual (útil para identificarla en Mission Control / Dock cuando tienes varias abiertas) |
+| `CMD + SHIFT + R` | Renombrar la ventana actual; el nombre sale en el Dock y en Mission Control |
+| `CMD + SHIFT + T` | Renombrar la pestaña actual |
+
+Cada ventana y pestaña nueva pide su nombre al abrirse (`Enter` vacío la deja con el título automático); a una ventana nueva solo se le pide el de la ventana. Los nombres duran mientras WezTerm siga abierto.
 
 # SSH
 
