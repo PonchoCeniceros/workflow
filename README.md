@@ -402,6 +402,7 @@ Configuración en `.wezterm.lua`.
 | Shortcut | Acción |
 |----------|--------|
 | `CMD + CTRL + F` | Toggle fullscreen |
+| `CMD + CTRL + L` | Ventana al 85% del ancho de la pantalla, pegada a la izquierda (deja libre la franja derecha del escritorio) |
 | `CMD + H` | Ocultar ventana |
 | `CMD + SHIFT + R` | Renombrar la ventana actual (útil para identificarla en Mission Control / Dock cuando tienes varias abiertas) |
 

@@ -59,6 +59,23 @@ config.keys = {
 		action = wezterm.action.ToggleFullScreen,
 	},
 	{
+		-- 3/4 de la pantalla pegada a la izquierda, para dejar visible
+		-- la franja derecha del escritorio (iconos, imagenes para arrastrar)
+		-- no usar 'd': Ctrl+Cmd+D es el "Look Up" de macOS y nunca llega aqui
+		key = "l",
+		mods = "CMD|CTRL",
+		action = wezterm.action_callback(function(window, pane)
+			if window:get_dimensions().is_full_screen then
+				window:toggle_fullscreen()
+			end
+			local screen = wezterm.gui.screens().active
+			window:set_position(screen.x, screen.y)
+			-- 0.85: deja libre la columna de iconos del escritorio tambien en pantallas mas angostas
+			local fraccion = 0.85
+			window:set_inner_size(math.floor(screen.width * fraccion), screen.height)
+		end),
+	},
+	{
 		key = "h",
 		mods = "CMD",
 		action = wezterm.action.Hide,
