@@ -2,11 +2,15 @@
 
 Scripts para atajos de la app Shortcuts de macOS. Cada atajo es una sola acción que corre uno de estos archivos.
 
-Los de WezTerm y Safari acomodan la ventana igual que `Ctrl+Cmd+L` en WezTerm: pegada a la izquierda, al 85% del ancho, para dejar libre la franja derecha del escritorio. El de Obsidian la manda a la pantalla secundaria y el de Chrome lo pone en pantalla completa.
+El de WezTerm abre una ventana con tema al azar y el tamaño se ajusta a mano. El de Safari acomoda la ventana igual que `Ctrl+Cmd+L` en WezTerm: pegada a la izquierda, al 85% del ancho, para dejar libre la franja derecha del escritorio. El de Obsidian la manda a la pantalla secundaria y el de Chrome lo pone en pantalla completa.
 
 Así quedan en Shortcuts:
 
 ![Atajos en Shortcuts](../.assets/shortcuts.png)
+
+Con los atajos, el Dock queda así de limpio:
+
+![Dock](../.assets/dock.png)
 
 | Atajo | Script |
 | --- | --- |
@@ -17,7 +21,7 @@ Así quedan en Shortcuts:
 
 ## `wezterm-random.sh`
 
-Abre una ventana nueva de WezTerm con un tema al azar, ya acomodada a la izquierda al 85%.
+Abre una ventana nueva de WezTerm con un tema al azar.
 
 **Acción en Shortcuts:** Run Shell Script, con Shell `zsh`:
 
@@ -27,9 +31,9 @@ Abre una ventana nueva de WezTerm con un tema al azar, ya acomodada a la izquier
 
 **Cómo funciona:**
 
-- Si WezTerm ya está abierto, crea la ventana con `wezterm cli spawn --new-window`. Si está cerrado, lo arranca con esa ventana.
-- La ventana nace con `WORKFLOW_RANDOM_THEME=1`. En su primer prompt, `.cmds.sh` elige un tema de `_themes` distinto al tema por defecto y lo aplica con `theme`. Así `nv` y OpenCode quedan con el mismo tema.
-- Luego la shell le manda a WezTerm la variable `SNAP=left` y `.wezterm.lua` acomoda la ventana con `pegar_izquierda`, la misma función de `Ctrl+Cmd+L`.
+- Si WezTerm ya está abierto, crea la ventana con `wezterm cli spawn --new-window` y trae WezTerm al frente con `osascript ... activate`. No usa `open -a WezTerm`: `open` le manda a la app un "reopen" y WezTerm responde abriendo otra ventana más.
+- Si está cerrado, lo arranca con `open -a WezTerm --args start` y esa es la única ventana.
+- La ventana nace con `WORKFLOW_RANDOM_THEME=1`. En su primer prompt, `.cmds.sh` elige un tema de `_themes` distinto al tema por defecto y que no sea `dawn` y lo aplica con `theme`. Así `nv` y OpenCode quedan con el mismo tema.
 
 El tema tiene que aplicarlo la shell de la ventana nueva: WezTerm cambia los colores con una señal que solo puede mandar el propio pane, no un proceso de afuera.
 

@@ -20,8 +20,6 @@ end
 wezterm.on("user-var-changed", function(window, pane, name, value)
 	if name == "THEME" then
 		window:set_config_overrides({ color_scheme = value })
-	elseif name == "SNAP" and value == "left" then
-		pegar_izquierda(window)
 	end
 end)
 
