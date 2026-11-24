@@ -40,6 +40,7 @@ Workflow es un monorepo de configuración personal que centraliza y sincroniza e
 - [WezTerm](#wezterm)
 - [SSH](#ssh)
 - [Sesiones de Claude](#sesiones-de-claude)
+- [Fondos de pantalla](#fondos-de-pantalla)
 
 # Requisitos
 
@@ -436,3 +437,12 @@ migracion a ECS,357e7169-8f12-4b5a-84a1-45dc3646dcd1
 ```
 
 No hace falta guardar el directorio: Claude guarda cada sesión dentro de la carpeta de su proyecto y `--resume` solo la encuentra desde ahí, así que `ccs` lo lee del propio archivo de la sesión en `~/.claude/projects/`.
+
+# Fondos de pantalla
+
+Fondos con la paleta de Dracula en `.assets/fondos/`, cada uno en versión ancha (2560 × 1080) y vertical (1080 × 1920). El de puntos lleva una retícula de puntos cada 32 px, una luz morada y otra azul:
+
+<p align="center">
+  <img src=".assets/fondos/dracula-puntos-azul-ancha.png" alt="Fondo de puntos, ancho" height="270">
+  <img src=".assets/fondos/dracula-puntos-azul-vertical.png" alt="Fondo de puntos, vertical" height="270">
+</p>
