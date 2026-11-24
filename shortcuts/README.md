@@ -10,7 +10,9 @@ Así quedan en Shortcuts:
 
 Con los atajos, el Dock queda así de limpio:
 
-![Dock](../.assets/dock.png)
+<p align="center">
+  <img src="../.assets/dock.png" alt="Dock">
+</p>
 
 | Atajo | Script |
 | --- | --- |
