@@ -3,12 +3,25 @@ local mux = wezterm.mux
 local config = wezterm.config_builder()
 config.window_decorations = "RESIZE"
 
+local pegar_izquierda = function(window)
+	if window:get_dimensions().is_full_screen then
+		window:toggle_fullscreen()
+	end
+	local screen = wezterm.gui.screens().active
+	window:set_position(screen.x, screen.y)
+	-- 0.85: deja libre la columna de iconos del escritorio tambien en pantallas mas angostas
+	local fraccion = 0.85
+	window:set_inner_size(math.floor(screen.width * fraccion), screen.height)
+end
+
 --
 -- Escuchar el evento personalizado de Neovim
 --
 wezterm.on("user-var-changed", function(window, pane, name, value)
 	if name == "THEME" then
 		window:set_config_overrides({ color_scheme = value })
+	elseif name == "SNAP" and value == "left" then
+		pegar_izquierda(window)
 	end
 end)
 
@@ -157,14 +170,7 @@ config.keys = {
 		key = "l",
 		mods = "CMD|CTRL",
 		action = wezterm.action_callback(function(window, pane)
-			if window:get_dimensions().is_full_screen then
-				window:toggle_fullscreen()
-			end
-			local screen = wezterm.gui.screens().active
-			window:set_position(screen.x, screen.y)
-			-- 0.85: deja libre la columna de iconos del escritorio tambien en pantallas mas angostas
-			local fraccion = 0.85
-			window:set_inner_size(math.floor(screen.width * fraccion), screen.height)
+			pegar_izquierda(window)
 		end),
 	},
 	{

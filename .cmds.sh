@@ -382,6 +382,31 @@ theme() {
 }
 
 # -------------------------------------------------------------------
+# Ventana con tema aleatorio, pegada a la izquierda al 85%. La abre
+# shortcuts/wezterm-random.sh con WORKFLOW_RANDOM_THEME=1;
+# se aplica en el primer prompt porque el tema solo lo puede pedir la
+# shell de la propia ventana
+# -------------------------------------------------------------------
+_wf_random_theme_once() {
+  add-zsh-hook -d precmd _wf_random_theme_once
+  unset WORKFLOW_RANDOM_THEME
+
+  local actual t
+  local -a opciones
+  actual=$(_curtheme)
+  for t in ${(f)"$(_themes)"}; do
+    [[ "$(_themekey "$t")" == "$actual" ]] || opciones+=("$t")
+  done
+  (( ${#opciones[@]} )) && theme "${opciones[RANDOM % ${#opciones[@]} + 1]}"
+  printf '\033]1337;SetUserVar=SNAP=%s\007' "$(printf '%s' left | base64)"
+}
+
+if [[ -z "$NVIM" && "$WORKFLOW_RANDOM_THEME" == "1" ]]; then
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd _wf_random_theme_once
+fi
+
+# -------------------------------------------------------------------
 # Fija el tema por defecto de WezTerm: el que usan las ventanas nuevas
 # y las que no han cambiado de tema con 'theme'
 #
